@@ -1,0 +1,57 @@
+{#
+/**
+ * @file
+ * CTA Molecule.
+ *
+ * Variables disponibles:
+ * - modifier: Variante visual ('dark', etc.)
+ * - heading_level: Nivel del heading (1-6)
+ * - heading_text: Texto del título
+ * - content: Texto wysiwyg (puede traer HTML)
+ * - button_content / button_url: para botón único
+ * - button_icon / button_modifiers
+ */
+#}
+
+{% set header__base_class = 'cta-mapa' %}
+<div class="container">
+  <div class="{{ header__base_class }} {{ modifier }}">
+    <div class="cta__content">
+      <div class='content'>
+        {# Botón tipo etiqueta informativa (tagline) #}
+        {% if tagline %}
+          {% include "@atoms/buttons/button.twig" with {
+            button_icon: button_icon_tag,
+            button_content: button_content_tag,
+            is_download: button_is_download|default(false),
+            button_modifiers: button_modifiers_tag,
+          } %}
+        {% endif %}
+
+        {# Texto wysiwyg #}
+        {% if content %}
+          <div class="cta__text">
+            {{ content|raw }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class='buttons'>
+        {# Botones múltiples o botón único #}
+        {% include "@atoms/buttons/button.twig" with {
+          button_icon: button_icon,
+          button_content: button_content,
+          button_url: button_url,
+          is_download: button_is_download|default(false),
+          button_modifiers: button_modifiers,
+        } %}
+      </div>
+    </div>
+
+    {% if mapa %}
+      <div class="cta__mapa">
+        {{ mapa }}
+      </div>
+    {% endif %}
+  </div>
+</div>

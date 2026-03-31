@@ -1,0 +1,114 @@
+.paragraph--type--menus {
+  padding: 0 0 var(--spacing-xxl);
+  overflow: unset;
+
+  ul.menu {
+    list-style-type: none;
+    display: flex;
+    gap: var(--spacing-md);
+    background-color: var(--grey-4);
+    width: max-content;
+    padding: var(--spacing-md);
+    border-radius: 18px;
+    margin: 0;
+
+    li {
+      a {
+        color: var(--tpms-negro);
+        display: inline-flex;
+        font-weight: 600;
+        justify-content: center;
+        border-radius: 8px;
+        padding: 8px var(--spacing-md);
+
+        &.menu__link--active {
+          background-color: var(--tpms-azul-cielo);
+          color: var(--tpms-blanco);
+        }
+
+        &:hover {
+          background-color: var(--grey-3);
+          color: var(--tpms-negro);
+        }
+      }
+    }
+  }
+
+  .menu-wrap {
+    position: relative;
+    width: 100%;
+  }
+
+  #menu-toggle {
+    display: none;
+  }
+
+  .menu-label {
+    display: none;
+    color: var(--grey-1);
+    padding: 1rem;
+    border: 1px solid var(--grey-2);
+    border-radius: var(--spacing-sm);
+    position: relative;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Flecha */
+  .menu-label::after {
+    content: '>';
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    transition: transform 0.3s ease;
+    font-size: 1.2rem;
+    color: var(--grey-1);
+  }
+
+  #menu-toggle:checked + .menu-label::after {
+    transform: translateY(-50%) rotate(-90deg);
+  }
+
+  @media (max-width: $large) {
+    .menu-label {
+      display: block;
+    }
+
+    ul.menu {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      border: 1px solid var(--grey-2);
+      background: $white;
+      border-radius: var(--spacing-sm);
+      overflow: hidden;
+      z-index: 1000;
+      padding: 0;
+
+      li a {
+        border-radius: 0;
+        justify-content: normal;
+        width: 100%;
+      }
+    }
+
+    #menu-toggle:checked + .menu-label + ul.menu {
+      display: flex;
+      margin-top: 4px;
+    }
+
+    .menu__item:hover,
+    .menu__item:focus {
+      background-color: var(--tpms-azul-cielo);
+
+      a {
+        color: var(--tpms-blanco);
+      }
+    }
+  }
+}

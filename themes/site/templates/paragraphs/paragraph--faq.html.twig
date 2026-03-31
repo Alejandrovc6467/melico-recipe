@@ -1,0 +1,41 @@
+{#
+/**
+ * @file
+ * Paragraph FAQ rendered with the Accordion component.
+ *
+ * Available variables:
+ * - paragraph: Full paragraph entity.
+ * - content: All paragraph items.
+ * - attributes: HTML attributes for the containing element.
+ * - view_mode: View mode.
+ */
+#}
+{%
+  set classes = [
+    'drupal-paragraph',
+    'paragraph--type--' ~ paragraph.bundle|clean_class,
+    view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+    not paragraph.isPublished() ? 'paragraph--unpublished'
+  ]
+%}
+
+{% set accordion_items = [] %}
+{% for item in paragraph.field_items %}
+  {% set question = item.entity %}
+  {% if question %}
+    {% set answer = question.field_answer.processed|default(question.field_answer.value) %}
+    {% set accordion_items = accordion_items|merge([{
+      title: question.field_question.value,
+      content: answer,
+    }]) %}
+  {% endif %}
+{% endfor %}
+
+{% block paragraph %}
+  <section{{ attributes.addClass(classes).setAttribute('id', 'component-' ~ paragraph.id()) }}>
+    {% include "@organisms/accordion/accordion.twig" with {
+      accordion_title: paragraph.field_heading.value,
+      accordion_items: accordion_items,
+    } only %}
+  </section>
+{% endblock paragraph %}

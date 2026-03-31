@@ -1,0 +1,65 @@
+/*
+ * General Mixins (put specific ones in component files where applicable)
+*/
+
+@mixin list-reset {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+// @mixin flex-center {
+//   align-items: center;
+//   display: flex;
+//   justify-content: center;
+// }
+
+// tokens
+$site-max-width: 1920px;
+$container-max-width: 1440px;
+$gutter: var(--spacing-lg);
+
+// site container
+@mixin site-container {
+  max-width: $site-max-width;
+  margin-inline: auto;
+}
+
+@mixin container {
+  @extend .container;
+}
+
+.container {
+  width: min(
+    100%,
+    #{$xxl}
+  ); // nunca excede el viewport, pero puede llegar a 1440 px
+
+  max-width: none;
+  margin-left: auto;
+  margin-right: auto;
+  padding-inline: 16px;
+  box-sizing: border-box;
+
+  @include breakpoint('medium') {
+    max-width: calc(100% - 24px);
+  }
+
+  @include breakpoint('large') {
+    padding-inline: 24px;
+  }
+
+  @include breakpoint('xxlarge') {
+    overflow: hidden;
+    max-width: #{$xxl - 24px};
+  }
+
+  @media screen and (min-width: 1520px) {
+    padding-inline: 0;
+    max-width: #{$xxl};
+  }
+}
+
+.container:not(.full-region-content) .container {
+  padding-inline: 0;
+}

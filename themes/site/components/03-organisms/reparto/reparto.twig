@@ -1,0 +1,28 @@
+{% set reparto_base_class = reparto_base_class|default('reparto') %}
+
+<section {{ bem(reparto_base_class, reparto_modifiers, reparto_blockname, ['container section-margin']) }}>
+  {% if reparto_title %}
+    <div class="reparto__title">
+      {% include "@atoms/text/headings/_heading.twig" with {
+        heading_level: 2,
+        heading: reparto_title,
+        heading_blockname: 'reparto',
+        heading_icon: true,
+        heading_underline: true
+      } only %}
+    </div>
+  {% endif %}
+
+  {% if reparto_cards %}
+    <div class="row reparto__grid">
+      {% for card in reparto_cards %}
+        <div class="col-12 col-md-6 col-lg-4">
+          {% include "@molecules/card-reparto/card-reparto.twig" with {
+            card_title: card.title,
+            card_item: card.item
+          } %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</section>

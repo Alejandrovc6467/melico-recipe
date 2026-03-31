@@ -1,0 +1,25 @@
+langcode: es
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - filter.format.full_html
+    - node.type.noticia
+  module:
+    - text
+id: node.noticia.body
+field_name: body
+entity_type: node
+bundle: noticia
+label: Descripción
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+  required_summary: true
+  allowed_formats:
+    - full_html
+field_type: text_with_summary

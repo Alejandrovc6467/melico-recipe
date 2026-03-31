@@ -1,0 +1,15 @@
+{
+    "name": "alejandrovc177/melico-recipe",
+    "description": "Content type noticia, vista noticias_y_comunicados, tema site y admin Gin",
+    "type": "drupal-recipe",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Alejandro",
+            "role": "Maintainer"
+        }
+    ],
+    "require": {
+        "drupal/core": "^11"
+    }
+}

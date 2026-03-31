@@ -1,0 +1,22 @@
+title: 'Title Example'
+items:
+  - title: 'Introduction'
+    url: '#'
+    in_active_trail: true
+    below:
+      - title: 'What is Drupal?'
+        url: '#'
+      - title: 'Why use Books?'
+        url: '#'
+
+  - title: 'Installation'
+    url: '#'
+    below:
+      - title: 'Requirements'
+        url: '#'
+      - title: 'Setup'
+        url: '#'
+
+attributes:
+  class:
+    - book-tree

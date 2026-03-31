@@ -1,0 +1,431 @@
+.lista-eventos.page-section {
+  .layout {
+    position: relative;
+
+    @include large {
+      display: none;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: var(--grey-4);
+      color: white;
+      padding: 1rem;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      z-index: 1000;
+      overflow-y: auto;
+      box-sizing: border-box;
+
+      &.open {
+        transform: translateX(0);
+
+        .form-actions {
+          display: flex;
+          flex-direction: row-reverse;
+          justify-content: space-between;
+          padding: var(--spacing-md) 0;
+          border-top: 1px solid var(--gris-neblina);
+          margin-left: -1rem;
+          margin-right: -1rem;
+          padding-left: 1rem;
+          padding-right: 1rem;
+          background-color: var(--tpms-blanco);
+
+          #edit-reset-lista-cartelera--2,
+          #edit-reset-lista-cartelera--3 {
+            background: none;
+            color: var(--grey-2);
+            padding: var(--spacing-sm) var(--spacing-lg);
+
+            font-size: 1rem;
+          }
+
+          input {
+            min-width: auto;
+          }
+        }
+      }
+
+      .js-form-type-select.form-item-provincia {
+        display: none;
+      }
+
+      [data-drupal-selector='views-exposed-form-lista-cartelera-block-4'] {
+        .form-item.form-item-institucion,
+        .form-item.form-item-title {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .lista-eventos__content {
+    .views-view-responsive-grid {
+      margin-bottom: var(--spacing-xxl);
+      @include large {
+        margin-bottom: 76px;
+      }
+    }
+    .content-title {
+      margin-bottom: var(--spacing-xl);
+      @include large {
+        margin-bottom: var(--spacing-lg);
+      }
+      h1 {
+        color: var(--tpms-azul-presi);
+      }
+    }
+  }
+  &__content {
+    .pager {
+      .paginator {
+        h4 {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .sidebar-filtros {
+    max-width: 100%;
+    margin-bottom: var(--spacing-xxl);
+
+    @include large {
+      margin-bottom: 0;
+    }
+
+    &__buscador {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    &__select {
+      .form-item {
+        margin-bottom: var(--spacing-lg);
+      }
+    }
+
+    &__mobile_button {
+      margin-right: var(--spacing-lg);
+      margin-bottom: var(--spacing-xl);
+      display: inline-block;
+
+      @include large {
+        display: none;
+      }
+
+      .button {
+        flex-direction: row-reverse;
+      }
+    }
+
+    .limpia_busca {
+      justify-content: space-between;
+      padding: 20px 0;
+      background-color: var(--tpms-blanco);
+      border-top: 1px solid var(--gris-neblina);
+      display: none;
+
+      .button--primary {
+        flex-direction: row-reverse;
+
+        svg {
+          margin-left: 0;
+          margin-right: var(--spacing-sm);
+
+          use {
+            filter: brightness(0) saturate(100%) invert(99%) sepia(1%)
+              saturate(1801%) hue-rotate(11deg) brightness(118%) contrast(100%);
+          }
+        }
+      }
+
+      .button--link {
+        text-decoration: none;
+        color: var(--gris-neblina);
+        padding: 0;
+        min-width: fit-content;
+      }
+    }
+
+    &__grupo {
+      display: none;
+
+      @include large {
+        display: block;
+      }
+
+      .paragraph--semi-bold {
+        margin-bottom: var(--spacing-md);
+        color: var(--tpms-azul-presi);
+      }
+
+      .form-item--checkboxes {
+        padding: 0;
+      }
+    }
+
+    form {
+      .js-form-type-textfield,
+      .js-form-type-select {
+        padding-top: 0;
+        padding-bottom: 0;
+
+        label {
+          display: block;
+          margin-bottom: 8px;
+          color: var(--tpms-azul-presi);
+        }
+
+        input {
+          height: 48px;
+          max-height: 48px;
+          background: url('../assets/icons/search-default.svg') 18px center
+            no-repeat;
+          &::placeholder {
+            color: #71797f;
+          }
+          &:not(:placeholder-shown) {
+            color: var(--tpms-azul-presi);
+          }
+        }
+
+        select {
+          height: 45px;
+          width: 100%;
+          color: var(--tpms-azul-presi);
+        }
+      }
+
+      .js-form-type-select {
+        overflow: hidden;
+        border: 1px solid var(--grey-2);
+      }
+    }
+
+    .buscar {
+      padding: var(--spacing-sm) var(--spacing-xxl);
+      flex: 1;
+    }
+
+    #views-exposed-form-lista-cartelera-block-4 {
+      .form-item-title,
+      .form-item-label,
+      .form-item-institucion {
+        order: 1;
+      }
+
+      .form-actions {
+        display: none;
+
+        input[type='submit'] {
+          @include button-base;
+
+          width: 100%;
+        }
+
+        input[type='submit'].button:not([name='reset']) {
+          @include button-color-primary;
+        }
+
+        input[type='submit'].button[name='reset'] {
+          @extend .button--tertiary-border;
+        }
+      }
+
+      fieldset {
+        display: none;
+
+        @include large {
+          display: block;
+          order: 3;
+          margin-bottom: var(--spacing-xs);
+        }
+      }
+
+      @include large {
+        display: flex;
+        flex-direction: column;
+
+        .form-actions {
+          display: flex;
+          flex-direction: column;
+          gap: 32px;
+          order: 1;
+          margin-bottom: var(--spacing-xl);
+        }
+
+        .form-item-title,
+        .form-item-label,
+        .form-item-institucion {
+          order: 0;
+        }
+
+        .form-item-field-provincia-target-id {
+          order: 2;
+        }
+
+        input {
+          &#edit-reset-lista-cartelera--2 {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+
+  .actions-custom {
+    display: flex;
+    max-height: var(--spacing-xxl);
+    justify-content: space-between;
+
+    @include large {
+      display: none;
+    }
+    #toggleSidebar {
+      min-width: auto;
+    }
+    .button.buscar {
+      min-width: auto;
+      padding: var(--spacing-sm) var(--spacing-lg);
+    }
+  }
+
+  .cerrar {
+    display: flex;
+    margin-bottom: var(--spacing-md);
+    padding: 0 15px;
+
+    svg {
+      padding: 0;
+    }
+
+    .h3 {
+      color: var(--tpms-azul-presi);
+      margin-bottom: 0;
+    }
+
+    .boton_cerrar {
+      flex-shrink: 0;
+    }
+
+    .title {
+      flex-grow: 1;
+      text-align: center;
+    }
+  }
+
+  .border_boton {
+    border-bottom: 1px solid var(--gris-neblina);
+    margin-bottom: var(--spacing-xl);
+    display: block;
+  }
+}
+
+[data-drupal-selector='views-exposed-form-lista-cartelera-block-4'] {
+  position: relative;
+  width: 100%;
+
+  input[type='text'] {
+    position: relative;
+    border: 1px solid var(--gris-neblina);
+    padding: var(--spacing-sm) var(--spacing-sm) var(--spacing-sm) 52px;
+    width: 100%;
+    min-width: auto;
+    box-sizing: border-box;
+
+    @extend .paragraph--small;
+
+    &:focus,
+    &:focus-visible {
+      border-color: var(--tpms-azul-cielo);
+      outline: none;
+    }
+
+    &:focus {
+      fill: var(--tpms-azul-cielo);
+    }
+  }
+
+  .form-item.form-item-label,
+  .form-item.form-item-institucion {
+    margin-bottom: var(--spacing-lg);
+
+    @include large {
+      margin-bottom: var(--spacing-xl);
+    }
+  }
+
+  .toggle-expand__icon {
+    cursor: pointer;
+    position: absolute;
+    left: var(--spacing-sm);
+    top: 0;
+    bottom: 0;
+    margin: auto;
+  }
+
+  fieldset {
+    legend {
+      margin-bottom: var(--spacing-md);
+
+      span {
+        font-weight: 600;
+        color: var(--tpms-azul-presi);
+      }
+    }
+
+    .form-checkboxes {
+      .form-item {
+        display: flex;
+        gap: 8px;
+        margin-bottom: var(--spacing-md);
+        align-items: center;
+
+        label {
+          font-weight: 400;
+          font-size: 1rem;
+          color: var(--grey-2);
+        }
+
+        input[type='checkbox'] {
+          -webkit-appearance: none;
+          appearance: none;
+          width: var(--spacing-md);
+          height: var(--spacing-md);
+          margin: 0;
+          cursor: pointer;
+          background: transparent;
+          border: 1px solid #182951;
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: 16px 16px;
+
+          &:checked {
+            border: 0;
+            background-image: url('data:image/svg+xml,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Crect%20x%3D%220.5%22%20y%3D%220.5%22%20width%3D%2215%22%20height%3D%2215%22%20fill%3D%22%23182951%22%20stroke%3D%22%23182951%22/%3E%3Cpath%20d%3D%22M13.6667%204L6.33333%2011.3333L3%208%22%20fill%3D%22%23182951%22/%3E%3Cpath%20d%3D%22M13.6667%204L6.33333%2011.3333L3%208%22%20stroke%3D%22white%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E');
+            background-color: transparent;
+          }
+
+          &:focus-visible {
+            outline: 2px solid var(--tpms-azul-cielo);
+            outline-offset: 2px;
+          }
+
+          &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+          }
+        }
+
+        input[type='checkbox']:checked + label {
+          color: var(--tpms-azul-presi);
+        }
+      }
+    }
+  }
+}

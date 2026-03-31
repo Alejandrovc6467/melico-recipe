@@ -1,0 +1,23 @@
+title: 'Butacas'
+
+butacas_items:
+  - capacity: '535'
+    label: 'Lunetas'
+
+  - capacity: '32'
+    label: 'Palco Luneta'
+
+  - capacity: '50'
+    label: 'Balcón Segundo Piso'
+
+  - capacity: '535'
+    label: 'Palcos Segundo Piso'
+
+  - capacity: '32'
+    label: 'Balcón Tercer Piso'
+
+  - capacity: '32'
+    label: 'Palcos Tercer Piso'
+
+  - capacity: '32'
+    label: 'Cuarto piso Galería'

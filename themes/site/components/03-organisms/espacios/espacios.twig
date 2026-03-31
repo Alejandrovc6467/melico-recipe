@@ -1,0 +1,67 @@
+{#
+/**
+ * Espacios Organism
+ * 
+ * Displays cultural spaces grouped by institution with:
+ * - Institution title
+ * - Grid of event cards (3 columns desktop, 2 tablet, 1 mobile)
+ * 
+ * Variables:
+ * - espacios_institutions: Array of institutions, each with:
+ *   - institution_name: Institution name
+ *   - spaces: Array of space cards with event-card properties
+ * - espacios_modifiers: BEM modifiers array
+ * - espacios_blockname: BEM blockname
+ */
+#}
+
+{% set espacios_base_class = 'espacios' %}
+
+<section {{ bem(espacios_base_class, espacios_modifiers, espacios_blockname, ['section-margin']) }}>
+  <div class="container">
+
+    {# Institutions loop #}
+    {% for institution in espacios_institutions %}
+        {% if institution.institution_name or institution.pretitle %}
+          <div class="espacios__institution-header">
+            {% if institution.pretitle %}
+              {% include "@atoms/text/headings/_heading.twig" with {
+                heading: institution.pretitle,
+                heading_level: 4,
+                heading_blockname: espacios_base_class,
+                heading_modifiers: ['institution-pretitle']
+              } only %}
+            {% endif %}
+            {% if institution.institution_name %}
+              {% include "@atoms/text/headings/_heading.twig" with {
+                heading: institution.institution_name,
+                heading_level: 3,
+                heading_blockname: espacios_base_class,
+                heading_modifiers: ['institution-title']
+              } only %}
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {# Spaces grid #}
+        <div class="espacios__grid">
+          {% for space in institution.spaces %}
+            <div class="espacios__grid-item">
+              {% include "@molecules/event-card/event-card.twig" with {
+                card__image__src: space.image,
+                card__image__alt: space.title,
+                card__category: space.category,
+                card__title: space.title,
+                card__location: space.location,
+                card__url: space.url,
+                card__heading_level: 4,
+                card_version: 'second'
+              } %}
+            </div>
+          {% endfor %}
+        </div>
+        
+    {% endfor %}
+
+  </div>
+</section>

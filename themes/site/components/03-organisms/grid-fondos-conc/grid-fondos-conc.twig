@@ -1,0 +1,29 @@
+{#
+/**
+ * Available variables:
+ * - grid_fondos_conc_title - the title text.
+ * - grid_fondos_conc_items - array of items of latest-fondos_conc-card molecule (see @molecules/cards/latest-fondos_conc-card/latest-fondos_conc-card.twig).
+ * - grid_fondos_conc_button - a button atom (see @atoms/buttons/button.twig).
+ */
+#}
+
+{% set grid_fondos_conc_base_class = grid_fondos_conc_base_class|default('grid-fondos_conc') %}
+{% set base_class = bem(grid_fondos_conc_base_class) %}
+<div {{ bem(grid_fondos_conc_base_class, [],grid_fondos_conc_block_name, ['container'] ) }}>
+  {% if viewFilters %}
+    <div class="view-filters">
+      {{ viewFilters }}
+    </div>
+  {% endif %}
+
+  <div {{ bem('content', grid_fondos_conc_modifiers, grid_fondos_conc_base_class) }}>
+    {% block grid_fondos_conc_items %}
+      {% for item in items %}
+          {% include "@organisms/grid-fondos-conc/grid-fondos-conc-item.twig" with {
+            item__base_class: grid_fondos_conc_base_class,
+            item: item
+          }%}
+      {% endfor %}
+    {% endblock %}
+  </div>
+</div>

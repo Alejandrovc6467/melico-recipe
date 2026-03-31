@@ -1,0 +1,7 @@
+slider__items:
+  - slide__image: 'img/slider-img.png'
+    slide__short_description: 'Surfing in Jaco'
+  - slide__image: 'img/slider-img.png'
+    slide__short_description: 'Surfing in Guanacaste'
+  - slide__image: 'img/slider-img.png'
+    slide__short_description: 'Surfing in Tamarindo'

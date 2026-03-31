@@ -1,0 +1,43 @@
+
+{#
+/**
+ * @file
+ * Theme override for Lista Espacios view - Block 3
+ * 
+ * Available variables:
+ * - rows: Results of the view query (rendered nodes)
+ * - view: The view object
+ *
+ * This template prepares data for the galeria-espacios component
+ */
+#}
+
+
+{% set espacios_items = [] %}
+
+
+{% if espacios_data is defined and espacios_data|length > 0 %}
+
+  {% set total = view.result|length %}
+  {% set label = total == 1 ? 'Espacio' : 'Espacios' %}
+
+ 
+  {% include "@organisms/galeria-espacios/galeria-espacios.twig" with {
+    title: total ~ ' ' ~ label ~ ':',
+    espacios_items: espacios_data,
+  } only %}
+
+{% elseif empty %}
+  
+  <div class="galeria-espacios__empty">
+    {{ empty }}
+    <p> vacio </p>
+  </div>
+  
+{% endif %}
+
+<p> afuera </p> 
+
+
+
+

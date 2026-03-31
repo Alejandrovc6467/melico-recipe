@@ -1,0 +1,34 @@
+{#
+/**
+ * @file
+ * Theme override to display a media item.
+ *
+ * Available variables:
+ * - name: Name of the media.
+ * - content: Media content.
+ *
+ * @see template_preprocess_media()
+ *
+ * @ingroup themeable
+ */
+#}
+{# Obtengo el ID de la vista y del display desde la ruta #}
+{% set view_id    = app.request.attributes.get('view_id') %}
+{% set display_id = app.request.attributes.get('display_id') %}
+
+{% set media_entity = media %}
+
+{% set file_entity = media_entity.field_media_file.entity %}
+
+{% set file_uri = file_entity.uri.value %}
+
+{% set file_url = file_uri|file_url %}
+
+<article{{ attributes.addClass(classes) }}>
+
+  {{ title_suffix.contextual_links }}
+
+  {% if content %}
+    <a class="this-is-the-archivo-url-list-view" href="{{file_url}}" download="{{ name }}">Descargar</a>
+  {% endif %}
+</article>

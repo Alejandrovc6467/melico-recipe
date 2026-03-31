@@ -1,0 +1,20 @@
+.page-button {
+  width: var(--spacing-xl);
+  height: var(--spacing-xl);
+  border-radius: 8px;
+  border: none;
+  background-color: transparent;
+  color: $black;
+  font-size: 1rem;
+  font-weight: 400;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $azul-cielo;
+  }
+
+  &.checked {
+    background-color: $azul-presi;
+    color: #fff;
+  }
+}

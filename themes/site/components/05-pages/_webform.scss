@@ -1,0 +1,544 @@
+.webform-submission-alquiler-o-prestamo-form {
+  #edit-flexbox,
+  #edit-flexbox-01,
+  #edit-flexbox-02,
+  #edit-flexbox-04 {
+    input[type='text'],
+    input[type='email'],
+    input[type='tel'],
+    input[type='date'],
+    textarea,
+    .form-text {
+      border: 1px solid var(--gris-neblina);
+      padding: 12px var(--spacing-md);
+      height: 48px;
+      font-size: 16px;
+      color: var(--grey-2);
+      width: 100%;
+      margin-bottom: 49px;
+      @include medium {
+        margin-bottom: 0;
+      }
+      &:focus-visible {
+        outline: none;
+      }
+    }
+  }
+  .webform-type-select {
+    &::after {
+      display: none;
+    }
+  }
+  select.form-select {
+    background-image: url("data:image/svg+xml,<svg width='14' height='8' viewBox='0 0 14 8' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M0.75 0.75L6.75 6.75L12.75 0.75' stroke='%23182951' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 18px center;
+    width: 100%;
+    background-size: 14px 8px;
+    &:focus,
+    &:focus-visible {
+      outline: none;
+      border-color: var(--tpms-azul-presi) !important;
+    }
+  }
+  .form-item {
+    margin: 0;
+    &__label {
+      display: block;
+      @include paragraph;
+      margin-bottom: 8px;
+      color: var(--tpms-azul-presi);
+    }
+  }
+  .form-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    gap: 0;
+    @include medium {
+      gap: var(--spacing-lg);
+      flex-direction: row;
+      margin: 0 0 var(--spacing-xl) 0;
+    }
+    .form-item {
+      &__label {
+        display: block;
+        @include paragraph;
+        margin-bottom: 8px;
+        color: var(--tpms-azul-presi);
+      }
+    }
+    .webform-flex--container {
+      margin: 0;
+    }
+    &#edit-flexbox-04 {
+      flex-direction: column;
+      gap: 17px;
+      border: 1px solid var(--gris-neblina);
+      padding: 15px;
+      margin-bottom: 49px;
+      @include medium {
+        padding: 20px 180px 20px 20px;
+        margin-bottom: var(--spacing-xl);
+      }
+      @supports selector(:has(*)) {
+        > .webform-flex:not(:has(.js-form-item:not([style*='display: none']))) {
+          display: none;
+        }
+      }
+      .webform-type-radio {
+        margin: 0;
+      }
+      .radios--wrapper {
+        display: flex;
+        margin-bottom: 0;
+      }
+      .form-select {
+        margin-bottom: 0;
+      }
+      #edit-es-concierto--wrapper {
+        border: 0;
+        padding: 0;
+        margin: 0;
+
+        legend {
+          position: absolute !important;
+          width: 1px !important;
+          height: 1px !important;
+          padding: 0 !important;
+          margin: -1px !important;
+          overflow: hidden !important;
+          clip: rect(0, 0, 0, 0) !important;
+          white-space: nowrap !important;
+          border: 0 !important;
+        }
+
+        .fieldset-wrapper {
+          padding: 0;
+        }
+
+        .js-form-type-radio {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin: 0;
+        }
+
+        input[type='radio'] {
+          appearance: none;
+          -webkit-appearance: none;
+
+          width: 16px;
+          height: 16px;
+          border: 1px solid var(--gris-neblina);
+          background: #fff;
+          cursor: pointer;
+          position: relative;
+          flex: 0 0 16px;
+
+          &:focus-visible {
+            outline: 2px solid #2b73ff;
+            outline-offset: 2px;
+          }
+
+          &:checked::after {
+            content: '';
+            position: absolute;
+            inset: 1px;
+            background: var(--tpms-azul-presi);
+          }
+        }
+
+        label.option.form-item__label {
+          margin: 0;
+          cursor: pointer;
+
+          font-size: 0;
+
+          &::after {
+            content: '¿Es un concierto?';
+            font-size: 16px;
+            color: var(--grey-2);
+            line-height: 24px;
+          }
+        }
+      }
+    }
+  }
+  .form-textarea {
+    width: 100%;
+    border: 1px solid var(--gris-neblina);
+    margin-bottom: 49px;
+
+    border: 1px solid var(--gris-neblina);
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    color: var(--grey-2);
+
+    @include medium {
+      margin-bottom: var(--spacing-xl);
+    }
+    &:focus,
+    &:focus-visible {
+      outline: none;
+      border-color: var(--tpms-azul-presi) !important;
+    }
+  }
+  #edit-actions {
+    margin-bottom: 0;
+    #edit-actions-submit {
+      width: 100%;
+      @include button-color-secondary;
+    }
+  }
+
+  #edit-tipo-de-actividad-a-realizar,
+  #edit-fechas-a-solicitar,
+  #edit-hora-a-realizar,
+  #edit-agrupacion {
+    border: 1px solid var(--gris-neblina);
+    padding: 12px var(--spacing-md);
+    height: 48px;
+    font-size: 16px;
+    background-color: var(--tpms-blanco, #fff);
+    width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    color: var(--grey-2);
+    margin-bottom: 49px;
+    @include medium {
+      margin-bottom: 0;
+    }
+  }
+
+  /* Webform Document File - Dropzone */
+  .js-webform-type-webform-document-file {
+    /* =========================
+   * CONTENEDOR DASHED
+   * ========================= */
+    .tpms-file-dropzone {
+      position: relative;
+      border: 1px dashed var(--gris-neblina);
+      background: #fff;
+      margin-bottom: var(--spacing-lg);
+      padding: 16px 0;
+      @include medium {
+        margin-bottom: var(--spacing-xxl);
+      }
+      .option {
+        margin-bottom: 0;
+      }
+
+      &:focus-within {
+        // outline-offset: 2px;
+      }
+    }
+
+    /* =========================
+   * BASE managed file
+   * ========================= */
+    .form-managed-file {
+      position: relative;
+    }
+
+    /* Ocultar SOLO el botón de subir (auto upload), NO el remove */
+    .form-managed-file input[data-drupal-selector$='upload-button'],
+    .form-managed-file .js-hide {
+      display: none !important;
+    }
+
+    /* =========================
+   * ESTADO: SIN ARCHIVOS
+   * (cuando NO hay lista de checkbox)
+   * ========================= */
+    .form-managed-file:not(:has(.js-form-type-checkbox)) {
+      text-align: center;
+
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 8px;
+
+      &:focus,
+      &:focus-visible {
+        outline: none;
+      }
+    }
+
+    /* Overlay completo SOLO cuando está vacío */
+    .form-managed-file:not(:has(.js-form-type-checkbox)) input[type='file'] {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    /* Icono */
+    .form-managed-file:not(:has(.js-form-type-checkbox))::before {
+      content: '';
+      width: 24px;
+      height: 24px;
+      display: block;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      background-image: url('data:image/svg+xml,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="%23182951" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 3L7 8M12 3L12 15M12 3L17 8" stroke="%23182951" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+    }
+
+    /* Texto principal */
+    .form-managed-file:not(:has(.js-form-type-checkbox))::after {
+      content: 'Arrastra el archivo o elige uno';
+      display: block;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--tpms-azul-presi);
+    }
+
+    .form-managed-file:has(.js-form-type-checkbox) {
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      position: relative;
+      padding-top: 50px;
+    }
+
+    .form-managed-file:has(.js-form-type-checkbox)::before {
+      content: '';
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      width: 20px;
+      height: 20px;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      background-image: url('data:image/svg+xml,<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14M5 12h14" stroke="%23182951" stroke-width="2.5" stroke-linecap="round"/></svg>');
+    }
+
+    .form-managed-file:has(.js-form-type-checkbox) {
+      position: relative;
+      padding: 0 16px;
+      padding-top: 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .form-managed-file:has(.js-form-type-checkbox)::before {
+      content: '';
+      position: absolute;
+      top: 18px;
+      left: 16px;
+      width: 20px;
+      height: 20px;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      background-image: url('data:image/svg+xml,<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14M5 12h14" stroke="%23182951" stroke-width="2.5" stroke-linecap="round"/></svg>');
+      pointer-events: none;
+    }
+
+    .form-managed-file:has(.js-form-type-checkbox)::after {
+      content: 'Agregar otro archivo';
+      position: absolute;
+      top: 18px;
+      left: 44px;
+      font-size: 14px;
+      color: var(--tpms-azul-presi);
+      text-decoration: underline;
+      pointer-events: none;
+    }
+
+    .form-managed-file:has(.js-form-type-checkbox) input[type='file'] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 5;
+    }
+
+    .form-managed-file .js-form-type-checkbox input[type='checkbox'] {
+      position: absolute;
+      opacity: 0;
+    }
+
+    /* Tarjeta del archivo */
+    .form-managed-file .js-form-type-checkbox label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+
+      padding: 12px;
+      border: 1px solid var(--gris-neblina);
+      border-radius: 4px;
+      background: #fff;
+
+      cursor: pointer;
+      text-align: left;
+    }
+
+    /* Seleccionado (para eliminar) */
+    .form-managed-file
+      .js-form-type-checkbox
+      input[type='checkbox']:checked
+      + label {
+      border-color: var(--tpms-azul-presi);
+    }
+
+    /* Link del archivo */
+    .form-managed-file .js-form-type-checkbox .file a {
+      color: var(--tpms-azul-presi);
+      text-decoration: underline;
+      word-break: break-word;
+    }
+
+    /* Tamaño */
+    .form-managed-file .js-form-type-checkbox label > span {
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    /* Botón Eliminar seleccionados */
+    .form-managed-file input[data-drupal-selector$='remove-button'] {
+      align-self: flex-end;
+      appearance: none;
+      border: 1px solid var(--gris-neblina);
+      background: #fff;
+      color: var(--tpms-azul-presi);
+      padding: 8px 12px;
+      // border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .form-managed-file input[data-drupal-selector$='remove-button']:hover {
+      border-color: #9ca3af;
+    }
+
+    // DESCRIPTION dentro del dashed
+
+    .form-item__description {
+      font-size: 12px;
+      color: #6b7280;
+      text-align: center;
+    }
+
+    .webform-element-description br {
+      display: block;
+    }
+  }
+}
+.tpms-webform-block {
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xxl);
+    margin-bottom: var(--spacing-xl);
+    @include medium {
+      flex-direction: row;
+      margin-bottom: var(--spacing-xxxl);
+      gap: var(--spacing-lg);
+    }
+  }
+
+  &__left {
+    .tpms-webform-block {
+      &__insttitucion {
+        @include heading-h4;
+        margin-bottom: var(--spacing-md);
+        color: var(--tpms-azul-presi);
+        font-size: 18px;
+        line-height: 100%;
+        @include medium {
+          font-size: 24px;
+          line-height: 34px;
+        }
+      }
+      &__espacio {
+        @include heading-h4;
+        margin-bottom: var(--spacing-md);
+        color: var(--tpms-oro-libertad);
+        font-size: 18px;
+        @include medium {
+          font-size: 24px;
+        }
+      }
+      &__heading {
+        margin-bottom: 32px;
+        max-width: 586px;
+        h2 {
+          font-size: 40px;
+          @include medium {
+            font-size: 52px;
+          }
+        }
+      }
+    }
+  }
+
+  &__right {
+    // Asegurar que el input se vea como los demás
+    #edit-fechas-a-solicitar.form-date {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+
+      // ✅ tu icono
+      background-image: url("data:image/svg+xml,<svg width='18' height='20' viewBox='0 0 18 20' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M16 18H2V7H16M13 0V2H5V0H3V2H2C0.89 2 0 2.89 0 4V18C0 18.5304 0.210714 19.0391 0.585786 19.4142C0.960859 19.7893 1.46957 20 2 20H16C16.5304 20 17.0391 19.7893 17.4142 19.4142C17.7893 19.0391 18 18.5304 18 18V4C18 3.46957 17.7893 2.96086 17.4142 2.58579C17.0391 2.21071 16.5304 2 16 2H15V0M14 11H9V16H14V11Z' fill='%23182951'/></svg>");
+      background-repeat: no-repeat;
+      background-size: 18px 20px;
+      background-position: right 18px center;
+    }
+
+    #edit-hora-a-realizar.form-time {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+
+      background-image: url("data:image/svg+xml,<svg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M9.99996 0C15.5229 0 19.9999 4.47698 19.9999 9.99996C19.9999 15.5229 15.5229 19.9999 9.99996 19.9999C4.47698 19.9999 0 15.5229 0 9.99996C0 4.47698 4.47698 0 9.99996 0ZM9.99996 3.99998C9.73475 3.99998 9.48039 4.10534 9.29286 4.29288C9.10532 4.48041 8.99997 4.73477 8.99997 4.99998V9.99996C9.00002 10.2652 9.10542 10.5195 9.29296 10.707L12.293 13.7069C12.4816 13.8891 12.7342 13.9899 12.9964 13.9876C13.2585 13.9853 13.5094 13.8802 13.6948 13.6948C13.8802 13.5094 13.9853 13.2585 13.9876 12.9964C13.9899 12.7342 13.8891 12.4816 13.7069 12.293L11 9.58596V4.99998C11 4.73477 10.8946 4.48041 10.7071 4.29288C10.5195 4.10534 10.2652 3.99998 9.99996 3.99998Z' fill='%23182951'/></svg>");
+      background-repeat: no-repeat;
+      background-size: 20px 20px;
+      background-position: right 18px center;
+    }
+    // Chrome/Safari/Edge: oculta icono nativo
+    #edit-fechas-a-solicitar,
+    #edit-hora-a-realizar {
+      height: 48px;
+      &::-webkit-calendar-picker-indicator {
+        opacity: 0;
+        display: block;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+      }
+    }
+    #edit-actions-submit {
+      height: 56px;
+    }
+    .iti--allow-dropdown {
+      width: 100%;
+      margin-bottom: 49px;
+      @include medium {
+        margin-bottom: 0;
+      }
+    }
+    #edit-telefono {
+      padding-left: 48px !important;
+      height: 48px;
+    }
+  }
+}

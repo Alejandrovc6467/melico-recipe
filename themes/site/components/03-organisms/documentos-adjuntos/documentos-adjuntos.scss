@@ -1,0 +1,91 @@
+.documentos-adjuntos {
+  padding: var(--spacing-xl) 0;
+  background-color: var(--grey-4);
+
+  @include small {
+    padding: var(--spacing-xxxl) 0;
+  }
+
+  // Header con título y descripción
+  &__header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xxl);
+  }
+
+  // Título personalizado
+  &__title {
+    color: var(--tpms-azul-presi);
+  }
+
+  // Descripción
+  &__description {
+    color: var(--grey-2);
+    max-width: 665px;
+    text-align: center;
+  }
+
+  // Lista de documentos
+  &__list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  // Botón de descarga
+  &__download-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 15px 0;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid var(--grey-2);
+    width: 100%;
+    max-width: 394px;
+
+    &:first-child {
+      padding: 0 0 15px;
+    }
+
+    &:last-child {
+      border-bottom: none;
+      padding: 15px 0 0;
+    }
+  }
+
+  &__label {
+    flex: 1;
+    min-width: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    
+    @include large {
+      max-width: 319px;
+      flex: 0 1 auto;
+    }
+  }
+
+  // Icono de descarga
+  &__download-icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background-image: url('../assets/icons/descargar.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    flex-shrink: 0;
+    transition: filter 0.3s ease;
+    margin-left: var(--spacing-md);
+    
+    @include large {
+      margin-left: 50px;
+    }
+  }
+}

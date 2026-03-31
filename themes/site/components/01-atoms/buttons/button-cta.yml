@@ -1,0 +1,4 @@
+button_content: 'Medium'
+button_url: '#'
+button_modifiers:
+  - 'link'

@@ -1,0 +1,101 @@
+{#
+/**
+ * @file
+ * Componente de paginación personalizado para Emulsify.
+ *
+ * Variables esperadas:
+ * - heading_id: ID único usado para accesibilidad en el heading invisible.
+ * - pagination_heading_level: Nivel de heading (h2, h3...) usado solo para accesibilidad.
+ * - items: Array de elementos de paginación generado por Drupal.
+ *   - first: Página inicial (si no estás en la primera).
+ *   - previous: Página anterior.
+ *   - next: Página siguiente.
+ *   - last: Última página (si no estás en la última).
+ *   - pages: Array de páginas intermedias. Key = número de página, value = objeto con href.
+ * - current: Número de la página actual.
+ * - ellipses: Controla si se deben mostrar puntos suspensivos (cuando hay muchas páginas).
+ *   - previous: boolean para mostrar elipsis antes de las páginas.
+ *   - next: boolean para mostrar elipsis después de las páginas.
+ */
+#}
+{% set last_page = items.pages|last %}
+{% set last_page_number_visible = items.pages|keys|last %}
+
+<nav class="paginator" role="navigation" aria-labelledby="{{ heading_id }}">
+	<{{pagination_heading_level}} id="{{ heading_id }}" class="visually-hidden">
+		{{ 'Pagination'|t }}
+	</{{pagination_heading_level}}>
+
+	<div
+		class="paginator__controls">
+
+		{# Botón de página anterior #}
+		{% if items.previous %}
+			<a href="{{ items.previous.href }}" class="arrow-button arrow-button--prev" aria-label="Página anterior">
+				<span class="arrow-button__label">{{ 'Anterior'|t }}</span>
+			</a>
+		{% else %}
+			<span class="arrow-button arrow-button--prev is-disabled" aria-disabled="true">
+				<span class="arrow-button__label">{{ 'Anterior'|t }}</span>
+			</span>
+		{% endif %}
+
+		{% if items.first %}
+			{% if 2 not in items.pages|keys %}
+				{% include "@atoms/page-button/page-button.twig" with {
+          number: 1,
+          url: items.first.href,
+          is_current: current == items.first
+        } %}
+			{% endif %}
+
+			{% if 1 not in items.pages|keys %}
+				{% include "@atoms/dots/dots.twig" %}
+			{% endif %}
+		{% endif %}
+
+		{# Primeras páginas visibles #}
+		{% set count = 0 %}
+		{% for key, item in items.pages %}
+			{% if count < last_page_number_visible %}
+				{% include "@atoms/page-button/page-button.twig" with {
+          number: key,
+          url: item.href,
+          is_current: current == key
+        } %}
+			{% endif %}
+			{% set count = count + 1 %}
+		{% endfor %}
+
+		{# Última página #}
+		{# Puntos suspensivos si hay más páginas #}
+		{% if items.last %}
+			{# Obtener el número de la última página desde el href de items.last #}
+			{% set last_page_href = items.last.href ?? '' %}
+			{% set last_page_param = last_page_href|split('page=')|last|split('&')|first %}
+			{% set last_page_number = last_page_param|trim %}
+
+			{% if last_page_number_visible < last_page_number + 1 %}
+				{% include "@atoms/dots/dots.twig" %}
+			{% endif %}
+
+			{% if last_page_number_visible < last_page_number %}
+				{% include "@atoms/page-button/page-button.twig" with {
+          number: last_page_number + 1,
+          url: items.last.href,
+          is_current: current == items.last
+        } %}
+			{% endif %}
+		{% endif %}
+		{# Botón de página siguiente #}
+		{% if items.next %}
+			<a href="{{ items.next.href }}" class="arrow-button arrow-button--next" aria-label="Página siguiente">
+				<span class="arrow-button__label">{{ 'Siguiente'|t }}</span>
+			</a>
+		{% else %}
+			<span class="arrow-button arrow-button--next is-disabled" aria-disabled="true">
+				<span class="arrow-button__label">{{ 'Siguiente'|t }}</span>
+			</span>
+		{% endif %}
+	</div>
+</nav>

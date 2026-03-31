@@ -1,0 +1,9 @@
+heading: '¿Tienes alguna pregunta?'
+contact_info_content: |
+  <p><strong>Contáctenos al:</strong><br>
+  (506) 2295-6000</p>
+  <p>comunicacion@example.com</p>
+  <p><strong>Horario de oficinas</strong><br>
+  Lunes a viernes de 9:00 a.m. a 4:00 p.m.</p>
+contact_info_centered: false
+contact_info_with_margin: false

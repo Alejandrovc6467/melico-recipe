@@ -1,0 +1,24 @@
+{#
+/**
+ * @file
+ * Theme override to display the footer region using the Site Footer organism.
+ *
+ * El preprocess mueve el bloque de Simplenews a `elements.tpms_newsletter_form`
+ * y extrae el título/descripcion del bloque de contenido Newsletter.
+ */
+#}
+
+{% set newsletter_title = elements.tpms_newsletter_title is defined ? (elements.tpms_newsletter_title|render) : null %}
+{% set newsletter_description = elements.tpms_newsletter_description is defined ? elements.tpms_newsletter_description : null %}
+{% set newsletter_form =
+  elements.tpms_newsletter_form is defined ? elements.tpms_newsletter_form :
+  (elements.tpms_simplenewssubscription is defined ? elements.tpms_simplenewssubscription : null)
+%}
+
+{% include "@organisms/site/site-footer/site-footer.twig" with {
+  directory: directory,
+  elements: elements,
+  newsletter_title: newsletter_title,
+  newsletter_description: newsletter_description,
+  newsletter_form: newsletter_form
+} only %}

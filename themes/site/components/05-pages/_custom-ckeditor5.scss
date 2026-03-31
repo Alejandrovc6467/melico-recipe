@@ -1,0 +1,91 @@
+.ck-content,
+.text-long {
+  h2 {
+    margin-bottom: var(--spacing-md);
+  }
+
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-bottom: 8px;
+  }
+
+  p {
+    margin-bottom: 16px;
+    overflow: visible;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+
+  p:empty {
+    margin-bottom: 0 !important;
+  }
+
+  a {
+    text-decoration: underline !important;
+  }
+
+  a.button {
+    border: none !important;
+    background: transparent !important;
+    color: #0034a0 !important;
+    font-size: initial !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    min-height: unset !important;
+    min-width: unset !important;
+    text-decoration: underline !important;
+
+    span {
+      color: #0034a0;
+    }
+  }
+
+  blockquote {
+    overflow: visible;
+  }
+
+  table {
+    width: auto !important;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  li {
+    font-size: 1rem !important;
+    line-height: 1.5 !important;
+    white-space: normal !important;
+    color: #454e54 !important;
+  }
+
+  figcaption {
+    caption-side: bottom;
+    color: #454e54;
+    font-size: 0.75em;
+    outline-offset: -1px;
+    padding: 0.6em;
+    text-align: center;
+  }
+
+  img {
+    margin-bottom: var(--spacing-md);
+  }
+
+  @include medium {
+    img.align-left,
+    figure.align-left {
+      margin-right: var(--spacing-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    img.align-right,
+    figure.align-right {
+      margin-left: var(--spacing-lg);
+      margin-bottom: var(--spacing-md);
+    }
+  }
+}

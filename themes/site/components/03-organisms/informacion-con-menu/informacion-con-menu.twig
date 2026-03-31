@@ -1,0 +1,56 @@
+{#
+/**
+ * Información con Menú Component
+ */
+#}
+
+{% set informacion_con_menu_base_class = informacion_con_menu_base_class|default('informacion-con-menu') %}
+
+{# Determinar si hay items válidos #}
+{% set has_items = items is defined and items|length > 0 %}
+
+<section {{ bem(informacion_con_menu_base_class, informacion_con_menu_modifiers, informacion_con_menu_blockname, ['section-margin']) }}>
+  
+  <div class="container">
+    <div class="row">
+
+      {# Sidebar solo si hay items #}
+      {% if has_items %}
+        <aside class="{{ informacion_con_menu_base_class }}__sidebar col-12 col-lg-3">
+          <ul class="{{ informacion_con_menu_base_class }}__menu">
+            {% for item in items %}
+              <li class="{{ informacion_con_menu_base_class }}__menu-item">
+                <a href="{{ item.url }}" class="{{ informacion_con_menu_base_class }}__menu-link">
+                  {{ item.title }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </aside>
+      {% endif %}
+
+      {# Contenido principal - dinámico #}
+      <div class="{{ informacion_con_menu_base_class }}__content col-12 {{ has_items ? 'col-lg-9' : 'col-lg-12' }}">
+        
+        {% if title %}
+          {% include "@atoms/text/headings/_heading.twig" with {
+            heading_level: 2,
+            heading: title,
+            heading_icon: true,
+            heading_underline: true,
+            heading_base_class: informacion_con_menu_base_class ~ '__title',
+          } %}
+        {% endif %}
+
+        {% if description %}
+          <div class="{{ informacion_con_menu_base_class }}__description">
+            {{ description }}
+          </div>
+        {% endif %}
+
+      </div>
+
+    </div>
+  </div>
+
+</section>

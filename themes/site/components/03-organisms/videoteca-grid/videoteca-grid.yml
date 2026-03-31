@@ -1,0 +1,22 @@
+videoteca_title: Videoteca
+
+videoteca_description:
+  Morem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum,
+  ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra,
+  per inceptos himenaeos. lputate libero et dolor sit amet, consectetur dolor sit amet.
+
+videoteca_button_text: IR A YOUTUBE
+videoteca_button_url: https://youtube.com
+
+videoteca_videos:
+  - url: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+    title: Morem ipsum dolor sit amet, consectetur adipiscing elit.
+
+  - url: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+    title: Video Secundario 1
+
+  - url: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+    title: Video Secundario 2
+
+  - url: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+    title: Video Secundario 3

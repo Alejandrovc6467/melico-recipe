@@ -1,0 +1,180 @@
+.accordion {
+  &__header {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  &__title {
+    color: var(--tpms-azul-presi);
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+
+  &__list.accordion--enabled {
+    display: block;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  &__list.accordion--enabled > .accordion__item {
+    position: absolute;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    will-change: height, top;
+  }
+
+  &__list.snap {
+    .accordion__item,
+    &,
+    .accordion__content {
+      transition: none;
+    }
+  }
+
+  &__item {
+    transition: all 0.3s ease;
+
+    &.is-open {
+      .accordion__icon {
+        background-color: var(--tpms-azul-presi);
+        background-image: url('../assets/icons/minus.svg');
+      }
+    }
+  }
+
+  &__header-wrapper {
+    display: flex;
+    align-items: stretch;
+    position: relative;
+    cursor: pointer;
+  }
+
+  &__trigger-wrapper {
+    flex: 1;
+    border: 1px solid var(--tpms-oro-libertad);
+    border-right: none;
+    border-bottom: none;
+    padding: 24px;
+    height: auto;
+    min-height: 96px;
+    max-height: 192px;
+
+    @include large {
+      padding: 24px 24px 24px 40px;
+      min-height: 82px;
+      max-height: 116px;
+    }
+  }
+
+  &__trigger {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    background-color: var(--tpms-blanco);
+    border: none;
+    text-align: left;
+    transition: all 0.3s ease;
+  }
+
+  &__trigger-inner {
+    display: flex;
+    gap: var(--spacing-sm);
+    width: 100%;
+    align-items: center;
+
+    @include large {
+      gap: 56px;
+    }
+  }
+
+  &__number-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__number {
+    font-family: $font-heading;
+    color: var(--tpms-azul-presi);
+    flex-shrink: 0;
+    transition: color 0.3s ease;
+  }
+
+  &__item-title {
+    font-family: $font-heading;
+    transition: color 0.3s ease;
+    color: var(--tpms-azul-presi);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 6;
+    line-clamp: 6;
+    overflow: hidden;
+
+    @include large {
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+    }
+  }
+
+  &__icon {
+    width: 86px;
+    background-color: var(--tpms-oro-libertad);
+    border-radius: 0;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    // Icono por defecto (plus)
+    background-image: url('../assets/icons/plus.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 18px;
+
+    @include large {
+      background-size: 22px;
+    }
+  }
+
+  &__content {
+    overflow: hidden;
+    border: 1px solid var(--tpms-oro-libertad);
+    border-top: none;
+  }
+
+  &__content-inner {
+    padding: 20px 12px;
+
+    @include large {
+      padding: 24px 122px;
+    }
+  }
+
+  &__text {
+    color: var(--tpms-azul-presi);
+  }
+}
+
+.accordion__item.is-closed {
+  .accordion__header-wrapper {
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background-color: var(--tpms-oro-libertad);
+    }
+  }
+
+  .accordion__content {
+    visibility: hidden;
+  }
+}

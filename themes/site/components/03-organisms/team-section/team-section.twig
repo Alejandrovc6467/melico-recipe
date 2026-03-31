@@ -1,0 +1,49 @@
+{#
+/**
+ * @file
+ * Team Section Organism - Nuestro Equipo
+ * 
+ * Available variables:
+ * - section_title - Título de la sección (ej: "Nuestro Equipo")
+ * - section_show_icon - boolean para mostrar el ícono decorativo
+ * - team_members - array de miembros del equipo con:
+ *   - card_image_src
+ *   - card_image_alt
+ *   - card_image_width (opcional)
+ *   - card_name
+ *   - card_role
+ *   - card_organization
+ * - section_modifiers - array de modificadores BEM
+ * - section_blockname - blockname para BEM
+ */
+#}
+
+{% set section_base_class = section_base_class|default('team-section') %}
+
+<section {{ bem(section_base_class, section_modifiers, section_blockname, ['container section-margin']) }}>
+    <div class="team-section__title">
+      {% include "@atoms/text/headings/_heading.twig" with {
+        heading_level: 2,
+        heading: section_title|default('Nuestro Equipo'),
+        heading_blockname: 'team-section',
+        heading_modifiers: ['title'],
+        heading_icon: true,
+        heading_underline: true
+      } only %}
+    </div>
+
+    <div class="row {{ section_base_class }}__row">
+      {% for member in team_members %}
+        <div class="col-12 col-md-6 col-lg-4 {{ section_base_class }}__col">
+          {% include "@molecules/team-card/team-card.twig" with {
+            card_image_src: member.card_image_src,
+            card_image_alt: member.card_image_alt,
+            card_image_width: member.card_image_width|default(null),
+            card_name: member.card_name,
+            card_role: member.card_role,
+            card_organization: member.card_organization,
+          } %}
+        </div>
+      {% endfor %}
+    </div>
+</section>

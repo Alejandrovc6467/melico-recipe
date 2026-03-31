@@ -1,0 +1,17 @@
+/* Typography tokens mapped to CSS variables for Figma parity */
+
+:root {
+  /* Families (published from Sass variables) */
+  --font-heading: #{$font-heading};
+  --font-body: #{$font-body};
+
+  /* Weights */
+  --fw-regular: 400;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* Letter-spacing */
+  --ls-tight: -0.01em;
+  --ls-normal: 0;
+  --ls-wide: 0.04em; /* buttons */
+}

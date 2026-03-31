@@ -1,0 +1,35 @@
+.list-style {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--spacing-md) 30px;
+  margin-top: var(--spacing-xxl);
+  margin-bottom: 0;
+  padding: 0;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+
+  li {
+    list-style: none;
+    display: flex;
+    gap: var(--spacing-lg);
+    padding: 0;
+    font-size: 1rem;
+    line-height: 1;
+
+    &::before {
+      content: '.';
+      width: var(--spacing-lg);
+      height: var(--spacing-lg);
+      display: flex;
+    }
+  }
+
+  &-horizontal {
+    display: flex;
+    gap: var(--spacing-xl) 70px;
+    flex-wrap: wrap;
+    margin: 0;
+  }
+}

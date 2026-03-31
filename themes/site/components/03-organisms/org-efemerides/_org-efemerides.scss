@@ -1,0 +1,202 @@
+.org-efemerides {
+  background-color: var(--grey-4);
+  padding: var(--spacing-xl) 0;
+  overflow: hidden;
+
+  .button--tertiary {
+    margin-bottom: var(--spacing-md);
+  }
+
+  h4,
+  .paragraph {
+    color: var(--tpms-azul-presi);
+    margin-bottom: var(--spacing-xs);
+  }
+
+  a h5,
+  h5 {
+    color: var(--tpms-azul-presi);
+    margin: 0;
+  }
+
+  .basic-card:hover > a {
+    h5,
+    .paragraph {
+      color: var(--tpms-azul-cielo);
+    }
+  }
+
+  &__grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+
+    @include medium {
+      flex-direction: row;
+    }
+  }
+
+  &__column {
+    flex: 30%;
+  }
+
+  &__actions {
+    margin-top: var(--spacing-xl);
+    text-align: center;
+
+    @include medium {
+      margin-top: var(--spacing-xxl);
+    }
+
+    a {
+      display: flex;
+    }
+  }
+
+  .org-efemerides-left {
+    max-width: 874px;
+  }
+
+  &__item {
+    margin-bottom: var(--spacing-md);
+    flex: 70%;
+
+    &--featured {
+      margin-bottom: 0;
+
+      .basic-card__wrapper {
+        padding: 0 !important;
+        padding-top: var(--spacing-md) !important;
+        display: grid !important;
+        margin: 0 !important;
+        gap: 8px 18px !important;
+        overflow-wrap: break-word !important;
+        word-break: break-word !important;
+        grid-template-areas:
+          'detail title'
+          'detail description' !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+
+        @include medium {
+          align-items: center !important;
+          column-gap: var(--spacing-xl) !important;
+        }
+
+        .basic-card__title {
+          grid-area: title !important;
+          min-width: 0 !important;
+          overflow: hidden !important;
+          width: 100% !important;
+          box-sizing: border-box !important;
+
+          h3 {
+            color: var(--tpms-azul-presi);
+          }
+
+          h5 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            line-height: 1.5;
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+            white-space: normal !important;
+            text-overflow: unset !important;
+            overflow: visible !important;
+          }
+        }
+
+        .basic-card__description {
+          grid-area: description !important;
+          min-width: 0 !important;
+          overflow: hidden !important;
+          width: 100% !important;
+          box-sizing: border-box !important;
+          margin-bottom: 0;
+
+          .paragraph {
+            @extend .paragraph--small;
+
+            color: var(--grey-1);
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+          }
+        }
+      }
+
+      .basic-card__detail {
+        flex-direction: column !important;
+        grid-area: detail !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        margin-bottom: 0;
+
+        .paragraph {
+          @include paragraph($font-weight: 700);
+
+          color: var(--tpms-azul-presi);
+          word-wrap: break-word !important;
+          overflow-wrap: break-word !important;
+        }
+
+        .paragraph--small {
+          padding-left: 10px;
+          @include medium {
+            padding-left: 15px;
+          }
+          @include paragraph(
+            $font-size: 5.625rem,
+            $line-height: 1.222,
+            $font-weight: 700
+          );
+        }
+      }
+    }
+  }
+
+  .org-efemerides__column {
+    max-width: 422px;
+
+    .basic-card {
+      border: 1px solid var(--gris-neblina);
+      border-radius: 15px;
+      background-color: var(--tpms-blanco);
+
+      &__detail {
+        gap: 8px;
+
+        .paragraph--small {
+          @include heading-h4;
+
+          color: var(--tpms-azul-presi);
+        }
+      }
+    }
+  }
+
+  @include medium {
+    padding: var(--spacing-xxxl) 0;
+
+    &__item {
+      &--featured {
+        .basic-card__wrapper {
+          padding: var(--spacing-md);
+          position: relative;
+
+          .basic-card__title {
+            h5 {
+              font-size: 2rem;
+              line-height: 1.375;
+              font-weight: 600;
+            }
+          }
+        }
+      }
+    }
+  }
+}

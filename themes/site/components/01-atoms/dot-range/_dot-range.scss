@@ -1,0 +1,28 @@
+// _dot-range.scss
+
+.dot-range-wrapper {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dot-range {
+  width: var(--spacing-md);
+  height: var(--spacing-md);
+  background-color: $azul-presi;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.dot-range__tooltip {
+  background-color: $oro-libertad;
+  color: $azul-presi;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px var(--spacing-sm);
+  border-radius: 4px;
+  margin-bottom: 4px;
+  white-space: nowrap;
+}

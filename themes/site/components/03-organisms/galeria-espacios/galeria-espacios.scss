@@ -1,0 +1,137 @@
+.galeria-espacios {
+  background-color: var(--grey-4);
+  padding: var(--spacing-xl) 0;
+  margin-bottom: var(--spacing-xl);
+
+  @include medium {
+    margin-bottom: var(--spacing-xxxl);
+    padding: var(--spacing-xxxl) 0;
+  }
+
+  // Main Title
+  &__title {
+    font-size: 2rem;
+    line-height: 2.5rem;
+    color: var(--tpms-azul-presi);
+    margin-bottom: var(--spacing-lg);
+    //necesario colocar el title siempre donde inicia los item en version movil
+    padding-left: calc((100vw - 288px) / 2 - 16px);
+
+    @include small {
+      padding-left: 0;
+    }
+  }
+
+  // Grid Container (Bootstrap row)
+  &__grid {
+    gap: 30px;
+    margin: 0;
+    //justify-content: center;
+
+    @include medium {
+      gap: var(--spacing-lg);
+    }
+
+    @include xxl {
+      //justify-content: start;
+    }
+  }
+
+  // Individual Item (Bootstrap handles column layout)
+  &__item {
+    padding: 0;
+    width: 288px;
+    height: 240px;
+    margin: 0 auto;
+
+    @include medium {
+      width: 342px;
+      // margin: 0 auto;
+    }
+
+    @include small {
+      margin: 0;
+    }
+  }
+
+  // Card Wrapper
+  &__card {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: translateY(-4px);
+
+      .galeria-espacios__overlay {
+        opacity: 0.5;
+      }
+
+      .galeria-espacios__image {
+        transform: scale(1.05);
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--tpms-azul-cielo);
+      outline-offset: 4px;
+    }
+  }
+
+  // Image Wrapper
+  &__image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 240px;
+    overflow: hidden;
+  }
+
+  // Image
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  // Label Wrapper
+  &__label-wrapper {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 8px 16px;
+    background-color: var(--tpms-azul-presi);
+    z-index: 2;
+    border-top: 1px solid var(--tpms-oro-libertad);
+    height: 40px;
+  }
+
+  // Label Text
+  &__label {
+    font-family: $font-body;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.5rem;
+    color: var(--tpms-blanco);
+    text-align: center;
+    display: block;
+  }
+}
+
+.galeria-espacios-view {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  @include medium {
+    gap: var(--spacing-lg);
+    justify-content: flex-start;
+  }
+}

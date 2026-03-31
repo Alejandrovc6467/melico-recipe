@@ -1,0 +1,50 @@
+// // These styles only affect the colors "Usage" page in the component library
+
+.cl-colors {
+  padding: 1rem;
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 0;
+    margin: 0 0 2rem;
+    list-style: none;
+  }
+
+  &__item {
+    padding: 1rem;
+    flex: 1 1 150px;
+    min-height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgb(0 0 0 / 5%);
+    text-align: center;
+    transition: all 0.3s;
+  }
+}
+
+// Contraste dinámico de texto
+@function set-color(
+  $color,
+  $text-primary: var(--tpms-negro),
+  $text-secondary: var(--tpms-blanco)
+) {
+  @if (lightness($color) > 50) {
+    @return clr($text-primary);
+  } @else {
+    @return clr($text-secondary);
+  }
+}
+
+// Generar clases dinámicas usando un enfoque más seguro
+@each $name, $color in $defaultColors {
+  .cl-colors__item--default-#{$name} {
+    background-color: $color;
+    color: set-color($color);
+  }
+}

@@ -1,0 +1,150 @@
+.institucion-container {
+  max-width: 82.5rem;
+  margin: 0 15px;
+
+  .institucion-header {
+    border-bottom: 1px solid #0003;
+    margin-bottom: var(--spacing-xl);
+
+    .institucion-image {
+      min-height: 12.125rem;
+      object-fit: cover;
+      margin-bottom: 23px;
+    }
+
+    .institucion-info {
+      margin-bottom: var(--spacing-xl);
+
+      .categorias-list {
+        margin-bottom: 1rem;
+
+        .category-name {
+          font-size: 1rem;
+          font-weight: 600;
+        }
+      }
+
+      h2 {
+        font-size: 26px;
+        margin: 0;
+        margin-bottom: 1rem;
+        color: var(--tpms-azul-presi);
+      }
+
+      .provincia {
+        margin-bottom: 1rem;
+
+        span {
+          font-weight: 700;
+          font-size: 1rem;
+        }
+      }
+
+      .external-link {
+        color: var(--tpms-azul-presi);
+        text-decoration: none;
+        border-radius: 15px;
+        display: block;
+        overflow: hidden;
+        width: 100%;
+        padding: var(--spacing-sm) 0;
+        text-align: center;
+        background: var(--tpms-oro-libertad);
+        font-size: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        max-width: 345px;
+      }
+    }
+  }
+
+  .institucion-body {
+    margin-bottom: var(--spacing-xxxl);
+    border-bottom: 1px solid #0003;
+
+    .paragraph--type--ubicacion {
+      .container {
+        padding-inline: 0;
+      }
+    }
+  }
+
+  .institucion-content {
+    border-bottom: 1px solid #0003;
+    margin-bottom: var(--spacing-huge);
+
+    .instituciones-relacionadas-titulo {
+      margin-bottom: 24px;
+
+      h2 {
+        color: var(--grey-1);
+      }
+    }
+  }
+
+  .group--tarjeta {
+    margin-bottom: 24px;
+
+    .group-tarjeta-image {
+      margin-bottom: 24px;
+
+      img {
+        border-radius: 20px;
+      }
+    }
+
+    .group-tarjeta-tipo {
+      text-decoration: none;
+      color: var(--grey-1);
+      font-size: 0.875rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+
+    .group-tarjeta-title {
+      margin-bottom: 8px;
+
+      h4 {
+        font-weight: 600;
+        color: var(--tpms-azul-cielo);
+      }
+    }
+
+    .group-tajeta-body {
+      color: var(--grey-1);
+    }
+  }
+}
+@include large {
+  .institucion-container {
+    .institucion-header {
+      display: flex;
+      gap: var(--spacing-lg);
+
+      .institucion-image {
+        max-width: 648px;
+        border-radius: 20px;
+      }
+
+      .institucion-info {
+        .external-link {
+          max-width: 239px;
+        }
+      }
+    }
+  }
+}
+
+@include xl {
+  .institucion-container {
+    margin: 0 auto;
+
+    .institucion-header {
+      .institucion-info {
+        h2 {
+          font-size: 42px;
+        }
+      }
+    }
+  }
+}

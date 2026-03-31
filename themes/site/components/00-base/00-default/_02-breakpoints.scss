@@ -1,0 +1,67 @@
+// Updated Global Breakpoints (based on Figma)
+
+$xs: 320px;
+$small: 480px;
+$medium: 768px;
+$large: 1024px;
+$xl: 1320px;
+$xxl: 1440px; // Este es el ancho máximo del container en Figma
+$xxxl: 1920px;
+
+$max-width: $xxxl;
+
+/// Mixin - xs Breakpoint
+@mixin xs {
+  @include breakpoint($xs) {
+    @content;
+  }
+}
+
+/// Mixin - small Breakpoint
+@mixin small {
+  @include breakpoint($small) {
+    @content;
+  }
+}
+
+/// Mixin - medium Breakpoint
+@mixin medium {
+  @include breakpoint($medium) {
+    @content;
+  }
+}
+
+/// Mixin - large Breakpoint
+@mixin large {
+  @include breakpoint($large) {
+    @content;
+  }
+}
+
+/// Mixin - xl Breakpoint
+@mixin xl {
+  @include breakpoint($xl) {
+    @content;
+  }
+}
+
+/// Mixin - xxl Breakpoint
+@mixin xxl {
+  @include breakpoint($xxl) {
+    @content;
+  }
+}
+
+/// Mixin - xxxl Breakpoint
+@mixin xxxl {
+  @include breakpoint($xxxl) {
+    @content;
+  }
+}
+
+/// Mixin - max-width Breakpoint
+@mixin max-width {
+  @include breakpoint($max-width) {
+    @content;
+  }
+}

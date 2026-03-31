@@ -1,0 +1,43 @@
+# VERSION DEFAULT (original)
+Default:
+  card__image__src: 'https://static.mywebsites360.com/fafebf1e03c14b4a9fce33fd524c87c7/i/a7956914224746c99facb0a8229a4ded/1/4SoifmQp45JMgBnHndfLg/5%20Therapeutic%20Benefits%20of%20Ballet%20Dance%20Lessons%206.jpg'
+  card__image__alt: 'Homenaje a nuestros artistas'
+  card__category: 'Compañía Nacional de Danza'
+  card__title: 'En las Ramas del Ciprés lorem ipsum dolor sit amet'
+  card__location: 'Teatro La Aduana'
+  card__url: '/evento/homenaje-artistas'
+
+LongTitle:
+  card__image__src: 'https://static.mywebsites360.com/fafebf1e03c14b4a9fce33fd524c87c7/i/a7956914224746c99facb0a8229a4ded/1/4SoifmQp45JMgBnHndfLg/5%20Therapeutic%20Benefits%20of%20Ballet%20Dance%20Lessons%206.jpg'
+  card__image__alt: 'Evento con título largo'
+  card__category: 'Festival Internacional de Arte'
+  card__title: 'En las Ramas del Ciprés lorem ipsum dolor sit amet, Gran Festival Internacional de Música y Danza Contemporánea con Artistas de Todo el Mundo'
+  card__location: 'Teatro Nacional de Costa Rica'
+  card__url: '/evento/festival-internacional'
+
+ShortTitle:
+  card__image__src: 'https://static.mywebsites360.com/fafebf1e03c14b4a9fce33fd524c87c7/i/a7956914224746c99facb0a8229a4ded/1/4SoifmQp45JMgBnHndfLg/5%20Therapeutic%20Benefits%20of%20Ballet%20Dance%20Lessons%206.jpg'
+  card__image__alt: 'Evento sin enlace'
+  card__category: 'Teatro Experimental'
+  card__title: 'Presentación Especial'
+  card__location: 'Sala de Ensayo'
+  card__url: '/evento/festival-internacional'
+
+# VERSION SECOND (nueva variante)
+SecondVersion:
+  card_version: 'second'
+  card__image__src: 'https://plaroig.com/wp-content/uploads/2024/05/05-Escuela-de-Danza.jpg'
+  card__image__alt: 'Salón de ensayo'
+  card__category: 'Salón de ensayo'
+  card__title: 'Teatro Popular Melico Salazar'
+  card__location: 'Escazú'
+  card__url: '/evento/teatro-melico'
+
+SecondVersionLongTitle:
+  card_version: 'second'
+  card__image__src: 'https://plaroig.com/wp-content/uploads/2024/05/05-Escuela-de-Danza.jpg'
+  card__image__alt: 'Evento versión segunda con título largo'
+  card__category: 'Salón de ensayo múltiple'
+  card__title: 'Teatro Popular Melico Salazar y Centro Cultural de Artes Escénicas Contemporáneas'
+  card__location: 'San José Centro'
+  card__url: '/evento/teatro-melico-largo'

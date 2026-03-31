@@ -1,0 +1,87 @@
+.eventos-por-provincia {
+  .h3 {
+    color: var(--tpms-azul-presi);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  &__grid {
+    display: flex;
+    gap: var(--spacing-lg);
+    flex-direction: column;
+    @include large {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+    }
+  }
+  @include large {
+    // Fila 1 (tarjetas 1-4): cada una ocupa 2 columnas
+    .evento-provincia-card:nth-child(1),
+    .evento-provincia-card:nth-child(2),
+    .evento-provincia-card:nth-child(3),
+    .evento-provincia-card:nth-child(4) {
+      grid-column: span 2;
+    }
+    // Fila 2 (tarjeta 5): ocupa 3 columnas
+    .evento-provincia-card:nth-child(5) {
+      grid-column: span 3;
+    }
+
+    // Fila 2 (tarjeta 6): ocupa 2 columnas
+    .evento-provincia-card:nth-child(6) {
+      grid-column: span 2;
+    }
+
+    // Fila 2 (tarjeta 7): ocupa 3 columnas
+    .evento-provincia-card:nth-child(7) {
+      grid-column: span 3;
+    }
+  }
+}
+
+.evento-provincia-card {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  overflow: hidden;
+  text-decoration: none;
+  color: #fff;
+  background: #222;
+  position: relative;
+  box-shadow: 0 2px var(--spacing-sm) rgb(20 20 20 / 10%);
+  // Degradado
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, #1b285800 20%, #1b2858 90%);
+    z-index: 1;
+    pointer-events: none;
+    // height: 80%;
+    bottom: 0;
+  }
+
+  picture {
+    width: 100%;
+    height: 100%;
+
+    img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__label {
+    display: inline-block;
+    padding: 8px;
+    background-color: var(--tpms-azul-presi);
+    border-radius: var(--radius-sm);
+    color: var(--tpms-blanco);
+    position: absolute;
+    z-index: 2;
+    left: 14px;
+    bottom: var(--spacing-sm);
+  }
+}

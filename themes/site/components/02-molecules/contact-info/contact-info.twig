@@ -1,0 +1,50 @@
+{#
+/**
+ * Contact Info Component
+ * 
+ * Available variables:
+ * - heading: string - El título del componente
+ * - contact_info_content: string - El contenido HTML del componente
+ * - contact_info_centered: boolean - Controla el layout del heading
+ *   true = contenido a la derecha (versión original con col-lg-6)
+ *   false = contenido a la izquierda (versión modificada con col-lg-5)
+ * - contact_info_base_class: string - Clase base del componente (default: 'contact-info')
+ * - contact_info_modifiers: array - Modificadores BEM
+ * - contact_info_blockname: string - Blockname BEM
+ */
+#}
+
+{% set contact_info_base_class = contact_info_base_class|default('contact-info') %}
+{% set contact_info_modifiers = contact_info_modifiers|default([]) %}
+
+{# Agregar modificador 'left-aligned' cuando contact_info_centered es false #}
+{% if contact_info_centered == false %}
+  {% set contact_info_modifiers = contact_info_modifiers|merge(['left-aligned']) %}
+{% endif %}
+
+{# Determinar el tamaño de columna según la versión #}
+{% set heading_col_size = contact_info_centered == false ? 'col-12 col-lg-5' : 'col-12 col-lg-6' %}
+  
+<section {{ bem(contact_info_base_class, contact_info_modifiers, contact_info_blockname, ['section-margin']) }}>
+  <div class="container">
+  
+    <div class="row">
+
+      <div class="contact-info__content-heading {{ heading_col_size }}">
+        {% include "@atoms/text/headings/_heading.twig" with {
+          heading_level: 3,
+          heading: heading,
+          heading_icon: true,
+          heading_underline: true,
+          heading_base_class: 'contact-info__heading',
+        } only %}
+      </div>
+     
+      <div class="contact-info__info col-12 col-lg-6">
+        {{ contact_info_content|raw }}
+      </div>
+
+    </div>
+  
+  </div>
+</section>

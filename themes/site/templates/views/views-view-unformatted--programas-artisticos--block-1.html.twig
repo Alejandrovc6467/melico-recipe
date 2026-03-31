@@ -1,0 +1,20 @@
+{#
+/**
+ * @file
+ * Template para vista de Programas Artísticos
+ * 
+ * Available variables:
+ * - view: The view object.
+ * - rows: A list of the view's row items.
+ *   - attributes: HTML attributes for each row.
+ * - options: View display options.
+ */
+#}
+
+<div class="programas-artisticos__list">
+  {% for row in rows %}
+    <div{{ row.attributes.addClass('programas-artisticos__item') }}>
+      {{ row.content }}
+    </div>
+  {% endfor %}
+</div>

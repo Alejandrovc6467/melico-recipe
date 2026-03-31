@@ -1,0 +1,19 @@
+langcode: es
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: sL588ui1E_8-2c_UupwyYxcqX2OVyMFp3HTLbbFqvPc
+id: global
+label: Global
+tags:
+  abstract: '[node:summary]'
+  canonical_url: '[current-page:url]'
+  description: '[node:summary]'
+  keywords: 'Teatro Popular Melico Salazar, teatro, tpms, melico salazar, eventos, funciones, espectáculos '
+  schema_web_page_description: '[node:body] [node:summary] global'
+  schema_web_page_type: WebPage
+  title: '[current-page:title] | [site:name]'
+  twitter_cards_creator_id: '@TeatroMelico'
+  twitter_cards_site: '@TeatroMelico'
+  twitter_cards_title: '[current-page:title] | [site:name]'
+  twitter_cards_type: summary

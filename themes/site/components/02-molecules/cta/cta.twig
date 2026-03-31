@@ -1,0 +1,68 @@
+{% set header__base_class = 'cta' %}
+{% set cta_has_margin = cta_has_margin is defined ? cta_has_margin : true %}
+{% set modifier = modifier is defined ? modifier : '' %}
+
+<div class="{{ header__base_class }} container{{ cta_has_margin ? ' section-margin' : '' }}{{ modifier ? ' ' ~ modifier : '' }}">
+    {% if image %}
+      <div class="cta__image">
+        <img src="{{ image }}" alt="{{ image_alt }}">
+      </div>
+    {% endif %}
+    {% if background_image %}
+      <div class="cta__image">
+        <img src="{{ background_image }}" alt="{{ heading_text }}">
+      </div>
+    {% endif %}
+
+    <div class="cta__content">
+      <div class="cta__inner-border"> 
+        <div class='cta__sub-content'>
+          {% if intro_text %}
+            <div class="cta__intro">
+              {{ intro_text|raw }}
+            </div>
+          {% endif %}
+
+          {# {% if tagline %}
+            {% include "@atoms/buttons/button.twig" with {
+              button_content: 'VER MÁS',
+              button_url: button_url,
+              button_modifiers: ['secondary', 'medium']
+            } %}
+          {% endif %} #}
+
+          {% include "@atoms/text/headings/_heading.twig" with {
+            heading_level: heading_level,
+            heading: heading_text,
+            heading_base_class: header__base_class ~ '__heading-text',
+            heading_icon: heading_icon,
+            heading_underline: heading_underline
+          } only %}
+
+          {% if content %}
+            <div class="cta__text">
+              {{ content|raw }}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class='cta__buttons'>
+          {% if buttons is defined and buttons is iterable and buttons|length > 0 %}
+            <div class="cta__buttons">
+              {% for btn in buttons %}
+                {% include "@atoms/buttons/button.twig" with btn %}
+              {% endfor %}
+            </div>
+          {% elseif button_content is defined %}
+            {% include "@atoms/buttons/button.twig" with {
+              button_icon: button_icon,
+              button_content: button_content,
+              button_url: button_url,
+              is_download: button_is_download|default(false),
+              button_modifiers: button_modifiers,
+            } %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+</div>

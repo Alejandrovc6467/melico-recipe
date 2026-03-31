@@ -1,0 +1,15 @@
+title: 'CREACIÓN DE LOS PREMIOS'
+imagen_url: 'https://picsum.photos/seed/awards/483/452'
+imagen_alt: 'Mujer sosteniendo copa de premio en ceremonia'
+
+items:
+  - titulo: 'Ley sobre Premios Nacionales de Cultura'
+    numero_ley: 'N° 9211'
+    button_label: 'VER LEY'
+    button_url: '/ley/9211'
+
+  - titulo: 'Reglamento a la Ley N° 9211 Ley sobre Premios Nacionales de Cultura'
+    numero_ley: 'N° 38979-C'
+    button_label: 'VER LEY'
+    button_url: '/ley/38979-c'
+    archivo_url: '/files/reglamento-38979-c.pdf'

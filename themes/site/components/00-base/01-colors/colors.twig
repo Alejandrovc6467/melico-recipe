@@ -1,0 +1,19 @@
+<h2>{{ colors_heading }}</h2>
+
+{% for palette in palettes %}
+  <section class="color-palette-group">
+    <h3>{{ palette.palette_heading }}</h3>
+    <ul class="color-palette cl-colors__list">
+      {% for color in palette.colors %}
+        {% set class_name = color.token %}
+        <li class="color-swatch cl-colors__item cl-colors__item--default-{{ class_name }}">
+          <div class="color-labels">
+            <strong>{{ color.name }}</strong><br>
+            <code>{{ color.variable }}</code><br>
+            <small>{{ color.hex }}</small>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endfor %}

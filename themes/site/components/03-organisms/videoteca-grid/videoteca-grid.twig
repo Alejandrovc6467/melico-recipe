@@ -1,0 +1,58 @@
+{% set videoteca_base_class = videoteca_base_class|default('videoteca-grid') %}
+
+<section {{ bem(videoteca_base_class, videoteca_modifiers, videoteca_blockname, ['section-margin']) }}>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center">
+        {% if videoteca_title %}
+          <div class="videoteca-grid__title-wrapper">
+            {% include "@atoms/text/headings/_heading.twig" with {
+              heading_level: 1,
+              heading: videoteca_title,
+              heading_icon: true,
+              heading_underline: true,
+              heading_base_class: videoteca_base_class ~ '__main-title'
+            } only %}
+          </div>
+        {% endif %}
+        {% if videoteca_description %}
+          <p class="videoteca-grid__description">{{ videoteca_description }}</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      {% if videoteca_videos[0] %}
+        <div class="col-12 videoteca-grid__item--featured">
+          {% include "@molecules/video-item/video-item.twig" with {
+            video_url: videoteca_videos[0].url,
+            video_title: videoteca_videos[0].title
+          } %}
+        </div>
+      {% endif %}
+
+      {% for video in videoteca_videos|slice(1, 3) %}
+        <div class="col-12 col-lg-4 videoteca-grid__item--secondary">
+          {% include "@molecules/video-item/video-item.twig" with {
+            video_url: video.url,
+            video_title: video.title
+          } %}
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if videoteca_button_text and videoteca_button_url %}
+      <div class="videoteca-grid__actions">
+        {% include "@atoms/buttons/button.twig" with {
+          button_content: videoteca_button_text,
+          button_url: videoteca_button_url,
+          button_target: '_blank',
+          link_attributes: {
+            rel: 'noopener noreferrer'
+          },
+          button_modifiers: ['secondary']
+        } %}
+      </div>
+    {% endif %}
+  </div>
+</section>

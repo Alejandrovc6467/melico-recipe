@@ -1,0 +1,16 @@
+<div class="video-item">
+  <div class="video-item__media">
+    {% include "@atoms/video-thumbnail/video-thumbnail.twig" with {
+      video_url: video_url,
+      video_title: video_title
+    } %}
+  </div>
+  
+  <div class="video-item__content">
+    {% include "@atoms/text/headings/_heading.twig" with {
+      heading_level: 4,
+      heading: video_title,
+      heading_base_class: 'video-item__title'
+    } only %}
+  </div>
+</div>

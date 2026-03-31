@@ -1,0 +1,118 @@
+.no-sidebar {
+  .card-blue {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 375 / 447;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--tpms-blanco);
+    border: 1px solid var(--tpms-oro-libertad);
+    cursor: pointer;
+    flex: 0 0 auto;
+    min-width: 0;
+
+    @include small {
+      aspect-ratio: 375 / 373;
+      height: 342px;
+      width: 375px;
+    }
+    @include large {
+      width: 100%;
+      height: auto;
+    }
+
+    &__media {
+      position: absolute;
+      inset: 0;
+    }
+
+    &__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    &__overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        191.22deg,
+        rgb(54 93 183 / 0%) 1.34%,
+        rgb(38 65 128 / 80%) 27.07%,
+        #182951 100%
+      );
+      display: flex;
+      padding: 28px;
+      transition: background-color 0.25s ease;
+    }
+
+    &__title {
+      align-items: flex-end;
+      color: var(--tpms-amarillo-paz);
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      line-height: 1.813rem;
+      width: 261px;
+    }
+  }
+}
+
+.has-sidebar {
+  .card-blue {
+    width: 375px;
+    height: 445px;
+    position: relative;
+    display: block;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--tpms-blanco);
+    border: 1px solid var(--tpms-oro-libertad);
+    cursor: pointer;
+    flex: 0 0 auto;
+    min-width: 0;
+
+    &__media {
+      position: absolute;
+      inset: 0;
+    }
+
+    &__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    &__overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        191.22deg,
+        rgb(54 93 183 / 0%) 1.34%,
+        rgb(38 65 128 / 80%) 27.07%,
+        #182951 100%
+      );
+      display: flex;
+      padding: 28px;
+      transition: background-color 0.25s ease;
+    }
+
+    &__title {
+      align-items: flex-end;
+      color: var(--tpms-amarillo-paz);
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      line-height: 1.813rem;
+      width: 261px;
+    }
+    @include large {
+      width: 358px;
+      height: 342px;
+    }
+  }
+}

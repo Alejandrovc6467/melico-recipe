@@ -1,0 +1,9 @@
+button_content: 'Mapa'
+button_url: '#'
+button_icon:
+  icon_name: 'filtro'
+  icon_height: 24
+  icon_width: 24
+button_modifiers:
+  - 'mini'
+directory: ' '

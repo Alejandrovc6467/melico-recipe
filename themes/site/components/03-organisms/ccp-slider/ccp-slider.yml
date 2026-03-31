@@ -1,0 +1,73 @@
+title: "Centros Cívicos por la Paz (CCP)"
+intro: >-
+  El Taller Nacional de Danza cuenta actualmente con una oferta consolidada en los
+  Centros Cívicos Por la Paz, este programa busca la inclusión social basada en la
+  participación adolescente como pilar en la prevención de la violencia y el desarrollo
+  de una cultura de paz.
+
+items:
+  - sede_label: "SEDE"
+    sede_text: "Teatro Nacional, San José - 2643 3863"
+    role: "Festivales"
+    name: "Festival Internacional de las Artes"
+    email: "nombredelformador@gmail.com"
+    phone: "8888 2222"
+    image: "https://static.mywebsites360.com/fafebf1e03c14b4a9fce33fd524c87c7/i/a7956914224746c99facb0a8229a4ded/1/4SoifmQp45JMgBnHndfLg/5%20Therapeutic%20Benefits%20of%20Ballet%20Dance%20Lessons%206.jpg"
+    body:
+      - "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus."
+      - "Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus."
+
+  - sede_label: "SEDE"
+    sede_text: "Auditorio Nacional, San José - 2244 1100"
+    role: "Música"
+    name: "Concierto Sinfónico de Gala"
+    email: "nombredelformador@gmail.com"
+    phone: "8888 2222"
+    image: "https://boleteria.teatromelico.go.cr/uplimage/TD.HOMENAJEv29oct.jpg"
+    body:
+      - "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      - "Maecenas eget condimentum velit."
+
+  - sede_label: "SEDE"
+    sede_text: "Museo Nacional, San José - 2680 2222"
+    role: "Exposiciones"
+    name: "Exposición: Arte Precolombino"
+    email: "nombredelformador@gmail.com"
+    phone: "8888 2222"
+    image: "https://m.media-amazon.com/images/M/MV5BNzJmMmMyNzUtMjFkNS00MGY5LTlkMGYtODFmMzAyNGExNDE4XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
+    body:
+      - "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      - "Donec id elit non mi porta gravida at eget metus."
+
+  - sede_label: "SEDE"
+    sede_text: "Teatro Melico Salazar, San José - 2680 2222"
+    role: "Danza"
+    name: "Ballet Nacional: Cascanueces"
+    email: "nombredelformador@gmail.com"
+    phone: "8888 2222"
+    image: "https://picsum.photos/seed/billboard4/720/900"
+    body:
+      - "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      - "Aenean lacinia bibendum nulla sed consectetur."
+
+  - sede_label: "SEDE"
+    sede_text: "Parque Central, Cartago - 2680 2222"
+    role: "Cine"
+    name: "Cine Bajo las Estrellas"
+    email: "nombredelformador@gmail.com"
+    phone: "8888 2222"
+    image: "https://picsum.photos/seed/billboard5/720/900"
+    body:
+      - "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      - "Morbi leo risus, porta ac consectetur ac, vestibulum at eros."
+
+  - sede_label: "SEDE"
+    sede_text: "Centro Cultural, Heredia - 2680 2222"
+    role: "Teatro"
+    name: "Teatro Comunitario: La Pérgola de las Flores"
+    email: "nombredelformador@gmail.com"
+    phone: "8888 2222"
+    image: "https://picsum.photos/seed/billboard6/720/900"
+    body:
+      - "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      - "Curabitur blandit tempus porttitor."

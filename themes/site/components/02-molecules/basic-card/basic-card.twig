@@ -1,0 +1,200 @@
+{#
+/*
+ * Basic Card Component
+ *
+ * Displays a flexible card with optional image, title, metadata, and call-to-action buttons.
+ *
+ * Available Variables:
+ * - basic_card__modifiers: Array of modifiers to change card style (e.g., ['event', 'news']).
+ * - basic_card__blockname: Block name for BEM naming (optional).
+ * - basic_card__extra_classes: Additional CSS classes (optional).
+ *
+ * Content Variables:
+ * - rendered_image: Render array for the card image (optional).
+ * - card__image__src: Path/URL to the card's main image.
+ * - card__image__alt: Alt text for the main image.
+ * - card__url: Primary URL for the entire card link (optional).
+ * - card__url__mas: Secondary "Ver más" URL (optional).
+ * - card__txt__mas: "Ver más" button text.
+ * - card__url__entradas: "Entradas" URL (optional).
+ * - card__txt__entradas: "Entradas" button text.
+ * - card__target: Link target (e.g., '_blank').
+ * - card__title: Card title text.
+ * - card__date: Date metadata.
+ * - card__category: Category metadata.
+ * - card__service: Service type metadata.
+ * - card__types: Array of type tags ({type: 'string'}).
+ * - card__description: Card description text.
+ * - card__event__categories: Card Categories in event.
+ * - card__location: Location information.
+ * - card__range: Date range information.
+ * - card__icon: Boolean to show/hide arrow icon.
+ */
+  #}
+{# {% set logo_src = directory ? '/' ~ directory ~ '/images/logo.png' : 'logo.png' %} #}
+  
+{% set basic_card__base_class = 'basic-card' %}
+{% set modifiers = basic_card__modifiers|join(' ')|replace({' ': ''}) %}
+
+<div {{ bem(basic_card__base_class, basic_card__modifiers, basic_card__blockname, basic_card__extra_classes) }}>
+	{# Primary Card Link #}
+    {% if card__url %}
+        <a href="{{ card__url }}" {{ card__target ? 'target="' ~ card__target ~ '"' : '' }}>
+    {% endif %}
+
+		{# Image Section #}
+        {% if rendered_image or card__image__src %}
+            <div {{ bem('image', [], basic_card__base_class) }}>
+                {% if rendered_image %}
+                    {{ rendered_image }}
+                {% else %}
+                    {# Responsive Image #}
+                    {% include "@atoms/images/image/responsive-image.twig" with {
+                        image_src: file_url(card__image__src),
+                        image_alt: card__image__alt,
+                    } %}
+                {% endif %}
+
+                {% if card__event__categories %}
+                    <div class="icons-event">
+                        {% for item in card__event__categories %}
+                            <div class="icons-event-item">
+                                {{ item|raw }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+					{# Optional Icon #}
+                {% if card__icon %}
+                    {% include "@atoms/images/icons/_icon.twig" with {
+                        icon__name: "arrow",
+                        icon__width: '24px',
+                        icon__height: '24px',
+                    } %}
+					{% endif %}
+				{% if card__url__mas and modifiers == 'event' %}
+					</a>
+                {% endif %}
+            </div>
+        {% endif %} 
+
+        {# Date range #}
+        {% if card__range %}
+            <div {{ bem('range', [], basic_card__base_class) }}>
+                {% include "@atoms/text/text/01-paragraph.twig" with {
+                    paragraph_content: card__range,
+                    paragraph_modifiers: ['mini-bold']
+                } %}
+            </div>
+        {% endif %}
+
+		{# Content Wrapper #}
+        <div {{ bem('wrapper', [], basic_card__base_class) }}>
+			{# Metadata (Date/Category) #}
+            {% if card__date or card__category %}
+                <div {{ bem('detail', [], basic_card__base_class) }}>
+                    {% if card__date %}
+                        {% include "@atoms/text/text/01-paragraph.twig" with {
+                            paragraph_content: card__date,
+                            paragraph_modifiers: ['small']
+                        } %}
+                    {% endif %}
+
+                    {% if card__month %}
+                        {% include "@atoms/text/text/01-paragraph.twig" with {
+                            paragraph_content: card__month
+                        } %}
+                    {% endif %}
+
+                    {% if card__category %}
+                        {% include "@atoms/text/text/01-paragraph.twig" with {
+                            paragraph_content: card__category,
+                            paragraph_modifiers: ['bold', 'small', 'category']
+                        } %}
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            {# Service Type #}
+            {% if card__service is not empty %}
+                <div {{ bem('service', [], basic_card__base_class) }}>
+                    {% include "@atoms/text/text/01-paragraph.twig" with {
+                        paragraph_content: card__service,
+                        paragraph_modifiers: ['small']
+                    } %}
+                </div>
+            {% endif %}
+
+			{# Title with Conditional Link #}
+			{% if card__url__mas and modifiers == 'event' %}
+				<a href="{{ card__url__mas }}" {{ card__target ? 'target="' ~ card__target ~ '"' : '' }}>
+			{% endif %}
+                <div {{ bem('title', [], basic_card__base_class) }}>
+                    {% include "@atoms/text/headings/_heading.twig" with {
+                        heading_level: card__heading_level|default(5),
+                        heading: card__title
+                    } only %}
+                </div>
+			{% if card__url__mas and modifiers == 'event' %}
+				</a>
+			{% endif %}
+
+            {# Types Tags #}
+            {% if card__types is not empty %}
+                <div {{ bem('type', [], basic_card__base_class) }}>
+                    {% for type in card__types %}
+                        {% include "@atoms/text/text/01-paragraph.twig" with {
+                                paragraph_content: type,
+                                paragraph_modifiers: ['mini-bold']
+                            } %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {# Description #}
+            {% if card__description is not empty %}
+                <div {{ bem('description', [], basic_card__base_class) }}>
+                    {% include "@atoms/text/text/01-paragraph.twig" with {
+                        paragraph_content: card__description
+                    } %}
+                </div>
+            {% endif %}
+
+            {# Location #}
+            {% if card__location is not empty %}
+                <div {{ bem('location', [], basic_card__base_class) }}>
+                    {% include "@atoms/text/text/01-paragraph.twig" with {
+                        paragraph_content: card__location,
+                        paragraph_modifiers: ['small']
+                    } %}
+                </div>
+            {% endif %}
+
+			{# Call-to-Action Buttons #}
+            {% if card__url__mas or card__url__entradas %}
+                <div {{ bem('actions', [], basic_card__base_class)}}>
+                    {% if card__url__mas is not empty %}
+                        {% include "@atoms/buttons/button.twig" with {
+                            button_content: card__txt__mas,
+                            button_url: card__url__mas,
+                            button_modifiers: ['link', 'tertiary']
+                        } %}
+                    {% endif %}
+
+                    {% if card__url__entradas is not empty %}
+                        {% include "@atoms/buttons/button.twig" with {
+                            button_content: card__txt__entradas,
+                            button_url: card__url__entradas,
+                            button_modifiers: ['primary']
+                        } %}
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+
+    {# Close Primary Card Link #}
+    {% if card__url %}
+        </a>
+    {% endif %}
+</div>

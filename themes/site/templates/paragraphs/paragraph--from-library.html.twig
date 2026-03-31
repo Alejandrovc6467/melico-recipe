@@ -1,0 +1,29 @@
+{#
+/**
+ * @file
+ * Theme implementation to display a paragraph from library with per-instance options.
+ */
+#}
+{% if paragraph.field_margen_inferior.value == 1 %}
+  {% set from_library_has_margin = 'paragraph--with-section-margin' %}
+{% else %}
+  {% set from_library_has_margin = 'paragraph--without-section-margin' %}
+{% endif %}
+
+{%
+  set classes = [
+    'drupal-paragraph',
+    'paragraph--type--' ~ paragraph.bundle|clean_class,
+    view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+    not paragraph.isPublished() ? 'paragraph--unpublished',
+    from_library_has_margin
+  ]
+%}
+{% block paragraph %}
+  <section{{ attributes.addClass(classes).setAttribute('id', 'component-' ~ paragraph.id()) }}>
+    {% block content %}
+      {{ content|without('field_margen_inferior') }}
+      
+    {% endblock %}
+  </section>
+{% endblock paragraph %}

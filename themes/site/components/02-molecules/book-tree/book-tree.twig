@@ -1,0 +1,30 @@
+{% import _self as book_tree %}
+
+{{ book_tree.book_links(items, attributes|default(null), 0) }}
+
+{% macro book_links(items, attributes, menu_level) %}
+  {% import _self as book_tree %}
+
+  {% if items %}
+    {% if menu_level == 0 %}
+      <ul {% if attributes %}{{ attributes }}{% endif %} class="book-tree">
+    {% else %}
+      <ul class="book-tree__subtree">
+    {% endif %}
+    {% for item in items %}
+      <li  {% if item.attributes %}{{ item.attributes }}{% endif %} class="book-tree__item">
+        {% if item.url is defined and item.url is iterable == false %}
+          <a href="{{ item.url }}" class="book-tree__link{% if item.in_active_trail %} is-active{% endif %}">
+            {{ item.title }}
+          </a>
+        {% else %}
+          {{ link(item.title, item.url) }}
+        {% endif %}
+        {% if item.below %}
+          {{ book_tree.book_links(item.below, attributes, menu_level + 1) }}
+        {% endif %}
+      </li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}

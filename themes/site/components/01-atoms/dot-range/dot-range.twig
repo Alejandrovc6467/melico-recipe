@@ -1,0 +1,9 @@
+{# dot-range.twig #}
+<div class="dot-range-wrapper {{ modifier }}">
+  {% if show_tooltip %}
+    <div class="dot-range__tooltip">
+      {{ tooltip_text }}
+    </div>
+  {% endif %}
+  <button class="dot-range" type="button" aria-label="Range point"></button>
+</div>

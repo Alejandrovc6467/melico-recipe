@@ -1,0 +1,43 @@
+{#
+/**
+ * @file
+ * Template para Paragraph: Archivos Adjuntos
+ *
+ * Variables disponibles:
+ * - paragraph: Entidad completa del paragraph
+ * - content: Render array del contenido
+ * - attributes: Atributos HTML del contenedor
+ *
+ * Campos del paragraph:
+ * - field_titulo: Título del componente
+ * - field_descripcion: Descripción
+ * - field_imagen: Media entity (solo para tipo "con_imagen")
+ * - field_archivos_adjuntos: Array de archivos
+ * - field_tipo_de_visualizacion: Lista (con_imagen|simple)
+ * - field_section_margin: Boolean (solo para tipo "simple")
+ */
+#}
+
+
+{% if tipo_visualizacion == 'con_imagen' %}
+  
+  {# Componente CON IMAGEN (archivos-adjuntos) #}
+  {% include "@organisms/archivos-adjuntos/archivos-adjuntos.twig" with {
+    archivos_title: archivos_title,
+    archivos_description: archivos_description,
+    archivos_image: archivos_image,
+    archivos_image_alt: archivos_image_alt,
+    archivos_items: archivos_items,
+  } only %}
+
+{% else %}
+  
+  {# Componente SIMPLE (documentos-adjuntos) #}
+  {% include "@organisms/documentos-adjuntos/documentos-adjuntos.twig" with {
+    documentos_title: archivos_title,
+    documentos_description: archivos_description,
+    documentos_items: archivos_items,
+    documentos_section_margin: section_margin,
+  } only %}
+
+{% endif %}

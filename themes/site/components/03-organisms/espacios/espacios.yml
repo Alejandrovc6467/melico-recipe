@@ -1,0 +1,82 @@
+# Default - 4 cards
+default:
+  espacios_institutions:
+    - pretitle: 'Alquiler y préstamo de espacios'
+      institution_name: 'Teatro popular Melico Salazar'
+      spaces:
+        - title: 'Teatro Popular Melico Salazar'
+          image: 'https://plaroig.com/wp-content/uploads/2024/05/05-Escuela-de-Danza.jpg'
+          category: 'Teatro'
+          location: 'Escazú'
+          url: '/espacios/teatro-melico-salazar'
+
+        - title: 'Salón de ensayos del TPMS'
+          image: 'https://plaroig.com/wp-content/uploads/2024/05/05-Escuela-de-Danza.jpg'
+          category: 'Salón de ensayo'
+          location: 'Escazú'
+          url: '/espacios/salon-ensayos'
+
+        - title: 'Galería Dinorah Bolandi'
+          image: 'https://plaroig.com/wp-content/uploads/2024/05/05-Escuela-de-Danza.jpg'
+          category: 'Galería'
+          location: 'Escazú'
+          url: '/espacios/galeria-dinorah'
+
+        - title: 'Sala Experimental'
+          image: 'https://plaroig.com/wp-content/uploads/2024/05/05-Escuela-de-Danza.jpg'
+          category: 'Teatro'
+          location: 'Escazú'
+          url: '/espacios/sala-experimental'
+
+# Many - 8 cards
+many:
+  espacios_institutions:
+    - institution_name: 'Teatro popular Melico Salazar'
+      spaces:
+        - title: 'Teatro Popular Melico Salazar'
+          image: 'https://plaroig.com/wp-content/uploads/2024/05/05-Escuela-de-Danza.jpg'
+          category: 'Teatro'
+          location: 'Escazú'
+          url: '/espacios/teatro-melico-salazar'
+
+        - title: 'Salón de ensayos del TPMS'
+          image: 'https://plaroig.com/wp-content/uploads/2024/05/05-Escuela-de-Danza.jpg'
+          category: 'Salón de ensayo'
+          location: 'Escazú'
+          url: '/espacios/salon-ensayos'
+
+        - title: 'Galería Dinorah Bolandi'
+          image: 'https://plaroig.com/wp-content/uploads/2024/05/05-Escuela-de-Danza.jpg'
+          category: 'Galería'
+          location: 'Escazú'
+          url: '/espacios/galeria-dinorah'
+
+        - title: 'Sala Experimental'
+          image: 'https://plaroig.com/wp-content/uploads/2024/05/05-Escuela-de-Danza.jpg'
+          category: 'Teatro'
+          location: 'Escazú'
+          url: '/espacios/sala-experimental'
+
+        - title: 'Teatro Nacional de Costa Rica'
+          image: 'https://plaroig.com/wp-content/uploads/2024/05/05-Escuela-de-Danza.jpg'
+          category: 'Teatro'
+          location: 'San José'
+          url: '/espacios/teatro-nacional'
+
+        - title: 'Sala de Ensayos Principal'
+          image: 'https://plaroig.com/wp-content/uploads/2024/05/05-Escuela-de-Danza.jpg'
+          category: 'Salón de ensayo'
+          location: 'San José'
+          url: '/espacios/sala-ensayos'
+
+        - title: 'Auditorio Municipal'
+          image: 'https://plaroig.com/wp-content/uploads/2024/05/05-Escuela-de-Danza.jpg'
+          category: 'Teatro'
+          location: 'San José'
+          url: '/espacios/auditorio-municipal'
+
+        - title: 'Centro Cultural del Este'
+          image: 'https://plaroig.com/wp-content/uploads/2024/05/05-Escuela-de-Danza.jpg'
+          category: 'Galería'
+          location: 'Cartago'
+          url: '/espacios/centro-cultural-este'

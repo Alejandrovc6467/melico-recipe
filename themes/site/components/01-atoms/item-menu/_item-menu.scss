@@ -1,0 +1,31 @@
+$color-default: var(--tpms-blanco);
+$color-hover: $oro-libertad;
+$color-selected: $amarillo-paz;
+$underline-color: $oro-libertad;
+$background: #16244c;
+// Estilo para ítem de menú
+@mixin item-menu {
+  color: $color-default;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.menu__item-menu {
+  @include item-menu;
+
+  .icon_default svg {
+    vertical-align: text-bottom;
+  }
+}
+
+// Menú hijo
+.menu-child a {
+  color: #1e3a8a;
+  font-weight: 400;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

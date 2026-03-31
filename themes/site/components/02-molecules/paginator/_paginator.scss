@@ -1,0 +1,122 @@
+.paginator {
+  .page-button {
+    text-align: center;
+    align-content: center;
+    background: var(--tpms-blanco);
+    text-decoration: none;
+    height: 40px;
+    border-radius: 0;
+
+    &--active {
+      background: var(--tpms-oro-libertad);
+      color: var(--tpms-azul-presi);
+      font-weight: 700;
+      border-radius: 0;
+    }
+
+    &:hover {
+      background: var(--tpms-azul-presi);
+      color: var(--tpms-blanco);
+    }
+  }
+
+  &__controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: var(--spacing-xl);
+    gap: 12px;
+
+    .arrow-button + .page-button,
+    .page-button + .arrow-button {
+      margin-left: 0;
+    }
+
+    @include medium {
+      margin-bottom: var(--spacing-xxxl);
+    }
+  }
+
+  &__dots {
+    margin: 0 8px;
+  }
+
+  /* Tamaños */
+  --paginator-btn-size: 40px;
+  --paginator-icon-size: 10px;
+
+  .arrow-button {
+    width: var(--paginator-btn-size);
+    height: var(--paginator-btn-size);
+    padding: 0;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    text-decoration: none;
+    border: 0;
+    background: transparent;
+
+    color: var(--tpms-azul-presi);
+
+    &__label {
+      display: none;
+      white-space: nowrap;
+      line-height: 1;
+    }
+
+    &::before {
+      content: '';
+      width: var(--paginator-icon-size);
+      height: var(--paginator-icon-size);
+      display: block;
+
+      background-color: currentColor;
+      -webkit-mask: var(--paginator-icon) no-repeat center / contain;
+      mask: var(--paginator-icon) no-repeat center / contain;
+    }
+
+    &:hover {
+      background: var(--tpms-azul-cielo);
+      color: var(--tpms-blanco);
+    }
+
+    &:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+
+    @include medium {
+      width: auto;
+      padding: 0 8px;
+      justify-content: center;
+
+      &__label {
+        display: inline;
+      }
+    }
+  }
+
+  --paginator-arrow-right: url('data:image/svg+xml,%3Csvg width=%2211%22 height=%2211%22 viewBox=%220 0 11 11%22 fill=%22none%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath d=%22M0.799805 5.46745H10.1331M10.1331 5.46745L5.46647 0.800781M10.1331 5.46745L5.46647 10.1341%22 stroke=%22%23000%22 stroke-width=%221.6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E');
+
+  .arrow-button {
+    --paginator-icon: var(--paginator-arrow-right);
+    &.is-disabled {
+      color: var(--grey-2);
+      pointer-events: none;
+    }
+  }
+
+  .arrow-button--prev::before {
+    transform: rotate(180deg);
+  }
+
+  @include medium {
+    .arrow-button--next {
+      flex-direction: row-reverse;
+    }
+  }
+}

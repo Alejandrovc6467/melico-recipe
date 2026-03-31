@@ -1,0 +1,9 @@
+button_content: 'A'
+button_tag: 'button'
+button_type: 'button'
+button_modifiers:
+  - 'is-active'
+  - 'button'
+button_blockname: 'font-resizer'
+button_data_attributes:
+  data-size: '24px'

@@ -1,0 +1,90 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a viewfield item.
+ *
+  * Instead of overriding the theming for all fields, you can also just override
+ * theming for a subset of fields using
+ * @link themeable Theme hook suggestions. @endlink For example,
+ * here are some theme hook suggestions that can be used for a field_foo field
+ * on an article node type:
+ * - viewfield-item--my-view--my-view-display.html.twig
+ * - viewfield-item--my-view-display.html.twig
+ * - viewfield-item--my-view.html.twig
+ * - viewfield-item--field-foo--my-view--my-view-display.html.twig
+ * - viewfield-item--field-foo--my-view-display.html.twig
+ * - viewfield-item--field-foo--my-view.html.twig
+ * - viewfield-item--field-foo--2.html.twig
+ * - viewfield-item--field-foo.html.twig
+ * - viewfield-item.html.twig
+ *
+ * Available variables:
+ * - title: The title of this item if visible.
+ * - content: The content of this item.
+ * - attributes: array of HTML attributes populated by modules, intended to
+ *   be added to the main container tag of this template.
+ * - title_attributes: Same as attributes, except applied to the main title
+ *   tag that appears in the template.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+ * - delta: Ordinal specifying the item number in the field.
+ * - entity: The entity object.
+ * - view_mode: View mode; e.g., 'full', 'teaser', etc.
+ *
+ * @see template_preprocess_viewfield_item()
+ *
+ * @ingroup themeable
+ */
+#}
+{%
+set classes = [
+  'lista-efemerides',
+]
+%}
+{%
+set title_classes = [
+  'field__item__label',
+  label_display == 'visually_hidden' ? 'visually-hidden',
+]
+%}
+
+<div{{attributes.addClass(classes)}}>
+	<div class="lista-efemerides__wrapper">
+		<div class="lista-efemerides__filtros">
+			{{ drupal_block('views_exposed_filter_block:efemerides-block_1') }}
+		</div>
+		<div class="lista-efemerides__content">
+			{% if items|length > 0 %}
+				{% for item in items %}
+					<a class="link" href="{{item.url}}">
+						<div class="lista-efemerides__item">
+							<div class="lista-efemerides__date">
+								<p class="p-date">{{item.month}}</p>
+								<time>{{item.date}}</time>
+							</div>
+							<div class="lista-efemerides__content">
+								<h2>{{item.title}}</h2>
+								{% set parts = item.description|split('</p>') %}
+								<div class="description--clamp">
+									{% if parts|length %}
+										{{ (parts[0] ~ '</p>')|raw }}
+									{% endif %}
+								</div>
+							</div>
+						</div>
+					</a>
+				{% endfor %}
+			{% else %}
+				{% include "@molecules/no-resultados/no-resultados.twig" with {
+          button_url: path('<current>')
+        } %}
+			{% endif %}
+			<div class='lista-efemerides__pager'>
+				{{ pager|raw }}
+			</div>
+		</div>
+
+	</div>
+</div>

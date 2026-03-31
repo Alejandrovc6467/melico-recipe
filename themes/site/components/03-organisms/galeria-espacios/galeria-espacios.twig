@@ -1,0 +1,51 @@
+{#
+/**
+ * @file
+ * Galería Espacios Component (Organism)
+ * Displays spaces gallery in a responsive grid layout
+ *
+ * Available variables:
+ * - title: Main title (string, e.g., "5 Espacios:")
+ * - espacios_items: Array of space objects
+ *   Each item contains:
+ *   - image: Image URL
+ *   - alt: Image alt text
+ *   - label: Space name (e.g., "Escenario", "Vestíbulo Principal")
+ * - galeria_espacios_modifiers: Array of BEM modifiers
+ * - galeria_espacios_blockname: BEM blockname
+ * - galeria_espacios_base_class: Base class (default: 'galeria-espacios')
+ *
+ * Dependencies:
+ * - Bootstrap grid system
+ * - Basic card component for image structure
+ */
+#}
+
+{% set galeria_espacios_base_class = galeria_espacios_base_class|default('galeria-espacios') %}
+
+<section {{ bem(galeria_espacios_base_class, galeria_espacios_modifiers, galeria_espacios_blockname, ['section-margin']) }}>
+	<div
+		class="container">
+
+		{# Main Title #}
+		{% if title %}
+			{% include "@atoms/text/headings/_heading.twig" with {
+        heading_level: 3,
+        heading: title,
+        heading_base_class: 'galeria-espacios__title',
+      } only %}
+		{% endif %}
+
+		{# Spaces Grid #}
+		<div class="row {{ galeria_espacios_base_class }}__grid">
+			{% for item in espacios_items %}
+				{% include "@molecules/galeria-espacios-item/galeria-espacios-item.twig" with {
+          item: item,
+          base_class: galeria_espacios_base_class
+        } %}
+			{% endfor %}
+		</div>
+
+
+	</div>
+</section>

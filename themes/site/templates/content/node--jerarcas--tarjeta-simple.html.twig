@@ -1,0 +1,45 @@
+{#
+/**
+ * @file
+ * Theme override to display a Jerarcas node in view mode "tarjeta_simple".
+ *
+ * Available variables:
+ * - node: The node entity.
+ * - label: (optional) The title of the node.
+ * - content: All node items.
+ * - attributes: HTML attributes for the containing element.
+ * - view_mode: View mode; for example, "teaser" or "full".
+ *
+ * @see template_preprocess_node()
+ */
+#}
+
+{%
+  set classes = [
+    'node',
+    'node--type--' ~ node.bundle|clean_class,
+    node.isPromoted() ? 'node--promoted',
+    node.isSticky() ? 'node--sticky',
+    not node.isPublished() ? 'node--unpublished',
+    view_mode ? 'node--view-mode--' ~ view_mode|clean_class,
+    'team-card-node',
+  ]
+%}
+
+
+{% set image_uri = content.field_imagen.0['#uri'] ?? null %}
+{% set image_style = content.field_imagen.0['#image_style'] ?? null %}
+{% if image_style %}
+  {% set image_url = file_url(image_uri | image_style(image_style)) %}
+{% endif %}
+{% set image_alt = content.field_imagen.0['#item'].alt|default('') %}
+
+<article{{ attributes.addClass(classes) }}>
+  {% include "@molecules/team-card/team-card.twig" with {
+    card_image_src: image_url,
+    card_image_alt: image_alt,
+    card_name: label.0,
+    card_role: content.field_organizaciones is defined ? content.field_organizaciones|render|striptags|trim : '',
+    card_organization: content.body is defined ? content.body|render|striptags|trim : '',
+  } only %}
+</article>

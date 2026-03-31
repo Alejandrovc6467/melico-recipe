@@ -1,0 +1,165 @@
+global:
+  css:
+    theme:
+      dist/css/style.css: {}
+  js:
+    js/mi-menu.js: {}
+    js/links.js: {}
+
+main-menu:
+  js:
+    dist/js/02-molecules/menus/main-menu/main-menu.js: {}
+  dependencies:
+    - core/drupal
+
+# IE 11 support for SVG use - disable if not needed.
+# See also components/01-atoms/images/icons/_icon.twig to remove attach_library.
+sprite:
+  js:
+    components/01-atoms/images/icons/svgxuse.min.js:
+      { attributes: { defer: true } }
+
+tabs:
+  js:
+    dist/js/02-molecules/tabs/tabs.js: {}
+  dependencies:
+    - core/drupal
+
+font-resizer:
+  version: 1.x
+  js:
+    assets/scripts/font-resizer.js: {}
+  css:
+    theme:
+      css/components/font-resizer.css: {}
+  dependencies:
+    - core/jquery
+
+menu:
+  version: 1.x
+  js:
+    assets/scripts/menu.js: {}
+  dependencies:
+    - core/jquery
+    - core/once
+
+splide:
+  remote: https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4
+  version: 4.1.4
+  license:
+    name: MIT
+    url: 'https://opensource.org/licenses/MIT'
+    gpl-compatible: true
+  css:
+    theme:
+      https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css: { type: external }
+  js:
+    https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js: { type: external }
+    dist/js/03-organisms/tpms-sliders/splide.js: { }
+    dist/js/03-organisms/ccp-slider/ccp-slider.js: { }
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/once
+
+datatables:
+  version: '1.13.4'
+  css:
+    theme:
+      https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css: {}
+      https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css: { type: external }
+  js:
+    https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js: {}
+    https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js: { type: external, scope: footer }
+    assets/scripts/datatables.js: { }
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/once
+
+filtros_noticias:
+  js:
+    assets/scripts/filtros.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/once
+    - core/drupal.once
+indice_eventos:
+  js:
+    assets/scripts/indice-eventos.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+tree_menu:
+  version: 1.x
+  js:
+    dist/js/05-pages/tree-menu.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/once
+
+mi-menu:
+  js:
+    js/mi-menu.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+
+search_expand:
+  version: 1.x
+  js:
+    assets/scripts/searchExpandClick.js: {}
+  dependencies:
+    - core/jquery
+    - core/once
+sticky_header_offset:
+  js:
+    assets/scripts/sticky-header-offset.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+
+accordion:
+  js:
+    dist/js/03-organisms/accordion/accordion.js: {}
+  dependencies:
+    - core/drupal
+
+gallery-modal:
+  js:
+    dist/js/03-organisms/gallery/gallery.js: {}
+  dependencies:
+    - core/drupal
+
+local-tasks-tabs:
+  css:
+    base:
+      ../../../core/themes/stable9/css/system/components/reset-appearance.module.css: {}
+      ../../../core/themes/claro/css/base/variables.css: {}
+      ../../contrib/gin/dist/css/theme/variables.css: {}
+    component:
+      ../../../core/themes/claro/css/components/tabs.css: {}
+      ../../contrib/gin/dist/css/components/tabs.css: {}
+  js:
+    ../../../core/themes/claro/js/nav-tabs.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/once
+    - core/drupal.debounce
+
+node-title-toggle:
+  css:
+    theme:
+      dist/css/node-title-toggle.css: {}
+
+webforms-js:
+  js:
+    assets/scripts/webforms.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+    - core/jquery
+

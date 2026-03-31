@@ -1,0 +1,32 @@
+.artists-section {
+  background-color: $azul-presi;
+  padding-block: var(--spacing-xxxl);
+  overflow: hidden;
+
+  &--with-margin {
+    @include section-margin;
+  }
+
+  &__header {
+    margin-bottom: var(--spacing-md);
+    text-align: left;
+
+    h2 {
+      color: $white;
+    }
+  }
+
+  p.artists-section__description {
+    color: $white;
+    margin-bottom: var(--spacing-xxl);
+    max-width: 711px;
+  }
+
+  &__grid {
+    row-gap: 31px;
+
+    @include medium {
+      row-gap: var(--spacing-lg);
+    }
+  }
+}

@@ -1,0 +1,106 @@
+{% set gallery_base_class = gallery_base_class|default('gallery') %}
+{% import _self as gallery %}
+
+{% macro gallery_image(image) %}
+  {% if image is not empty %}
+    {% set original_src = image.image_original_src|default(image.image_src) %}
+    <a href="{{ original_src }}" class="gallery__item js-gallery-modal-trigger">
+      <img src="{{ image.image_src }}" alt="{{ image.image_alt }}" loading="lazy">
+    </a>
+  {% endif %}
+{% endmacro %}
+
+{# Determinar si se aplica section-margin según la variable margen_inferior #}
+{% set section_classes = margen_inferior ? ['section-margin'] : [] %}
+
+<section {{ bem(gallery_base_class, gallery_modifiers, gallery_blockname, section_classes ) }}>
+  <div class="container">
+    
+    {% if gallery_title %}
+      <div class="gallery__title">
+        {% include "@atoms/text/headings/_heading.twig" with {
+          heading_level: 2,
+          heading: gallery_title,
+          heading_blockname: 'gallery',
+          heading_modifiers: ['title'],
+          heading_icon: true,
+          heading_underline: false 
+        } only %}
+      </div>
+    {% endif %}
+
+    {% if gallery_images %}
+      {{ attach_library('tpms/gallery-modal') }}
+      <div class="row gallery__grid">
+        
+        <div class="col-12 col-lg-6 gallery__left-wrapper">
+          <div class="gallery__left">
+
+            <div class="row gallery__row-small">
+              <div class="col-6">
+                {% if gallery_images[0] is defined %}
+                  {{ gallery.gallery_image(gallery_images[0]) }}
+                {% endif %}
+              </div>
+              <div class="col-6">
+                {% if gallery_images[1] is defined %}
+                  {{ gallery.gallery_image(gallery_images[1]) }}
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="gallery__row-large">
+              {% if gallery_images[2] is defined %}
+                {{ gallery.gallery_image(gallery_images[2]) }}
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      
+        <div class="col-12 col-lg-6 gallery__right-wrapper">
+          <div class="gallery__right">
+            <div class="gallery__row-large">
+              {% if gallery_images[3] is defined %}
+                {{ gallery.gallery_image(gallery_images[3]) }}
+              {% endif %}
+            </div>
+            
+            <div class="row gallery__row-small">
+              <div class="col-6">
+                {% if gallery_images[4] is defined %}
+                  {{ gallery.gallery_image(gallery_images[4]) }}
+                {% endif %}
+              </div>
+              <div class="col-6">
+                {% if gallery_images[5] is defined %}
+                  {{ gallery.gallery_image(gallery_images[5]) }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="gallery-modal" hidden data-gallery-modal>
+        <div class="gallery-modal__backdrop" data-gallery-modal-close></div>
+        <div class="gallery-modal__dialog" role="dialog" aria-modal="true" aria-label="Imagen ampliada">
+          <button type="button" class="gallery-modal__close" data-gallery-modal-close aria-label="Cerrar"></button>
+          <a class="gallery-modal__download" href="#" download data-gallery-modal-download aria-label="Descargar imagen"></a>
+          <img class="gallery-modal__image" src="" alt="" data-gallery-modal-image>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if gallery_button_text and gallery_button_url %}
+      <div class="gallery__actions">
+        {% include "@atoms/buttons/button.twig" with {
+          button_content: gallery_button_text,
+          button_url: gallery_button_url,
+          button_modifiers: ['secondary', 'medium']
+        } %}
+      </div>
+    {% endif %}
+
+  </div>
+</section>

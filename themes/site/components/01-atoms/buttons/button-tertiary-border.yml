@@ -1,0 +1,9 @@
+button_content: 'Contenido Personalizado'
+button_url: '#'
+button_icon:
+  icon_name: 'tag-seccion'
+  icon_height: 24
+  icon_width: 24
+button_modifiers:
+  - 'tertiary-border'
+directory: ' '

@@ -1,0 +1,10 @@
+button_content: 'Descargar PDF'
+button_url: '/files/formulario.pdf'
+button_modifiers:
+  - 'primary'
+is_download: true
+button_icon:
+  icon_name: 'descargar_blanco'
+  icon_height: 24
+  icon_width: 24
+directory: ' '

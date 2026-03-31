@@ -1,0 +1,59 @@
+.contact-info {
+  &__content-heading {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    padding-right: 0px;
+    margin-bottom: 24px;
+
+    @include large {
+      padding-right: 59px;
+      justify-content: flex-end;
+      margin-bottom: 0px;
+    }
+  }
+
+  &__heading {
+    font-size: 32px;
+    color: var(--tpms-azul-presi);
+  }
+
+  /***  content info ***********************/
+  &__info {
+    color: var(--tpms-azul-presi);
+
+    p {
+      margin-bottom: 0;
+      line-height: 24px;
+    }
+
+    p + p {
+      margin-top: var(--spacing-md);
+    }
+
+    strong {
+      font-weight: 700;
+    }
+  }
+
+  // ============================================================================
+  // VERSIÓN LEFT-ALIGNED (Modificador --left-aligned)
+  // Cuando contact_info_centered = false
+  // ============================================================================
+  &--left-aligned {
+    .contact-info__content-heading {
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      padding-right: 0px;
+      margin-bottom: 24px;
+
+      @include large {
+        padding-right: 0px;
+        justify-content: start;
+        margin-bottom: 0px;
+        margin-right: 32px;
+      }
+    }
+  }
+}

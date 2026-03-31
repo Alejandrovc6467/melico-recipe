@@ -1,0 +1,32 @@
+{#
+/**
+ * @file
+ * Template para el paragraph type: text_links_image
+ * 
+ * Variables procesadas por preprocess:
+ * - title: Título principal del componente
+ * - imagen_url: URL de la imagen
+ * - imagen_alt: Texto alternativo de la imagen
+ * - items: Array de items con titulo, numero_ley, button_label, button_url, archivo_url
+ */
+#}
+
+{%
+  set classes = [
+    'drupal-paragraph',
+    'paragraph--type--' ~ paragraph.bundle|clean_class,
+    view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+    not paragraph.isPublished() ? 'paragraph--unpublished'
+  ]
+%}
+
+<section{{ attributes.addClass(classes).setAttribute('id', 'component-' ~ paragraph.id()) }}>
+  {% block content %}
+    {% include "@organisms/text-links-image/text-links-image.twig" with {
+      title: title,
+      imagen_url: imagen_url,
+      imagen_alt: imagen_alt,
+      items: items,
+    } %}
+  {% endblock %}
+</section>

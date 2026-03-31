@@ -1,0 +1,25 @@
+{#
+/**
+ * @file
+ * Render del Paragraph "Sección artistas" usando el organismo Artists Section.
+ */
+#}
+{%
+  set classes = [
+    'drupal-paragraph',
+    'paragraph--type--' ~ paragraph.bundle|clean_class,
+    view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+    not paragraph.isPublished() ? 'paragraph--unpublished'
+  ]
+%}
+
+{% block paragraph %}
+  <section{{ attributes.addClass(classes).setAttribute('id', 'component-' ~ paragraph.id()) }}>
+    {% include "@organisms/artists-section/artists-section.twig" with {
+      section_title: section_title,
+      section_description: section_description,
+      artists: artists,
+      section_has_margin: section_has_margin
+    } only %}
+  </section>
+{% endblock paragraph %}

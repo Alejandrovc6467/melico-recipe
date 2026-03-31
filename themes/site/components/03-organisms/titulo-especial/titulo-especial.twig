@@ -1,0 +1,37 @@
+{#
+/**
+ * @file
+ * Componente Titulo Especial
+ *
+ * Variables disponibles:
+ * - titulo: contenido del título
+ * - descripcion: contenido del párrafo descriptivo
+ * - titulo_especial_modifiers: modificadores BEM
+ * - titulo_especial_blockname: blockname BEM
+ */
+#}
+
+{% set titulo_especial_base_class = 'titulo-especial' %}
+
+<div {{ bem(titulo_especial_base_class, titulo_especial_modifiers, titulo_especial_blockname, ['section-margin']) }}>
+  <div class="container titulo-especial__container">
+    <div class="titulo-especial__heading">
+      {% if titulo %}
+        {% include "@atoms/text/headings/_heading.twig" with {
+            heading_level: 1,
+            heading: titulo,
+            heading_icon: true,
+            heading_underline: true,
+        } only %}
+      {% endif %}
+    </div>
+
+    {% if descripcion %}
+      <div class="titulo-especial__description">
+        {% include "@atoms/text/text/01-paragraph.twig" with {
+          paragraph_content: descripcion,
+        } %}
+      </div>
+    {% endif %}
+  </div>
+</div>

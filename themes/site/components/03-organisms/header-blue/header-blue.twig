@@ -1,0 +1,77 @@
+{#
+/**
+ * @file
+ * Header Blue - Organism
+ * 
+ * Hero header con fondo azul degradado y superposición de imagen
+ *
+ * Available variables:
+ * - header_blue__title: string - Título principal del header
+ * - header_blue__description: string - Descripción o texto secundario
+ * - header_blue__image: string - URL de la imagen de fondo
+ * - header_blue__image_alt: string - Texto alternativo de la imagen
+ * - header_blue__buttons: array - Lista de botones con sus propiedades
+ *   - button_content: string
+ *   - button_url: string
+ *   - button_modifiers: array
+ *   - button_icon: object (opcional)
+ * - header_blue__modifiers: array - Modificadores BEM
+ */
+#}
+
+{% set header_blue_base_class = 'header-blue' %}
+
+<section {{ bem(header_blue_base_class, header_blue__modifiers) }}>
+  <div class="{{ header_blue_base_class }}__background">
+    {% if header_blue__image %}
+      {# Si es un campo renderizado (objeto), lo imprime directamente #}
+      {% if header_blue__image is iterable and header_blue__image['#theme'] is defined %}
+        <div class="{{ header_blue_base_class }}__image">
+          {{ header_blue__image }}
+        </div>
+      {# Si es una URL (string), usa img tag tradicional #}
+      {% else %}
+        <img 
+          src="{{ header_blue__image }}" 
+          alt="{{ header_blue__image_alt|default('') }}"
+          class="{{ header_blue_base_class }}__image"
+        >
+      {% endif %}
+    {% endif %}
+    <div class="{{ header_blue_base_class }}__overlay"></div>
+  </div>
+
+  <div class="{{ header_blue_base_class }}__container">
+    <div class="{{ header_blue_base_class }}__content">
+      {% if header_blue__title %}
+        {% include "@atoms/text/headings/_heading.twig" with {
+          heading_level: 1,
+          heading: header_blue__title,
+          heading_base_class: header_blue_base_class ~ '__title',
+          heading_icon: true,
+          heading_underline: true,
+        } only %}
+      {% endif %}
+
+      {% if header_blue__description %}
+        {% include "@atoms/text/text/01-paragraph.twig" with {
+          paragraph_content: header_blue__description,
+          paragraph_base_class: header_blue_base_class ~ '__description',
+        } %}
+      {% endif %}
+
+      {% if header_blue__buttons %}
+        <div class="{{ header_blue_base_class }}__actions">
+          {% for button in header_blue__buttons %}
+            {% include "@atoms/buttons/button.twig" with {
+              button_content: button.button_content,
+              button_url: button.button_url,
+              button_modifiers: loop.index == 1 ? ['secondary', 'large'] : ['tertiary', 'large'],
+              button_icon: button.button_icon|default(null),
+            } %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>

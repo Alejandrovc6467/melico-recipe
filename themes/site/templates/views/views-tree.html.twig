@@ -1,0 +1,65 @@
+{#
+/**
+ * @file
+ * Overridden theme implementation for a nested tree list with accordion toggles.
+ * Copia este archivo a:
+ *   themes/custom/mcj/templates/views/views-tree.html.twig
+ *
+ * Variables:
+ * - items: List of tree items, cada uno con 'node' (contenido) y 'leaves' (hijos).
+ * - list_type: "ul" o "ol".
+ * - attributes: atributos HTML para el wrapper.
+ *
+ * @see modules/contrib/views_tree/templates/views-tree.html.twig
+ */#}
+{% import _self as tree_helper %}
+
+{# Renderizamos solo si hay items #}
+{% if items.leaves %}
+	<ul class="tpms-tree-menu">
+		{% for item in items.leaves %}
+			{% set has_children = item.leaves is not empty %}
+			<li class="{% if has_children %}has-children{% endif %} parent" {{ item.attributes }}>
+				<div class="tree-item-wrapper">
+					{{ item.node }}
+					{% if has_children %}
+						<button class="tpms-toggle" aria-expanded="false">
+							<svg class="icon" aria-hidden="true" width="16" height="16" viewbox="0 0 24 24">
+								<path fill="currentColor" d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/>
+							</svg>
+							<span class="visually-hidden">{{ 'Expandir'|t }}</span>
+						</button>
+					{% endif %}
+				</div>
+				{% if has_children %}
+					{{ tree_helper.render_branch(item.leaves) }}
+				{% endif %}
+			</li>
+		{% endfor %}
+	</ul>
+{% endif %}
+
+{% macro render_branch(leaves) %}
+	{% import _self as tree_helper %}
+	<ul class="tpms-tree-submenu">
+		{% for leaf in leaves %}
+			{% set has_children = leaf.leaves is not empty %}
+			<li class="{% if has_children %}has-children{% endif %}" {{ leaf.attributes }}>
+				<div class="tree-item-wrapper">
+					{{ leaf.node }}
+					{% if has_children %}
+						<button class="tpms-toggle" aria-expanded="false">
+							<svg class="icon" aria-hidden="true" width="16" height="16" viewbox="0 0 24 24">
+								<path fill="currentColor" d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/>
+							</svg>
+							<span class="visually-hidden">{{ 'Expandir'|t }}</span>
+						</button>
+					{% endif %}
+				</div>
+				{% if has_children %}
+					{{ tree_helper.render_branch(leaf.leaves) }}
+				{% endif %}
+			</li>
+		{% endfor %}
+	</ul>
+{% endmacro %}

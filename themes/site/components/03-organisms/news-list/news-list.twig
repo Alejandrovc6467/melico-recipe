@@ -1,0 +1,72 @@
+{#
+/**
+ * @file
+ * News List Organism
+ * 
+ * Available variables:
+ * - title: Section heading (default: 'Noticias y Comunicados')
+ * - featured: Object with featured news article
+ * - items: Array of news items (max 3)
+ * - button_content: CTA button text (default: 'VER MÁS')
+ * - button_url: CTA button URL
+ */
+#}
+<section class="news-list section-margin">
+  <div class="container">
+    {# Section Title #}
+    <div class="news-list__title">
+      {% include "@atoms/text/headings/_heading.twig" with {
+        heading_level: 2,
+        heading: title|default('Noticias y Comunicados'),
+        heading_blockname: 'news-list',
+        heading_modifiers: ['title'],
+        heading_icon: true,
+        heading_underline: false
+      } only %}
+    </div>
+
+    <div class="row news-list__grid">
+      <div class="col-12 col-lg-5 news-list__featured-wrapper">
+        <div class="news-list__item news-list__item--featured">
+          {% include "@molecules/basic-card/basic-card.twig" with {
+            card__image__src: featured.image,
+            card__image__alt: featured.image_alt,
+            card__title: featured.title,
+            card__heading_level: 3,
+            card__date: featured.date,
+            card__category: featured.category,
+            card__url: featured.url,
+            card__target: '',
+            basic_card__modifiers: ['news']
+          } %}
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-7 news-list__column">
+        {% for item in items %}
+          <div class="news-list__item">
+            {% include "@molecules/basic-card/basic-card.twig" with {
+              basic_card__modifiers: ['news-horizontal'],
+              card__image__src: item.image,
+              card__image__alt: item.image_alt,
+              card__title: item.title,
+              card__heading_level: 4,
+              card__date: item.date,
+              card__category: item.category,
+              card__url: item.url,
+              card__target: ''
+            } %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="news-list__actions">
+      {% include "@atoms/buttons/button.twig" with {
+        button_content: button_content|default('VER MÁS'),
+        button_url: button_url,
+        button_modifiers: ['secondary', 'medium']
+      } %}
+    </div>
+  </div>
+</section>

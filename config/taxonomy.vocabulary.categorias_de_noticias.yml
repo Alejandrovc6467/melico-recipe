@@ -1,0 +1,8 @@
+langcode: es
+status: true
+dependencies: {  }
+name: 'Categorías de noticias'
+vid: categorias_de_noticias
+description: 'Taxonomía para tipo de contenido noticias.'
+weight: 0
+new_revision: false

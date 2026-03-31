@@ -1,0 +1,16 @@
+{#
+/**
+ * @file
+ * Theme override for node title field.
+ */
+#}
+{% if show_page_title|default(true) %}
+  {% set title_item = items|first %}
+  {% if title_item %}
+    <div{{ attributes }}>
+      {% include "@atoms/page-title/page-title.twig" with {
+        title: title_item.content,
+      } only %}
+    </div>
+  {% endif %}
+{% endif %}

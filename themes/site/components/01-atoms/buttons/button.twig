@@ -1,0 +1,91 @@
+{#
+/**
+ * @file
+ * Available variables:
+ * - button_content - the content of the button (typically text)
+ * - button_url
+ * - button_target
+ * - button_modifiers - BEM modifiers (e.g., ['secondary'])
+ * - button_blockname - BEM blockname (e.g., 'button')
+ * - button_font_weight (optional, e.g. 400, 600, 700)
+ * - button_font_size (optional, e.g. '16px')
+ * - button_data_attributes (optional: e.g. {'data-size': '14px'})
+ * - button_icon (optional icon)
+ * - is_download (optional boolean, para marcar si el botón es de descarga)
+ * - button_id (optional string, para agregar un id al botón)
+ * - eventless (optional boolean, si es true, se renderiza como <div>)
+ */
+#}
+
+{% set button_base_class = button_base_class|default('button') %}
+
+{# Construimos el atributo style combinando peso y tamaño de fuente #}
+{% set button_style = '' %}
+{% if button_font_weight is defined %}
+  {% set button_style = button_style ~ 'font-weight: ' ~ button_font_weight ~ '; ' %}
+{% endif %}
+{% if button_font_size is defined %}
+  {% set button_style = button_style ~ 'font-size: ' ~ button_font_size ~ ';' %}
+{% endif %}
+{% set button_style_attr = button_style ? {'style': button_style} : {} %}
+
+{# Atributos finales del enlace: clase + estilos + atributos data-* + id opcional #}
+{% set additional_attributes = {
+  class: bem(button_base_class, button_modifiers, button_blockname),
+}|merge(button_style_attr)
+  |merge(button_data_attributes|default({}))
+  |merge(button_id is defined ? {'id': button_id} : {}) %}
+
+{% if eventless %}
+  <div
+    {{ add_attributes(additional_attributes) }}
+    {% for attribute, value in link_attributes %}
+      {{ attribute }}="{{ value }}"
+    {% endfor %}
+    {% if button_target %}
+      target="{{ button_target }}"
+    {% endif %}
+    {% if is_download %}
+      download
+    {% endif %}
+  >
+    <span class="button__label">{{ button_content }}</span>
+
+    {% if button_icon %}
+      {% include "@atoms/images/icons/_icon.twig" with {
+        icon__url: button_icon.icon_url,
+        icon__name: button_icon.icon_name,
+        icon__height: button_icon.icon_height,
+        icon__width: button_icon.icon_width,
+        directory: button_icon.directory
+      } %}
+    {% endif %}
+  </div>
+{% else %}
+  <a
+    {{ add_attributes(additional_attributes) }}
+    {% for attribute, value in link_attributes %}
+      {{ attribute }}="{{ value }}"
+    {% endfor %}
+    href="{{ button_url }}"
+    {% if button_target %}
+      target="{{ button_target }}"
+    {% endif %}
+    {% if is_download %}
+      download
+    {% endif %}
+  >
+    {%- block button_content -%}
+      <span class="button__label">{{ button_content }}</span>
+    {%- endblock -%}
+
+    {% if button_icon %}
+      {% include "@atoms/images/icons/_icon.twig" with {
+        icon__url: button_icon.icon_url,
+        icon__name: button_icon.icon_name,
+        icon__height: button_icon.icon_height,
+        icon__width: button_icon.icon_width,
+      } %}
+    {% endif %}
+  </a>
+{% endif %}

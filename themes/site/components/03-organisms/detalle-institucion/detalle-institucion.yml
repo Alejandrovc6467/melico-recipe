@@ -1,0 +1,13 @@
+detalle_institucion_title: 'USO DE ESCENARIO'
+detalle_institucion_image: 'https://palomasanbasilio.es/wp-content/uploads/2025/03/Teatro-Melico-Salazar-San-Jose-Costa-Rica.jpg'
+detalle_institucion_image_alt: 'Vista del interior del Teatro Popular Melico Salazar'
+
+detalle_institucion_description: |
+  <p>Tarifa varía según el tipo de evento y día de función. El costo de abrir el telón* para el 2025 es de ¢5.401.991,00. La Junta Directiva del Teatro Popular Melico Salazar será la entidad encargada de la aprobación de todos los eventos que se presentarán en la Sala Principal. Se solicita una garantía de ¢650.000 por adelantado.
+  <br> (El costo de abrir el telón es la sumatoria de todos los gastos en que incurre la institución para poder atender las funciones: pago de virtualizaciones para personal técnico, de seguridad, acomodadores, servicios básicos como electricidad, agua, limpieza, teléfono y depreciación de los equipos y del inmueble.)</p>
+
+cta_primary_label: 'RESERVAR'
+cta_primary_url: '/reservar'
+
+cta_secondary_label: 'TARIFAS 2024'
+cta_secondary_url: '/tarifas-2024'

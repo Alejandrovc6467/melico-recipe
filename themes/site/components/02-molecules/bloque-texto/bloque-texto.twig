@@ -1,0 +1,14 @@
+<div class="container">
+  <div class="wrapper {{ contenido_centrado ? 'centrado' : '' }}">
+  {% if title.0 %}
+    {% include "@atoms/text/headings/_heading.twig" with {
+      heading_level: level|default(1),
+      heading: title.0,
+      heading_base_class: 'title',
+      heading_icon: true,
+      heading_underline: true
+    } only %}
+  {% endif %}
+    <div class="body">{{contenido}}</div>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+{#
+/**
+ * Lista Espacios (Block 1)
+ * Renderiza un <section> por institución
+ * Cada row se renderiza como entidad usando
+ * el view mode "agrupado_por_institucion"
+ */
+#}
+
+{% if espacios_groups is not empty %}
+
+  {% for group in espacios_groups %}
+
+    <section class="espacios section-margin">
+      <div class="container">
+
+        {# Título de institución #}
+        {% if group.institution_name %}
+          <div class="espacios__institution-header">
+            {% include "@atoms/text/headings/_heading.twig" with {
+              heading: group.institution_name,
+              heading_level: 3,
+              heading_blockname: 'espacios',
+              heading_modifiers: ['institution-title']
+            } only %}
+          </div>
+        {% endif %}
+
+        {# Grid de espacios (rows ya vienen renderizados como node) #}
+        <div class="espacios__grid">
+          {% for row in group.rows %}
+            {{ row }}
+          {% endfor %}
+        </div>
+
+      </div>
+    </section>
+
+  {% endfor %}
+
+{% else %}
+  <div class="container">
+    <p class="paragraph">No hay espacios disponibles.</p>
+  </div>
+{% endif %}

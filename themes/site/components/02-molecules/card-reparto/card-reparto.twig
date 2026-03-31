@@ -1,0 +1,13 @@
+{% set card_base_class = card_base_class|default('card-reparto') %}
+
+<div {{ bem(card_base_class, card_modifiers, card_blockname) }}>
+  {% if card_title %}
+    {% include "@atoms/text/headings/_heading.twig" with {
+      heading_level: 4,
+      heading: card_title.0,
+      heading_base_class: 'card-reparto__title'
+    } only %}
+  {% endif %}
+
+  {{ card_item }}
+</div>

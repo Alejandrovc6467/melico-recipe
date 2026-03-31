@@ -1,0 +1,57 @@
+{#
+/**
+ * @file
+ * Template for Información con Iconos paragraph
+ * Unified template for: butacas, variante_dorada, variante_azul
+ * 
+ * Available variables:
+ * - paragraph: Full paragraph entity
+ * - title: String (for variante_dorada and variante_azul)
+ * - description: String (for variante_dorada)
+ * - butacas_items: Array prepared in preprocess
+ * - variante_dorada_items: Array prepared in preprocess
+ * - variante_azul_items: Array prepared in preprocess
+ */
+#}
+
+<div{{ attributes.addClass('paragraph', 'paragraph--type--' ~ paragraph.bundle|clean_class) }}>
+  
+  {# Determinar qué variante renderizar #}
+  {% set variante_type = paragraph.field_tipo_de_componente.value %}
+
+  {% if variante_type == 'butacas' and butacas_items is defined %}
+    
+    {# Renderizar componente Butacas #}
+    {% include "@organisms/butacas/butacas.twig" with {
+      title: title,
+      description: description,
+      butacas_items: butacas_items,
+    } only %}
+
+  {% elseif variante_type == 'variante_dorada' and variante_dorada_items is defined %}
+    
+    {# Renderizar componente Servicios Extra (Variante Dorada) #}
+    {% include "@organisms/servicios-extras/servicios-extras.twig" with {
+      title: title,
+      description: description,
+      servicios_extra_items: variante_dorada_items,
+    } only %}
+
+  {% elseif variante_type == 'variante_azul' and variante_azul_items is defined %}
+    
+    {# Renderizar componente Amenidades (Variante Azul) #}
+    {% include "@organisms/amenidades/amenidades.twig" with {
+      title: title,
+      description: description,
+      amenidades_items: variante_azul_items,
+    } only %}
+
+  {% else %}
+    
+    {# Fallback: renderizar content por defecto si algo falla #}
+    {# quitar esto despues, estoy haciendo pruebas #}
+    {{ content }}
+    
+  {% endif %}
+
+</div>

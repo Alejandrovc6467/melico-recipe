@@ -1,0 +1,47 @@
+{#
+/**
+ * @file
+ * Team Card Component
+ * 
+ * Available variables:
+ * - card_image_src - URL de la imagen del miembro
+ * - card_image_alt - Texto alternativo para la imagen
+ * - card_image_width - Ancho de la imagen (opcional)
+ * - card_name - Nombre del miembro del equipo
+ * - card_role - Rol o puesto del miembro
+ * - card_organization - Organización o compañía
+ * - card_modifiers - array de modificadores BEM
+ * - card_blockname - blockname para BEM
+ */
+#}
+
+{% set card_base_class = card_base_class|default('team-card') %}
+
+<div {{ bem(card_base_class, card_modifiers, card_blockname) }}>
+  <div class="{{ card_base_class }}__image-wrapper">
+    {% include "@atoms/images/image/_image.twig" with {
+      image_src: card_image_src,
+      image_alt: card_image_alt|default(card_name),
+      image_width: card_image_width|default(null),
+      image_base_class: card_base_class ~ '__image',
+    } %}
+  </div>
+  
+  <div class="{{ card_base_class }}__content">
+    {% include "@atoms/text/headings/_heading.twig" with {
+      heading_level: 3,
+      heading: card_name,
+      heading_base_class: card_base_class ~ '__name',
+    } only %}
+    
+    {% include "@atoms/text/text/01-paragraph.twig" with {
+      paragraph_content: card_role,
+      paragraph_base_class: card_base_class ~ '__role',
+    } %}
+    
+    {% include "@atoms/text/text/01-paragraph.twig" with {
+      paragraph_content: card_organization,
+      paragraph_base_class: card_base_class ~ '__organization',
+    } %}
+  </div>
+</div>

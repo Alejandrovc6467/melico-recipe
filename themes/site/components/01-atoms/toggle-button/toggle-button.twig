@@ -1,0 +1,37 @@
+{# toggle-button.twig #}
+
+{% set classes = ['toggle-button'] %}
+
+{% if style is defined and style %}
+  {% set classes = classes|merge(['toggle-button--' ~ style]) %}
+{% endif %}
+{% if size is defined and size %}
+  {% set classes = classes|merge(['toggle-button--' ~ size]) %}
+{% endif %}
+{% if is_selected %}
+  {% set classes = classes|merge(['is-selected']) %}
+{% endif %}
+{% if is_disabled %}
+  {% set classes = classes|merge(['is-disabled']) %}
+{% endif %}
+{% if button_extra_classes is defined and button_extra_classes %}
+  {% set extra_classes = button_extra_classes is iterable ? button_extra_classes : [button_extra_classes] %}
+  {% set classes = classes|merge(extra_classes) %}
+{% endif %}
+
+<button
+  type="button"
+  class="{{ classes|join(' ') }}"
+  {% if is_disabled %}disabled{% endif %}
+  {% for attr, value in button_data_attributes|default({}) %}
+    {{ attr }}="{{ value }}"
+  {% endfor %}
+>
+  {% include "@atoms/images/icons/_icon.twig" with {
+    icon__name: icon_name,
+    icon__width: icon_width|default('24'),
+    icon__height: icon_height|default('24'),
+    icon_url: icon_url|default('/icons/icons.svg'),
+    icon_decorative: true
+  } %}
+</button>

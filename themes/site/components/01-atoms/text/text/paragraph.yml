@@ -1,0 +1,33 @@
+- paragraph_content: 'Este es un párrafo regular con peso normal.'
+  paragraph_modifiers: []
+
+- paragraph_content: 'Este es un párrafo semi-bold.'
+  paragraph_modifiers: ['semi-bold']
+
+- paragraph_content: 'Este es un párrafo bold.'
+  paragraph_modifiers: ['bold']
+
+- paragraph_content: 'Este es un párrafo small.'
+  paragraph_modifiers: ['small']
+
+- paragraph_content: 'Este es un párrafo small semi-bold.'
+  paragraph_modifiers: ['small-semi-bold']
+
+- paragraph_content: 'Este es un párrafo small bold.'
+  paragraph_modifiers: ['small-bold']
+
+- paragraph_content: 'Este es un párrafo mini.'
+  paragraph_modifiers: ['mini']
+
+- paragraph_content: 'Este es un párrafo mini bold.'
+  paragraph_modifiers: ['mini-bold']
+
+- paragraph_content: 'Este es un párrafo tipo botón.'
+  paragraph_modifiers: ['button']
+
+- paragraph_content: 'Este es un párrafo tipo link.'
+  paragraph_modifiers: ['link']
+
+- paragraph_content: 'Este es un párrafo con color azul.'
+  paragraph_modifiers: []
+  paragraph_color: 'azul-presi'

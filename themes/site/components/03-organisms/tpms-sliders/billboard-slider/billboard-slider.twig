@@ -1,0 +1,79 @@
+{#
+/**
+ * Billboard Slider Component
+ * 
+ * Slider organism for displaying billboard events using event-card molecules
+ * Layout: Content section on left, slider on right
+ * 
+ * Variables:
+ * - slider__modifiers: Array of BEM modifiers
+ * - slider__block_name: BEM block name
+ * - heading_title: Main heading text (default: 'CARTELERA')
+ * - heading_description: Description text below heading
+ * - button_text: Text for the button (default: 'VER CARTELERA')
+ * - button_url: URL for the button
+ * - show_star_icon: Boolean to show/hide star icon (default: true)
+ * - slider_items: Array of items to display in the slider
+ *   Each item should have:
+ *   - image: Image source
+ *   - title: Event title
+ *   - category: Event category
+ *   - location: Event location
+ *   - url: Link URL
+ */
+#}
+
+{% set slider_base_class = slider_base_class|default('billboard-slider') %}
+{{ attach_library('tpms/splide') }}
+
+<div {{ bem(slider_base_class, slider__modifiers, slider__block_name, ['section-margin']) }}>
+
+  <div {{ bem('wrapper', [], slider_base_class, ['container']) }}>
+    
+    {# Content Section - Left Side #}
+    <div {{ bem('content', [], slider_base_class) }}>
+
+      <div {{ bem('subcontent', [], slider_base_class) }}>
+        {% include "@atoms/text/headings/_heading.twig" with {
+          heading_level: 2,
+          heading: heading_title|default('CARTELERA'),
+          heading_blockname: slider_base_class,
+          heading_modifiers: ['title'],
+          heading_icon: true,
+          heading_underline: true
+        } only %}
+        
+        {% include "@atoms/text/text/01-paragraph.twig" with {
+          paragraph_content: heading_description|default('Descubre la cartelera de eventos y actividades culturales del Teatro Melico Salazar. Consulta horarios, espectáculos y vive el arte en Costa Rica.'),
+          paragraph_blockname: slider_base_class,
+          paragraph_modifiers: ['description']
+        } %}
+      </div>
+
+       {# Button completamente independiente #}
+      <a href="{{ button_url|default('#') }}" {{ bem('button', [], slider_base_class) }}>
+        {{ button_text|default('VER CARTELERA') }}
+      </a>
+      
+    </div>
+
+    {# Slider Section - Right Side #}
+    <div {{ bem('slider-container', [], slider_base_class) }}>
+      <div {{ bem('slider-wrapper', [], slider_base_class) }}>
+        <div class="splide" aria-label="Billboard Slider">
+          <div class="splide__track">
+            <ul class="splide__list">
+              {% for item in slider_items %}
+                {% include "@organisms/tpms-sliders/billboard-slider/billboard-slider-item.twig" with {
+                  item__base_class: slider_base_class,
+                  item: item
+                } %}
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

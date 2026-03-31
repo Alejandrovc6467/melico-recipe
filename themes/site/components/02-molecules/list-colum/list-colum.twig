@@ -1,0 +1,64 @@
+{#
+/**
+ * @file
+ * 
+ *
+ * Variables esperadas:
+ * - title: Título principal del bloque.
+ * - content: Texto o descripción general (string, puede contener HTML).
+ * - image: Objeto con:
+ *     - src: URL absoluta de la imagen.
+ *     - alt: Texto alternativo de la imagen.
+ */
+#}
+
+<div class="list-colum">
+  <div class="list-colum__wrapper">
+    <div class="list-colum__content">
+      {# Texto o descripción principal #}
+      {% if subtitle %}
+        <div class="list-colum__text">
+          {% include "@atoms/text/headings/_heading.twig" with {
+						heading_level: 4,
+						heading: subtitle
+					} only %}
+        </div>
+      {% endif %}
+      
+      {# Título principal #}
+      {% if title %}
+        <div class="list-colum__title">
+          {% include "@atoms/text/headings/_heading.twig" with {
+						heading_level: 3,
+						heading: title
+					} only %}
+        </div>
+      {% endif %}
+
+      {% if link %}
+        {% include "@atoms/buttons/button.twig" with {
+          button_content: link['#title'],
+          button_url: link['#url'],
+          button_modifiers: ['primary', 'large']
+        } %}
+      {% endif %}
+    </div>
+    {# Imagen del componente, si existe #}
+    {% if items %}
+      <div class="list-colum__items">
+        {% for item in items %}
+          {% set counter = '%02d'|format(loop.index) %}
+          <div>
+            {% include "@atoms/text/headings/_heading.twig" with {
+              heading_level: 4,
+              heading: counter ~ '. '
+            } only %}
+            {% include "@atoms/text/text/01-paragraph.twig" with {
+              paragraph_content: item,
+            } %}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</div>

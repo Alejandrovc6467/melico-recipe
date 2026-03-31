@@ -1,0 +1,87 @@
+.book-tree {
+  list-style: none;
+  padding-left: 14px;
+  position: relative;
+  @include section-margin;
+}
+
+.book-tree::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background-color: var(--grey-2);
+}
+
+.book-tree__item {
+  position: relative;
+  padding: 10px;
+  border-bottom: 1px solid var(--gris-neblina);
+  font-family: var(--font-body);
+}
+
+.book-tree__item:last-child {
+  border-bottom: none;
+}
+
+.book-tree__link {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  color: var(--grey-1);
+  text-decoration: none;
+  display: inline-block;
+}
+
+.book-tree__link:hover {
+  color: var(--tpms-azul-cielo);
+}
+
+.book-tree__link.is-active {
+  color: var(--tpms-azul-cielo);
+  font-weight: 600;
+}
+
+.book-tree > .book-tree__item:has(.is-active)::before {
+  content: '';
+  position: absolute;
+  left: -15px;
+  top: -4px;
+  width: 4px;
+  height: 50px;
+  background-color: var(--tpms-azul-cielo);
+}
+
+.book-tree__subtree {
+  list-style: none;
+  padding-left: 0;
+}
+
+.book-tree__subtree .book-tree__item {
+  border-bottom: none;
+  padding: 10px var(--spacing-lg) 10px var(--spacing-lg);
+}
+
+.book-tree > .book-tree__item:has(> .book-tree__subtree) > .book-tree__link {
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.book-tree__subtree > .book-tree__item {
+  margin-bottom: 10px;
+}
+
+.book-tree__subtree > .book-tree__item:last-child {
+  margin-bottom: 0;
+}
+
+.book-tree__title {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  margin-bottom: var(--spacing-lg);
+  color: var(--tpms-azul-presi);
+  font-family: var(--font-body);
+}

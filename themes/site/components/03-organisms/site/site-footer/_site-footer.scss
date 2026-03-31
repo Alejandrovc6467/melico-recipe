@@ -1,0 +1,476 @@
+.footer {
+  /* Sección negra por defecto */
+  background-color: var(--tpms-negro);
+  color: var(--tpms-blanco);
+  text-align: left;
+  padding-block: 0 var(--spacing-xs);
+
+  @include medium {
+    padding-block: 0 var(--spacing-md);
+  }
+
+  /* Quita bullets residuales en cualquier lista del footer */
+  ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+  }
+
+  p {
+    @extend .paragraph--small;
+
+    color: var(--tpms-blanco);
+    margin-bottom: var(--spacing-md);
+  }
+
+  /* Sección amarilla de newsletter */
+  &__newsletter {
+    background: var(--tpms-amarillo-paz);
+    padding-top: var(--spacing-xl);
+    position: relative;
+    overflow: hidden;
+
+    @include medium {
+      padding-top: var(--spacing-xxxl);
+    }
+
+    /* sutil motivo decorativo como en el figma */
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0 0 -20px; /* permite posicionar el motivo libremente sin recortes */
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0; /* intensidad más cercana al arte de Figma */
+
+      /* Motivo ornamental a la derecha del bloque */
+      background-image: url('../assets/icons/background-icon.svg');
+      background-repeat: no-repeat;
+      background-position: right 0 center; /* alineado a la derecha, centrado vertical */
+
+      /* muestra el motivo sólo en escritorio para evitar ruido en móvil */
+      @include breakpoint($large) {
+        opacity: 1;
+      }
+    }
+
+    .newsletter__content {
+      position: relative;
+      z-index: 1; /* asegura que el contenido quede sobre la decoración */
+
+      @include breakpoint($large) {
+        display: grid;
+        gap: var(--spacing-xl);
+        grid-template-columns: 1.3fr 1fr;
+      }
+    }
+
+    .newsletter__copy {
+      h3 {
+        color: var(--tpms-azul-presi);
+        margin: 0 0 var(--spacing-md);
+      }
+
+      p {
+        color: var(--tpms-negro);
+      }
+
+      /* Ajusta estilos cuando los campos vienen como Field API (Drupal) */
+
+      /* Si el título viene como field (sin <h2>), dale look de h2 */
+      .field--name-field-titulo,
+      .field--name-field-titulo .field__item {
+        @include heading-h2;
+
+        color: var(--tpms-azul-presi);
+        margin: 0 0 var(--spacing-sm);
+        display: block;
+      }
+
+      /* Descripción desde field */
+      .field--name-field-description,
+      .field--name-field-description .field__item {
+        color: var(--tpms-negro);
+      }
+    }
+
+    .newsletter__form {
+      display: flex;
+      gap: var(--spacing-xl);
+      justify-content: flex-start;
+      flex-direction: column;
+
+      @include breakpoint($large) {
+        flex-direction: row;
+        gap: var(--spacing-lg);
+      }
+
+      /* Cuando el formulario proviene de un módulo (Simplenews/Webform),
+       * los inputs/botón están dentro de un <form>. Aseguramos el layout. */
+      form {
+        display: flex;
+        gap: var(--spacing-sm);
+        justify-content: flex-start;
+        flex-direction: column;
+
+        @include breakpoint($large) {
+          flex-direction: row;
+        }
+
+        /* Deja el email flexible y el botón a la derecha */
+        .form-item-mail {
+          flex: 1 1 auto;
+          min-width: 260px;
+        }
+
+        .form-actions {
+          flex: 0 0 auto;
+        }
+      }
+
+      /* Elimina espacios por defecto de los wrappers de Drupal */
+      .form-item,
+      .form-actions {
+        margin: 0;
+        padding: 0;
+      }
+
+      .form-item.js-form-type-email {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .newsletter__input {
+        flex: 1 1 auto;
+        background: transparent;
+        border: 1px solid var(--tpms-negro);
+        color: var(--tpms-negro);
+        padding: 0 16px;
+        border-radius: 4px;
+        outline: none;
+        height: 52px;
+        line-height: 52px;
+        min-width: 260px;
+
+        &::placeholder {
+          color: rgb(0 0 0 / 50%);
+        }
+      }
+
+      /* Estilos para cuando el formulario proviene de un módulo (Simplenews/Webform) */
+      input[type='email'],
+      input[type='text'],
+      .form-email,
+      .form-text {
+        flex: 1 1 auto;
+        background: var(--tpms-amarillo-paz);
+        border: 1px solid var(--tpms-negro);
+        color: var(--tpms-negro);
+        padding: 0 16px;
+        outline: none;
+        min-width: 260px;
+      }
+
+      button[type='submit'],
+      input[type='submit'],
+      .form-submit,
+      .webform-button--submit {
+        @extend .button--block;
+      }
+    }
+  }
+
+  &__inner {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    padding-block: 120px 0;
+    position: relative;
+    @include container;
+
+    @include breakpoint($large) {
+      padding-block: 120px var(--spacing-xl);
+    }
+
+    /* divisor vertical dorado en el centro (ornamental) */
+    &::before {
+      content: '';
+      position: absolute;
+      top: -48px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 110px;
+      background: var(--tpms-oro-libertad);
+      opacity: 0.75;
+    }
+
+    /* pequeño rombo dorado bajo el divisor */
+    &::after {
+      /* Reemplaza el rombo por el icono "title-icon" del sprite */
+      content: '';
+      position: absolute;
+      top: 70px; /* dentro de la franja negra */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 25px;
+      height: 25px;
+      background: url('../assets/icons/title-icon.svg') center center no-repeat;
+      background-size: contain;
+    }
+  }
+
+  &__inner--content {
+    /* Coloca logo+redes a la izquierda y el menú a la derecha */
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
+    align-items: start;
+
+    @include breakpoint($large) {
+      grid-template-columns: 0.4fr 1.6fr; /* izquierda (logo+redes) / derecha (menus) */
+      gap: 64px 96px;
+    }
+
+    @include breakpoint($xxl) {
+      gap: 64px 120px;
+    }
+
+    /* Asegura tamaño consistente del logo en Storybook y Drupal */
+    .footer__logo__img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .footer__logo__wrapper {
+      margin: 0 auto var(--spacing-xl);
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center; /* centra iconos respecto al logo */
+
+      @include breakpoint($large) {
+        margin: 0;
+      }
+
+      .social-media-links--platforms {
+        margin-top: var(--spacing-md);
+        justify-content: center;
+        @include breakpoint($large) {
+          justify-content: flex-start;
+        }
+      }
+    }
+
+    .footer__logo {
+      margin-bottom: var(--spacing-md);
+    }
+
+    #block-tpms-socialnetworks,
+    #block-tpms-contactenos {
+      h2 {
+        @include heading-h5;
+
+        color: var(--tpms-oro-libertad);
+        margin-bottom: 16px;
+      }
+    }
+
+    .menus-order {
+      margin-bottom: var(--spacing-xs);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-lg);
+      align-items: start;
+
+      @include breakpoint($large) {
+        /* dos columnas de menú + contacto */
+        display: grid;
+        grid-template-columns: 1fr 0.3fr;
+        column-gap: var(--spacing-xxxl); /* más espacio entre columnas */
+      }
+
+      #block-tpms-contactenos {
+        max-width: 320px;
+        order: 1;
+
+        @include breakpoint($large) {
+          order: 2;
+        }
+
+        a {
+          @extend .paragraph--small;
+
+          color: var(--tpms-blanco);
+          margin-bottom: var(--spacing-md);
+          text-decoration: none;
+
+          &:hover {
+            color: var(--tpms-amarillo-paz);
+          }
+        }
+      }
+
+      #block-tpms-piedepagina {
+        order: 2;
+
+        @include breakpoint($large) {
+          order: 1;
+        }
+      }
+    }
+
+    .menu {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: var(--spacing-sm) var(--spacing-xxxl);
+      max-width: 560px;
+
+      @include large {
+        grid-template-columns: minmax(152px, auto) minmax(152px, auto);
+      }
+
+      .menu__item {
+        text-decoration: none;
+      }
+
+      .menu__item .menu__link {
+        @extend .paragraph--small;
+
+        color: var(--tpms-blanco);
+        text-decoration: none;
+        text-transform: none;
+        font-weight: 400;
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: var(--tpms-oro-libertad);
+        }
+
+        &.is-active,
+        &--active {
+          color: var(--tpms-amarillo-paz);
+        }
+      }
+    }
+
+    .social-media-links--platforms {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      gap: var(--spacing-xl);
+      margin: var(--spacing-lg) 0 0;
+
+      @include large {
+        margin: var(--spacing-md) 0;
+      }
+
+      li {
+        margin: 0;
+      }
+
+      /* Orden exacto según Figma: Instagram, Facebook, X, YouTube */
+      .social-media-links__platform--instagram {
+        order: 1;
+      }
+
+      .social-media-links__platform--facebook {
+        order: 2;
+      }
+
+      .social-media-links__platform--x,
+      .social-media-links__platform--x-twitter,
+      .social-media-links__platform--twitter {
+        order: 3;
+      }
+
+      .social-media-links__platform--youtube {
+        order: 4;
+      }
+
+      a {
+        background-color: var(--tpms-amarillo-paz);
+        color: var(--tpms-negro);
+        width: 28px;
+        height: 28px;
+        border-radius: 4px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+
+        svg {
+          display: block;
+          width: 20px;
+          height: 20px;
+        }
+
+        .fa-x-twitter,
+        .fa-youtube {
+          font-size: 1.5em;
+        }
+
+        .fa-instagram {
+          font-size: 2.5em;
+        }
+
+        .fa-facebook::before {
+          content: '\f082';
+        }
+
+        &:hover {
+          background: var(--tpms-oro-libertad);
+        }
+
+        &.social-media-link-icon--youtube,
+        &.social-media-link-icon--facebook {
+          background-color: var(--tpms-negro);
+          color: var(--tpms-amarillo-paz);
+
+          &:hover {
+            color: var(--tpms-oro-libertad);
+          }
+        }
+      }
+    }
+  }
+
+  &__outer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0;
+    @include container;
+
+    .footer__copyright {
+      padding-top: var(--spacing-xl);
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      gap: var(--spacing-lg);
+      flex-direction: column;
+      text-align: center;
+
+      @include breakpoint($large) {
+        flex-direction: row;
+        text-align: start;
+        align-items: baseline; /* alinea copyright y diseñado por en la misma línea base */
+      }
+
+      a {
+        color: var(--tpms-blanco);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+
+        &:hover {
+          color: var(--tpms-oro-libertad);
+        }
+      }
+
+      #block-tpms-copyright p {
+        text-align: start;
+      }
+    }
+  }
+}

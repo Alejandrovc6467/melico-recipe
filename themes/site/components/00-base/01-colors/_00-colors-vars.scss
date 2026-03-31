@@ -1,0 +1,54 @@
+// Color variables - it is better to use the colors in
+// components/00-base/01-colors/_01-colors-used.scss rather than
+// these colors directly.
+
+// BASE
+$black: #212121;
+$white: #fff;
+$grey-1: #4b535a;
+$grey-2: #4B535A;
+$gris-neblina: #c1c5c8;
+$grey-3: #dfe1e2;
+$grey-4: #f7f7f8;
+
+// PRIMARY
+$azul-cielo: #0135a0;
+$azul-presi: #182951;
+$primary-d1: #0c1427;
+
+// SECUNDARIO
+$amarillo-paz: #f2dab1;
+$oro-libertad: #cfac65;
+$comple-d1: #c2963d;
+
+// STATUS
+$success-l1: #aceccf;
+$success: #26a46b;
+$success-d1: #1d7c51;
+
+$warning-l1: #f9e7b8;
+$warning: #f0bf41;
+$warning-d1: #e3a812;
+
+$error-l1: #ffb3b3;
+$error: #e00101;
+$error-d1: #980101;
+
+// CSS Variables
+:root {
+  --tpms-blanco: #fff;
+  --tpms-negro: #212121;
+  --tpms-azul-cielo: #0135a0;
+  --tpms-azul-presi: #182951;
+  --tpms-primary-d1: #0c1427;
+  --tpms-oro-libertad: #cfac65;
+  --tpms-amarillo-paz: #f2dab1;
+  --tpms-oro-d1: #c2963d;
+  --gris-neblina: #c1c5c8;
+  --grey-1: #4b535a;
+  --grey-2: #4B535A;
+  --grey-3: #dfe1e2;
+  --grey-4: #f7f7f8;
+}
+
+//var(--grey-2);

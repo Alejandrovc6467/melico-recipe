@@ -1,0 +1,18 @@
+{% set slider_base_class = slider_base_class|default('slider-slideshow') %}
+{{ attach_library('tpms/splide') }}
+
+<div {{ bem(slider_base_class, slider__modifiers, slider__block_name) }}>
+  <div class="splide mySlideshow">
+    <div class="splide__track">
+      <ul class="splide__list">
+        {% for item in slider_items %}
+          {% include "@organisms/tpms-sliders/slideshow-slider/slideshow-slider-item.twig" with {
+            item__base_class: slider_base_class,
+            item: item
+          } %}
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="splide__pagination"></div>
+  </div>
+</div>

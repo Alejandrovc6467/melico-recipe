@@ -1,0 +1,99 @@
+{#
+/**
+ * @file
+ * Theme override for main view template - Lista Espacios Block 2
+ *
+ * Renderiza espacios de UNA institución específica (desde contexto de URL)
+ * Cada row se renderiza como entidad usando el view mode "agrupado_por_institucion"
+ *
+ * Available variables:
+ * - attributes: Remaining HTML attributes for the element.
+ * - css_name: A CSS-safe version of the view name.
+ * - css_class: The user-specified classes names, if any.
+ * - header: The optional header.
+ * - footer: The optional footer.
+ * - rows: The results of the view query, if any.
+ * - empty: The content to display if there are no rows.
+ * - pager: The optional pager next/prev links to display.
+ * - exposed: Exposed widget form/info to display.
+ * - feed_icons: Optional feed icons to display.
+ * - more: An optional link to the next page of results.
+ * - title: Title of the view, only used when displaying in the admin preview.
+ * - host_node_title: Título de la institución (agregado via preprocess)
+ * - dom_id: Unique id for every view being printed to give unique class for Javascript.
+ *
+ * @see template_preprocess_views_view()
+ */
+#}
+{%
+  set classes = [
+    dom_id ? 'js-view-dom-id-' ~ dom_id,
+  ]
+%}
+
+<div{{ attributes.addClass(classes) }}>
+  {{ title_prefix }}
+  {{ title }}
+  {{ title_suffix }}
+
+  {% if header %}
+    <header>
+      {{ header }}
+    </header>
+  {% endif %}
+
+  {{ exposed }}
+  {{ attachment_before }}
+
+  {# Renderizar espacios si existen #}
+  {% if rows %}
+
+    <section class="espacios section-margin">
+      <div class="container">
+
+        {# Institution header con pretitle y title #}
+        <div class="espacios__institution-header">
+          {% include "@atoms/text/headings/_heading.twig" with {
+            heading: 'Alquiler y préstamo de espacios',
+            heading_level: 4,
+            heading_blockname: 'espacios',
+            heading_modifiers: ['institution-pretitle']
+          } only %}
+          {% if host_node_title %}
+            {% include "@atoms/text/headings/_heading.twig" with {
+              heading: host_node_title,
+              heading_level: 3,
+              heading_blockname: 'espacios',
+              heading_modifiers: ['institution-title']
+            } only %}
+          {% endif %}
+        </div>
+
+        {# Grid de espacios (rows ya vienen renderizados como node) #}
+        <div class="espacios__grid">
+          {{ rows }}
+        </div>
+
+      </div>
+    </section>
+
+  {% elseif empty %}
+    
+    <div class="container">
+      {{ empty }}
+    </div>
+
+  {% endif %}
+
+  {{ pager }}
+  {{ attachment_after }}
+  {{ more }}
+
+  {% if footer %}
+    <footer>
+      {{ footer }}
+    </footer>
+  {% endif %}
+
+  {{ feed_icons }}
+</div>

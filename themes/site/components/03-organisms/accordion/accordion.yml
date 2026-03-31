@@ -1,0 +1,17 @@
+accordion_title: 'Preguntas Frecuentes'
+
+accordion_items:
+  - title: 'Lorem ipsum dolor sit amet consectetur.'
+    content: 'Lorem ipsum dolor sit amet consectetur. In augue ipsum tellus ultrices. Ac pharetra ultrices consectetur consequat tellus massa. Nec aliquam eras sagittis duis sed euismod arcu hac. Ornare amet ligula ornare lacus aliquam aenean. Eu lacus imperdiet urna amet congue adipiscing. Faucibus magna nisl ullamcorper in facilisis consequat aliquam. Id placerat dui habitasse quisque nisl tincidunt facilisi mi id. Dictum elit velit. Lorem ipsum dolor sit amet consectetur. In augue ipsum tellus ultrices. Ac pharetra ultrices consectetur consequat tellus massa. Nec aliquam eras sagittis duis sed euismod arcu hac. Ornare amet ligula ornare lacu Faucibus magna nisl ullamcorper in facilisis final'
+
+  - title: 'Lorem ipsum dolor sit amet consectetur. Sagittis id.Lorem ipsum dolor sit amet consectetur. Sagittis id. Lorem ipsum dolor sit amet consectetur. '
+    content: 'Lorem ipsum dolor sit amet consectetur. In augue ipsum tellus ultrices. Ac pharetra ultrices consectetur consequat tellus massa. Nec aliquam eras sagittis duis sed euismod arcu hac.'
+
+  - title: 'Lorem ipsum dolor sit amet consectetur. Sagittis id.'
+    content: 'Lorem ipsum dolor sit amet consectetur. In augue ipsum tellus ultrices. Ac pharetra ultrices consectetur consequat tellus massa.'
+
+  - title: 'Lorem ipsum dolor sit amet consectetur. Sagittis id.'
+    content: 'Lorem ipsum dolor sit amet consectetur. In augue ipsum tellus ultrices. Ac pharetra ultrices consectetur consequat tellus massa. Nec aliquam eras sagittis duis sed euismod arcu hac. Ornare amet ligula ornare lacus aliquam aenean.'
+
+  - title: 'Lorem ipsum dolor sit amet consectetur. Sagittis id.'
+    content: 'Lorem ipsum dolor sit amet consectetur. In augue ipsum tellus ultrices. Ac pharetra ultrices consectetur consequat tellus massa. Nec aliquam eras sagittis duis sed euismod arcu hac. Ornare amet ligula ornare lacus aliquam aenean. Eu lacus imperdiet urna amet congue adipiscing.'

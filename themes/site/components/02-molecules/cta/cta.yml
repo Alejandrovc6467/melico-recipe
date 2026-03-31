@@ -1,0 +1,12 @@
+modifier: default
+heading_level: 2
+heading_icon: true
+heading_underline: true
+heading_text: 'RECURSOS MULTIMEDIA'
+content: 'Morem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. lputate libero et dolor sit amet, consectetur  dolor sit amet, consectetur'
+button_content: 'VER RECURSOS MULTIMEDIA'
+button_url: '#'
+button_modifiers: ['primary', 'medium']
+button_is_download: false
+tagline: 'Innovación y calidad'
+image: ''

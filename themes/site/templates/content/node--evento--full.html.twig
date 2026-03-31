@@ -1,0 +1,47 @@
+{#
+/**
+ * @file
+ * Theme override to display a node of type Evento (full view).
+ */
+#}
+{%
+  set classes = [
+    'node',
+    'node--type--' ~ node.bundle|clean_class,
+    view_mode ? 'node--view-mode--' ~ view_mode|clean_class,
+    node.isPromoted() ? 'node--promoted',
+    node.isSticky() ? 'node--sticky',
+    not node.isPublished() ? 'node--unpublished'
+  ]
+%}
+
+<article{{ attributes.addClass(classes) }}>
+  {{ title_prefix }}
+  {{ title_suffix }}
+
+  <div id="component-{{ node.id }}" class="evento-info">
+    {% include "@organisms/imagen-texto/imagen-texto.twig" with {
+      variant: 'evento',
+      title: evento_title,
+      institucion: evento_institucion,
+      content: evento_description,
+      image: evento_image,
+      image_position: 'izquierda',
+      size: 'small',
+      lugar: evento_lugar,
+      links: evento_links
+    } only %}
+  </div>
+
+  <div class="container section-margin">
+    {{ content.body }}
+  </div>
+
+  {{ content|without([
+    'body',
+    'field_imagen',
+    'field_tabla_informativa',
+    'field_lugar',
+    'field_institucion'
+  ]) }}
+</article>

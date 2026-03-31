@@ -1,0 +1,17 @@
+.reparto__title {
+  margin-bottom: 33px;
+
+  @include large {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .h2,
+  h2 {
+    color: var(--tpms-azul-presi);
+    text-transform: uppercase;
+  }
+}
+
+.reparto__grid {
+  row-gap: var(--spacing-lg);
+}

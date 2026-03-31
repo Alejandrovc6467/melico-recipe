@@ -1,0 +1,95 @@
+.form-item {
+  margin-bottom: var(--spacing-lg);
+
+  @include large {
+    margin-bottom: var(--spacing-xl);
+  }
+}
+
+.form-item__control {
+  position: relative;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+
+  .form-item__label {
+    @extend .paragraph--small-bold;
+
+    display: block;
+    color: var(--tpms-azul-presi) !important;
+  }
+
+  .form-item__textfield {
+    @extend .paragraph;
+
+    border: none;
+    text-decoration: none;
+    background: transparent;
+    max-width: 100%;
+    width: 100%;
+    outline: none;
+    padding: 0;
+
+    &:focus-visible {
+      outline: none;
+    }
+
+    &::placeholder {
+      color: clr(gray6);
+    }
+  }
+
+  &:focus-within {
+    border-color: var(--tpms-azul-cielo);
+
+    .form-item__label {
+      color: var(--tpms-azul-cielo) !important;
+    }
+  }
+}
+
+.form-item__description {
+  margin-left: var(--spacing-md) !important;
+  color: var(--grey-2) !important;
+  @extend .paragraph--mini;
+}
+
+.form-fieldset {
+  border: none;
+  margin-bottom: 2em;
+  padding: 0;
+
+  .form-item {
+    margin-left: 1em;
+  }
+}
+
+input[type='submit'] {
+  @include button-base;
+  @include button-color-primary;
+}
+
+input[type='date'] {
+  width: inherit;
+}
+
+input[type='text'],
+input[type='email'],
+textarea,
+.form-text {
+  border: 1px solid var(--grey-2);
+  padding: 12px var(--spacing-md);
+  max-height: 48px;
+  font-size: 0.875rem;
+}
+
+input[type='email'] {
+  min-height: 48px;
+}
+
+textarea {
+  max-height: none;
+}

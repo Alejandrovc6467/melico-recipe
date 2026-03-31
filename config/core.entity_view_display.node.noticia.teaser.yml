@@ -1,0 +1,41 @@
+langcode: es
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.noticia.body
+    - field.field.node.noticia.field_autor
+    - field.field.node.noticia.field_categorias_de_noticias
+    - field.field.node.noticia.field_imagen_noticia
+    - field.field.node.noticia.field_metatags
+    - node.type.noticia
+  module:
+    - text
+    - user
+id: node.noticia.teaser
+targetEntityType: node
+bundle: noticia
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  addtoany: true
+  field_autor: true
+  field_categorias_de_noticias: true
+  field_imagen_noticia: true
+  field_metatags: true
+  langcode: true
+  preview_token: true
+  search_api_excerpt: true

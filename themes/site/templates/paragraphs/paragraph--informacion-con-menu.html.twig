@@ -1,0 +1,49 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a paragraph.
+ *
+ * Available variables:
+ * - paragraph: Full paragraph entity.
+ * - content: All paragraph items.
+ * - attributes: HTML attributes for the containing element.
+ *
+ * Campos disponibles:
+ * - field_titulo: Título principal
+ * - field_descripcion: Descripción/contenido
+ * - field_elementos_de_menu: Items del menú lateral (Paragraph reference)
+ *
+ * @ingroup themeable
+ */
+#}
+{%
+  set classes = [
+    'drupal-paragraph',
+    'paragraph--type--' ~ paragraph.bundle|clean_class,
+    view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+    not paragraph.isPublished() ? 'paragraph--unpublished'
+  ]
+%}
+
+{# Preparar items del menú #}
+{% set menu_items = [] %}
+{% if paragraph.field_elementos_de_menu %}
+  {% for item in paragraph.field_elementos_de_menu %}
+    {% set menu_items = menu_items|merge([{
+      title: item.title,
+      url: item.uri|default('#')
+    }]) %}
+  {% endfor %}
+{% endif %}
+
+{% block paragraph %}
+  <div{{ attributes.addClass(classes).setAttribute('id', 'component-' ~ paragraph.id()) }}>
+    
+    {% include "@organisms/informacion-con-menu/informacion-con-menu.twig" with {
+      title: paragraph.field_titulo.value,
+      description: content.field_descripcion|render,
+      items: menu_items,
+    } only %}
+    
+  </div>
+{% endblock paragraph %}

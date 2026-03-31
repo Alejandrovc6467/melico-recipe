@@ -1,0 +1,33 @@
+section_title: 'Nuestro Equipo'
+section_show_icon: true
+
+team_members:
+  - card_image_src: 'https://picsum.photos/342/419?random=1'
+    card_image_alt: 'Miembro del equipo 1'
+    card_name: 'Name Laste Lorem ipsum Dolor sit amet'
+    card_role: 'Director de la orquesta sinfónica de Costa Rica'
+    card_organization: 'Teatro Melico Salazar, compañía de música costarricense'
+
+  - card_image_src: 'https://picsum.photos/342/419?random=2'
+    card_image_alt: 'Miembro del equipo 2'
+    card_name: 'Name Laste Lorem ipsum Dolor sit amet'
+    card_role: 'Directora de la orquesta sinfónica de Costa Rica'
+    card_organization: 'Teatro Melico Salazar, compañía de música costarricense'
+
+  - card_image_src: 'https://picsum.photos/342/419?random=3'
+    card_image_alt: 'Miembro del equipo 3'
+    card_name: 'Name Laste Lorem ipsum Dolor sit amet'
+    card_role: 'Director de la orquesta sinfónica de Costa Rica'
+    card_organization: 'Teatro Melico Salazar, compañía de música costarricense'
+
+  - card_image_src: 'https://picsum.photos/342/419?random=4'
+    card_image_alt: 'Miembro del equipo 4'
+    card_name: 'Name Laste Lorem ipsum Dolor sit amet'
+    card_role: 'Directora de la orquesta sinfónica de Costa Rica'
+    card_organization: 'Teatro Melico Salazar, compañía de música costarricense'
+
+  - card_image_src: 'https://picsum.photos/342/419?random=5'
+    card_image_alt: 'Miembro del equipo 5'
+    card_name: 'Name Laste Lorem ipsum Dolor sit amet'
+    card_role: 'Director de la orquesta sinfónica de Costa Rica'
+    card_organization: 'Teatro Melico Salazar, compañía de música costarricense'

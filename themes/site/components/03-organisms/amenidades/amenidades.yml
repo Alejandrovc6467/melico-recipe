@@ -1,0 +1,34 @@
+title: '¿Qué equipo incluye?'
+
+amenidades_items:
+  - icon: 'coat-hanger'
+    title: 'Medios técnicos y wifi de alta velocidad'
+    description: 'Equipación técnica completa de las salas para asegurar la accesibilidad universal.'
+
+  - icon: 'palette'
+    title: 'Utilería'
+    description: 'Equipación técnica completa de las salas para asegurar la accesibilidad universal.'
+
+  - icon: 'calendar-blank'
+    title: 'Iluminación'
+    description: 'Equipación técnica completa de las salas para asegurar la accesibilidad universal.'
+
+  - icon: 'music-notes'
+    title: 'Espacios accesibles'
+    description: 'Equipación técnica completa de las salas para asegurar la accesibilidad universal.'
+
+  - icon: 'video-camera'
+    title: 'Lorem ipsum dolor'
+    description: 'Equipación técnica completa de las salas para asegurar la accesibilidad universal.'
+
+  - icon: 'microphone-stage'
+    title: 'Lorem ipsum dolor'
+    description: 'Equipación técnica completa de las salas para asegurar la accesibilidad universal.'
+
+  - icon: 'users-three'
+    title: 'Lorem ipsum dolor'
+    description: 'Equipación técnica completa de las salas para asegurar la accesibilidad universal.'
+
+  - icon: 'lightbulb'
+    title: 'Lorem ipsum dolor'
+    description: 'Equipación técnica completa de las salas para asegurar la accesibilidad universal.'

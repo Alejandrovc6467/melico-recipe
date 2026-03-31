@@ -1,0 +1,30 @@
+{#
+/**
+ * Available variables:
+ * - paragraph_base_class - the base classname
+ * - paragraph_modifiers - array of modifiers to add to the base classname
+ * - paragraph_blockname - blockname prepended to the base classname
+ * - paragraph_content - the content of the paragraph (typically text)
+ *
+ * Available blocks:
+ * - paragraph_content - used to replace the content of the paragraph with something other than plain text
+ *   for example: A formatted text field in Drupal
+ */
+#}
+{% set base = paragraph_base_class|default('paragraph') %}
+{% set content = paragraph_content|default('') %}
+{% set modifiers = paragraph_modifiers|default([]) %}
+{% if paragraph_color is defined and paragraph_color %}
+  {% set modifiers = modifiers|merge(['color-' ~ paragraph_color]) %}
+{% endif %}
+{% set classes = bem(base, modifiers, paragraph_blockname) %}
+
+{% if content|trim is not empty %}
+  {% set is_block = content|trim matches '/^<\s*(p|div|section|article|blockquote|ul|ol|figure|h[1-6])/i' %}
+
+  {% if is_block %}
+    <div {{ classes }}{% if paragraph_attributes %} {{ paragraph_attributes|join(' ') }}{% endif %}>{{ content|raw }}</div>
+  {% else %}
+    <p {{ classes }} {% if paragraph_attributes %} {{ paragraph_attributes|join(' ') }}{% endif %}>{{ content|raw }}</p>
+  {% endif %}
+{% endif %}

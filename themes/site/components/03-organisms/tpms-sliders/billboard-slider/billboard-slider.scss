@@ -1,0 +1,257 @@
+// Billboard Slider Styles
+// Layout: Content on left, slider on right
+// Desktop version (1440px+)
+
+.billboard-slider {
+  width: 100%;
+  max-width: $site-max-width;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  margin-inline: auto;
+  padding-bottom: 91px;
+
+  @include medium {
+    padding: 0;
+  }
+
+  // wrapper for content 1440px
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @include medium {
+      flex-direction: row;
+    }
+  }
+
+  // Content Section - Left Side
+  &__content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xxl);
+    flex-shrink: 0;
+    box-sizing: border-box;
+    max-width: none;
+    margin-right: 0;
+    margin-bottom: 56px;
+
+    @include medium {
+      max-width: 395px;
+      margin-right: 98px;
+    }
+  }
+
+  &__subcontent {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  &__h2--title {
+    font-family: $font-heading;
+    color: var(--tpms-azul-presi);
+    line-height: 62px;
+  }
+
+  &__paragraph--description {
+    color: var(--tpms-azul-presi);
+  }
+
+  // Button styles - completamente desde cero - cambiar cuando definamos el atomo del buttom
+  &__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 0;
+    gap: 16px;
+    width: 100%;
+    font-family: $font-body;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 24px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: var(--tpms-azul-presi);
+    background-color: var(--tpms-oro-libertad);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    max-width: none;
+
+    @include medium {
+      max-width: 383px;
+    }
+
+    &:hover {
+      color: var(--tpms-azul-presi);
+      background-color: var(--tpms-amarillo-paz);
+      box-shadow: 2px 6px 16px 0 #00000026;
+    }
+
+    &:active {
+      color: var(--tpms-blanco);
+      background-color: var(--tpms-oro-d1);
+    }
+  }
+
+  &__slider-container {
+    background-color: var(--tpms-azul-presi);
+    padding: 24px 0;
+    margin-left: 93px;
+    position: relative;
+
+    @include large {
+      padding: 44px 0;
+    }
+  }
+
+  // Slider Section - Right Side
+  &__slider-wrapper {
+    position: relative;
+    max-width: none; // Remover max-width para que pueda desbordarse
+    flex-shrink: 0; // No permitir que se comprima
+    margin-left: -93px;
+    // 2.5 slides + gaps + padding
+    width: calc(464px * 2.5 + 0.25rem * 2 + 30 * 2);
+    padding-left: 30px;
+
+    @include medium {
+      margin-left: -93px;
+      padding-left: 0;
+    }
+  }
+
+  .splide {
+    width: 100%;
+    max-width: 100vw;
+
+    .splide__track {
+      overflow: hidden; // Ocultar slides que no deben verses
+    }
+
+    .splide__list {
+      display: flex;
+    }
+
+    .splide__slide {
+      width: 100%;
+      max-width: 314px;
+
+      @include medium {
+        max-width: 464px;
+      }
+    }
+
+    // Contenedor para las flechas
+    .splide__arrows {
+      // Mobile por defecto: flechas FUERA del slider-container
+      position: absolute;
+      bottom: -142px;
+      left: 50%;
+      left: calc(50% - 15px);
+      transform: translateX(-50%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 48px;
+      padding: 0 15px;
+      width: auto;
+      z-index: 10;
+
+      // Desktop: resetear a estático
+      @include medium {
+        position: static;
+        bottom: auto;
+        left: auto;
+        transform: none;
+        gap: 0;
+        padding: 0;
+      }
+    }
+
+    // Estilos base para ambas flechas
+    .splide__arrow {
+      background: transparent;
+      opacity: 1;
+      width: 56px;
+      height: 56px;
+      padding: 0;
+      margin: 0;
+      transition:
+        opacity 0.3s ease,
+        transform 0.2s ease;
+      flex-shrink: 0;
+
+      // Ocultar el SVG por defecto de Splide
+      svg {
+        display: none;
+      }
+
+      // Mobile por defecto: posición relativa
+      position: relative;
+      top: auto;
+      left: auto;
+      right: auto;
+
+      // Desktop: posición absoluta
+      @include medium {
+        position: absolute;
+        top: 48%;
+        transform: translateY(-50%);
+
+        &:hover {
+          transform: translateY(-50%) scale(1.1);
+        }
+      }
+    }
+
+    // Flecha izquierda
+    .splide__arrow--prev {
+      @include medium {
+        left: 0;
+      }
+
+      &::before {
+        content: '';
+        display: block;
+        padding: 0;
+        margin: 0;
+        width: 56px;
+        height: 56px;
+        background-image: url('../assets/icons/flecha-izquierda-billboard.svg');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+    }
+
+    // Flecha derecha
+    .splide__arrow--next {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      @include medium {
+        right: 30px;
+      }
+
+      &::before {
+        content: '';
+        display: block;
+        padding: 0;
+        margin: 0;
+        width: 56px;
+        height: 56px;
+        background-image: url('../assets/icons/flecha-izquierda-billboard.svg');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        // Rotar 180 grados para apuntar a la derecha
+        transform: rotate(180deg);
+      }
+    }
+  }
+}

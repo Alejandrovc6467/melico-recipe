@@ -1,0 +1,35 @@
+// Bootstrap Grid Overrides
+// Sobrescribe los breakpoints de Bootstrap con los del proyecto
+// Este archivo debe importarse DESPUÉS de _variables.scss pero ANTES del grid de Bootstrap
+
+@import '../00-default/_02-breakpoints.scss';
+
+// Sobrescribir los breakpoints de Bootstrap con los del proyecto
+// Bootstrap requiere que el primer breakpoint sea 0, así que mantenemos xs: 0
+// y mapeamos nuestros breakpoints a partir de sm
+$grid-breakpoints: (
+  xs: 0,
+  sm: $small,
+  // 480px (en lugar de 576px)
+  md: $medium,
+  // 768px (igual)
+  lg: $large,
+  // 1024px (en lugar de 992px)
+  xl: $xl,
+  // 1320px (en lugar de 1200px)
+  xxl: $xxl, // 1440px (en lugar de 1400px)
+);
+
+// Sobrescribir el gutter para usar la variable del proyecto
+// Nota: Bootstrap calcula el gutter en tiempo de compilación, así que usamos el valor fijo
+// --spacing-lg = 24px (definido en _spacing.scss)
+$grid-gutter-width: 24px !default;
+
+// Container max widths (opcional, ajusta según tus necesidades)
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+  xxl: $xxl - 48px, // 1440px - padding
+) !default;

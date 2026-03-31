@@ -1,0 +1,104 @@
+langcode: es
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.full
+    - field.field.node.noticia.body
+    - field.field.node.noticia.field_autor
+    - field.field.node.noticia.field_categorias_de_noticias
+    - field.field.node.noticia.field_imagen_noticia
+    - field.field.node.noticia.field_metatags
+    - image.style.noticia_952x472
+    - node.type.noticia
+  module:
+    - blazy
+    - metatag
+    - text
+    - user
+id: node.noticia.full
+targetEntityType: node
+bundle: noticia
+mode: full
+content:
+  addtoany:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_categorias_de_noticias:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_imagen_noticia:
+    type: blazy_media
+    label: hidden
+    settings:
+      caption:
+        alt: '0'
+        title: '0'
+      class: ''
+      image: ''
+      link: ''
+      overlay: ''
+      title: ''
+      vanilla: false
+      by_delta: -1
+      layout: ''
+      view_mode: noticia_952x472
+      cache: 0
+      admin_uri: '/admin/structure/types/manage/noticia/display?ajax_form=1&_wrapper_format=drupal_ajax'
+      use_lb: false
+      background: false
+      box_caption: ''
+      box_caption_custom: ''
+      box_media_style: ''
+      loading: ''
+      preload: false
+      responsive_image_style: ''
+      use_theme_field: false
+      box_style: ''
+      image_style: noticia_952x472
+      media_switch: ''
+      ratio: ''
+      thumbnail_style: ''
+      grid: ''
+      grid_medium: ''
+      grid_small: ''
+      style: ''
+      svg_inline: false
+      svg_fill: false
+      svg_sanitize: true
+      svg_sanitize_remote: false
+      svg_hide_caption: false
+      svg_attributes: ''
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_metatags:
+    type: metatag_empty_formatter
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 115
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_autor: true
+  langcode: true
+  preview_token: true
+  search_api_excerpt: true

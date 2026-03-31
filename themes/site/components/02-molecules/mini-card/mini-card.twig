@@ -1,0 +1,60 @@
+{#
+/*
+ * Basic Card Component
+ *
+ * Displays a flexible card with optional image, title, metadata, and call-to-action buttons.
+ *
+ * Available Variables:
+ * - basic_card__modifiers: Array of modifiers to change card style (e.g., ['event', 'news']).
+ * - basic_card__blockname: Block name for BEM naming (optional).
+ * - basic_card__extra_classes: Additional CSS classes (optional).
+ *
+ * Content Variables:
+ * - card__url__mas: Secondary "Ver más" URL (optional).
+ * - card__txt__mas: "Ver más" button text.
+ * - card__target: Link target (e.g., '_blank').
+ * - card__title: Card title text.
+ * - card__description: Card description text.
+ */
+  #}
+
+{% set basic_card__base_class = 'mini-card' %}
+{% set modifiers = basic_card__modifiers is iterable ? basic_card__modifiers|join('-') : basic_card__modifiers|replace({' ': ''}) %}
+<div
+  {{ bem(basic_card__base_class, basic_card__modifiers, basic_card__blockname, basic_card__extra_classes) }}>
+  {# Content Wrapper #}
+  <div {{ bem('wrapper', [], basic_card__base_class) }}>
+
+    <div {{ bem('title', [], basic_card__base_class) }}>
+      {% include "@atoms/text/headings/_heading.twig" with {
+          heading: card__title,
+          heading_level: 4,
+          heading_blockname: basic_card__base_class,
+          heading_modifiers: ['title']
+      } only %}
+   
+    </div>
+
+    {% if card__description is not empty %}
+      <div {{ bem('description', [], basic_card__base_class) }}>
+        {% include "@atoms/text/text/01-paragraph.twig" with {
+						paragraph_content: card__description
+        } %}
+      </div>
+    {% endif %}
+
+    {% if card__url__mas  %}
+      <div {{ bem('actions', [], basic_card__base_class)}}>
+        {% if card__url__mas is not empty %}
+           {% include "@atoms/buttons/button.twig" with {
+            button_content: card__txt__mas,
+            button_url: card__url__mas,
+            button_target: card__target,
+            button_modifiers: ['secondary', 'medium'],
+            button_blockname: basic_card__base_class
+        } %}
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</div>

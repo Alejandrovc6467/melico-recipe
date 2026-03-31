@@ -1,0 +1,14 @@
+<li class="splide__slide">
+	{% include "@atoms/images/image/_image.twig" with {
+    image_src: item.image,
+    image_alt:item.image
+  } %}
+	<div class="content-slide">
+		<h3 class="slide-text">{{item.title}}</h3>
+		{% include "@atoms/buttons/button.twig" with {
+      button_content: view_more_text,
+      button_url: item.url,
+      button_modifiers: ['secondary', 'large']
+    } %}
+	</div>
+</li>

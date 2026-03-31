@@ -1,0 +1,62 @@
+{#
+/**
+ * Card Historia Component
+ * 
+ * Timeline event card displaying image, timeline point and content
+ * 
+ * Variables:
+ * - card_historia__modifiers: Array of BEM modifiers (e.g., ['active'])
+ * - card_historia__block_name: BEM block name
+ * - card_historia__image: Image source
+ * - card_historia__title: Event title
+ * - card_historia__date: Event date
+ * - card_historia__description: Event description
+ */
+#}
+
+{% set card_historia_base_class = card_historia_base_class|default('card-historia') %}
+
+<div {{ bem(card_historia_base_class, card_historia__modifiers, card_historia__block_name) }}>
+  
+  {# Image - con clase de historia-slider para compatibilidad con JS #}
+  <div {{ bem('image-wrapper', [], card_historia_base_class) }}>
+    <img 
+      src="{{ card_historia__image }}" 
+      alt="{{ card_historia__alt }}"
+      class="card-historia__image historia-slider__image"
+    />
+  </div>
+
+  {# Timeline Point - con clase de historia-slider para compatibilidad con JS #}
+  <div {{ bem('timeline', [], card_historia_base_class) }}>
+    <div class="card-historia__timeline-point historia-slider__timeline-point"></div>
+  </div>
+
+  {# Content #}
+  <div {{ bem('content', [], card_historia_base_class) }}>
+    <div class="card-historia__paragraph card-historia__paragraph--event-title">
+      {% include "@atoms/text/text/01-paragraph.twig" with {
+        paragraph_content: card_historia__title,
+        paragraph_base_class: 'historia-slider__paragraph',
+        paragraph_modifiers: ['event-title']
+      } %}
+    </div>
+
+    <div class="card-historia__paragraph card-historia__paragraph--event-date">
+      {% include "@atoms/text/text/01-paragraph.twig" with {
+        paragraph_content: card_historia__date,
+        paragraph_base_class: 'historia-slider__paragraph',
+        paragraph_modifiers: ['event-date']
+      } %}
+    </div>
+    
+    <div class="card-historia__paragraph card-historia__paragraph--event-description">
+      {% include "@atoms/text/text/01-paragraph.twig" with {
+        paragraph_content: card_historia__description,
+        paragraph_base_class: 'historia-slider__paragraph',
+        paragraph_modifiers: ['event-description']
+      } %}
+    </div>
+  </div>
+
+</div>

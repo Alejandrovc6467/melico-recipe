@@ -1,0 +1,84 @@
+{#
+/**
+ * @file
+ * 
+ *
+ * Variables esperadas:
+ * - title: Título principal del bloque.
+ * - content: Texto o descripción general (string, puede contener HTML).
+ * - image: Objeto con:
+ *     - src: URL absoluta de la imagen.
+ *     - alt: Texto alternativo de la imagen.
+ * - download: (opcional) Objeto con:
+ *     - url: URL del archivo a descargar.
+ *     - label: (opcional) Texto a la izquierda del botón.
+ *     - button_text: (opcional) Texto del botón.
+ */
+#}
+
+<div class="text-block-x2-imagen section-margin">
+  <div class="text-block-x2-imagen__content container">
+    <div class="text-block-x2-imagen__wrapper">
+      {# Título principal #}
+      {% if title %}
+        <div class="text-block-x2-imagen__title">
+          {% include "@atoms/text/headings/_heading.twig" with {
+            heading_level: 2,
+            heading: title,
+            heading_base_class: 'accordion__title',
+            heading_icon: true,
+            heading_underline: true
+          } only %}
+        </div>
+      {% endif %}
+
+      {# Texto o descripción principal #}
+      {% if content %}
+        <div class="text-block-x2-imagen__text">
+          {{ content }}
+        </div>
+      {% endif %}
+    </div>
+    
+    {% if image %}
+      {% if image.url %}
+        <a href="{{ image.url }}" class="text-block-x2-imagen__media">
+          {% include "@atoms/images/image/_image.twig" with {
+            image_src: image.src,
+            image_alt: image.alt
+          } %}
+        </a>
+      {% else %}
+        <div class="text-block-x2-imagen__media">
+          {% include "@atoms/images/image/_image.twig" with {
+            image_src: image.src,
+            image_alt: image.alt
+          } %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if download and download.url %}
+      <div class="text-block-x2-imagen__download">
+        <div class="text-block-x2-imagen__download-label">
+          {% include "@atoms/text/headings/_heading.twig" with {
+            heading_level: 3,
+            heading: download.label|default('Ver ganadores pasados:'|t),
+          } only %}
+        </div>
+
+        {% include "@atoms/buttons/button.twig" with {
+          button_content: download.button_text|default('DESCARGAR PDF'|t),
+          button_url: download.url,
+          button_modifiers: ['tertiary-border', 'medium'],
+          is_download: true,
+          button_icon: {
+            icon_name: 'mini_bottom',
+            icon_height: 8,
+            icon_width: 14,
+          },
+        } only %}
+      </div>
+    {% endif %}
+  </div>
+</div>

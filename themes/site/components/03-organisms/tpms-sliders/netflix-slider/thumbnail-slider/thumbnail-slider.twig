@@ -1,0 +1,15 @@
+{{ attach_library('tpms/splide') }}
+<div id="thumbnail-slider" class="splide">
+	<div class="splide__track">
+		<ul class="splide__list">
+			{% for item in items %}
+				<li class="splide__slide">
+					<img src="{{ item.image.url }}" alt="{{ item.image.alt }}">
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+	<div class="arrows">
+		<div class="splide__arrows"></div>
+	</div>
+</div>

@@ -1,0 +1,99 @@
+.mini-card {
+  box-sizing: border-box; // para que el padding y border se incluyan dentro del max-width
+  display: flex;
+  width: 100%;
+  max-width: 446px;
+  padding: 15px;
+  background-color: var(--tpms-azul-presi);
+  height: 100%;
+
+  &:hover {
+    background-color: #212121;
+  }
+
+  @include large {
+    padding: 33px 52px;
+    max-width: 464px;
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    gap: 8px;
+  }
+
+  &__h4--title {
+    color: var(--tpms-amarillo-paz);
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.125rem;
+    font-family: $font-heading;
+    overflow: hidden;
+    text-transform: none;
+    letter-spacing: 0;
+
+    //Truncamiento a 3 lineas con ellipsis
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    text-overflow: ellipsis;
+
+    @include large {
+      font-size: 1.5rem;
+      font-weight: 600;
+      line-height: 1.425;
+    }
+  }
+
+  &__description {
+    padding-bottom: 24px;
+    border-bottom: 0.5px solid var(--tpms-blanco);
+
+    p {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      overflow: hidden;
+      color: var(--tpms-blanco);
+    }
+  }
+
+  // Actions - Botón CTA
+  &__actions {
+    padding-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+    height: 100%;
+    align-items: end;
+  }
+
+  // Botón específico del mini-card con clase BEM
+  &__button {
+    max-width: 132px;
+    width: 100%;
+    padding: 12px 0;
+    background-color: var(--tpms-oro-libertad);
+    color: var(--tpms-azul-presi);
+    font-weight: 700;
+    font-size: 1.125rem;
+    line-height: 1.5rem;
+    text-transform: uppercase;
+    border: none;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+
+    &:hover {
+      background-color: var(--tpms-amarillo-paz);
+      color: var(--tpms-azul-presi);
+    }
+
+    &:active {
+      background-color: var(--tpms-oro-libertad);
+      color: var(--tpms-blanco);
+    }
+  }
+}

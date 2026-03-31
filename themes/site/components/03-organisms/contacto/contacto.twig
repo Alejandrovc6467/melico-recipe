@@ -1,0 +1,131 @@
+{#
+/**
+ * @file
+ * Organismo de contacto.
+ *
+ * Variables:
+ * - title: Título principal del bloque.
+ * - direccion: Texto con la dirección completa.
+ * - telefonos: Array de números telefónicos.
+ * - correo: Dirección de correo electrónico.
+ * - persona_nombre: Nombre de la persona encargada.
+ * - persona_puesto: Cargo o rol de la persona.
+ * - horario: Texto con el horario de atención.
+ * - apartado_postal: Texto con el apartado postal.
+ * - redes: Array de redes sociales con:
+ *    - icono: nombre del ícono (ej: "facebook")
+ *    - url: enlace al perfil
+ */
+#}
+
+<div class="contacto">
+  {% if title %}
+    <div class="contacto__title">
+    {% include "@atoms/text/headings/_heading.twig" with {
+      heading_level: 3,
+      heading: title
+    } only %}
+    </div>
+
+  {% endif %}
+
+  <div class="contacto__content">
+    <div class="contacto__col contacto__info-principal">
+      {% if direccion %}
+        <div class="contacto__direccion">
+          {% include "@atoms/text/headings/_heading.twig" with {
+            heading_level: 5,
+            heading: 'Dirección'
+          } only %}
+          {% include "@atoms/text/text/01-paragraph.twig" with {
+            paragraph_content: direccion,
+            paragraph_modifiers: ['small']
+          } %}
+        </div>
+      {% endif %}
+
+      {% if redes %}
+        <div class="contacto__redes">
+          {% include "@atoms/text/headings/_heading.twig" with {
+            heading_level: 5,
+            heading: 'Redes Sociales'
+          } only %}
+          <div class="contacto__redes-list">
+            {% for red in redes %}
+              <a href="{{ red.url }}" class="contacto__red" target="_blank" rel="noopener">
+                {% include "@atoms/images/icons/_icon.twig" with {
+                  icon__name: red.icono,
+                  icon__width: 24,
+                  icon__height: 24
+                } %}
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="contacto__col contacto__info-secundaria">
+      <div class='info_secundaria_uno'> 
+        {% if telefonos %}
+          <div class='telefono'>
+            {% include "@atoms/text/text/01-paragraph.twig" with {
+              paragraph_content: 'Teléfono',
+              paragraph_modifiers: ['bold']
+            } %}
+            <p>
+            {% for telefono in telefonos %}
+              {{ telefono }}<br>
+            {% endfor %}
+            </p>
+          </div>
+        {% endif %}
+
+        {% if horario %}
+          <div class='horario'>
+            {% include "@atoms/text/text/01-paragraph.twig" with {
+              paragraph_content: 'Horario de atención',
+              paragraph_modifiers: ['bold']
+            } %}
+            <p>{{ horario }}</p>
+          </div>
+        {% endif %}
+      </div>
+      <div class="info_secundaria_dos"> 
+        {% if correo %}
+          <div class='correo'>
+          {% include "@atoms/text/text/01-paragraph.twig" with {
+            paragraph_content: 'Correo electrónico:',
+            paragraph_modifiers: ['bold']
+          } %}
+          <p>{{ correo }}</p>
+          </div>
+        {% endif %}
+
+        {% if persona_nombre %}
+          <div class='persona'>
+          {% include "@atoms/text/text/01-paragraph.twig" with {
+            paragraph_content: persona_nombre,
+            paragraph_modifiers: ['bold']
+          } %}
+          {% include "@atoms/text/text/01-paragraph.twig" with {
+            paragraph_content: persona_puesto,
+          } %}
+          </div>
+        {% endif %}
+
+        {% if apartado_postal %}
+          <div class='apartado_postal'>
+
+          {% include "@atoms/text/text/01-paragraph.twig" with {
+            paragraph_content: 'Apartado Postal',
+            paragraph_modifiers: ['bold']
+          } %}
+          <p>{{ apartado_postal }}</p>
+          </div>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</div>

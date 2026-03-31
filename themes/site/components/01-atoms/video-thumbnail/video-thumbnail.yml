@@ -1,0 +1,9 @@
+name: Video Thumbnail
+description: Átomo que genera la miniatura de YouTube con el icono de play centrado.
+props:
+  video_url:
+    type: string
+    label: URL de YouTube
+  video_title:
+    type: string
+    label: Título descriptivo

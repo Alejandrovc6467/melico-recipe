@@ -1,0 +1,10 @@
+langcode: es
+status: true
+dependencies:
+  module:
+    - media
+id: media.noticia_952x472
+label: 'Noticia (952×472)'
+description: ''
+targetEntityType: media
+cache: true

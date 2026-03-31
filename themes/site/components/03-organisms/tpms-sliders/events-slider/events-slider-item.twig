@@ -1,0 +1,23 @@
+{% if item.categorias %}
+	{% set icons = [] %}
+	{% for cat in item.categorias %}
+		{% set var =  iconify_field(cat.icon["value"]) %}
+		{% set icons = icons | merge([var|raw ]) %}
+	{% endfor %}
+{% endif %}
+{% set base = 'https://agenda.mcj.go.cr' %}
+{% set path = item.url|trim('/') %}
+{% set front_url = base ~ '/' ~ path %}
+<li class="splide__slide" role="presentation">
+	{% include "@molecules/basic-card/basic-card.twig" with {
+    card__image__src: item.image,
+    card__image__alt:item.image,
+    card__title: item.large_title,
+    basic_card__modifiers: 'event',
+    card__heading_level: 3,
+    card__event__categories:icons,
+    card__range:item.date,
+    card__url__mas:front_url,
+    card__txt__mas: 'Ver Más',
+  } only %}
+</li>

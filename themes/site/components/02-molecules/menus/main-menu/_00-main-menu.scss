@@ -1,0 +1,61 @@
+/* Menu media */
+$main-menu-medium: $medium;
+
+/* Nav */
+.main-nav {
+  display: block;
+
+  &--open {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 110px;
+    display: block;
+    overflow-y: scroll;
+    width: 100%;
+    background-color: clr(background);
+
+    @include breakpoint('medium') {
+      position: relative;
+      left: auto;
+      right: auto;
+      top: auto;
+      width: auto;
+      overflow-y: visible;
+    }
+  }
+}
+
+/* UL */
+.main-menu,
+.menu-principal {
+  @include list-reset;
+
+  z-index: 10;
+}
+
+/*
+ * Sub Navigation
+ */
+
+/* UL (Nested) */
+.main-menu--sub,
+.menu-principal--sub {
+  max-height: 0;
+  transition: max-height 0.5s ease;
+  overflow: hidden;
+  width: 100%;
+  border-bottom: none;
+
+  /* See main-menu.js */
+  &-open {
+    height: auto;
+  }
+}
+
+.main-menu--sub-2,
+.menu-principal--sub-2 {
+  @include breakpoint('medium') {
+    display: none; /* Never shown on large screens */
+  }
+}

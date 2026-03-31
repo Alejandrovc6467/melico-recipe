@@ -1,0 +1,8 @@
+langcode: es
+status: true
+dependencies: {  }
+name: Autores
+vid: autores
+description: 'Taxonomía para autores de noticias.'
+weight: 0
+new_revision: false

@@ -1,0 +1,31 @@
+card_list_items:
+  - card__image__src: './img/slider-img.png'
+    card__image__alt: "This is the card image's alt text"
+    card__image__output_image_tag: false
+    card__link__url: 'https://example.com/'
+    card__title: 'Costa Rica'
+    card__postDate: 'Posted January 20, 2020'
+    card__address: 'San Jose, Costa Rica'
+    card__category: 'Wilderness Retreats'
+    card__desciption: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor iidunt ut labore et dolore magna aliqua.'
+    button__content: 'View More'
+  - card__image__src: './img/slider-img.png'
+    card__image__alt: "This is the card image's alt text"
+    card__image__output_image_tag: false
+    card__link__url: 'https://example.com/'
+    card__title: 'Colombia'
+    card__postDate: 'Posted January 20, 2020'
+    card__address: 'San Jose, Costa Rica'
+    card__category: 'Wilderness Retreats'
+    card__desciption: 'Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.'
+    button__content: 'View More'
+  - card__image__src: './img/slider-img.png'
+    card__image__alt: "This is the card image's alt text"
+    card__image__output_image_tag: false
+    card__link__url: 'https://example.com/'
+    card__title: 'Panama'
+    card__postDate: 'Posted January 20, 2020'
+    card__address: 'San Jose, Costa Rica'
+    card__category: 'Wilderness Retreats'
+    card__desciption: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor iidunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor iidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.'
+    button__content: 'View More'

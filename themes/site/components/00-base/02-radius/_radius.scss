@@ -1,0 +1,36 @@
+// Tokens base (Sass)
+$radius-sm: 8px;
+$radius-md: 15px;
+$radius-lg: 20px;
+$radius-xl: 30px;
+
+// Asignar las variables Sass al scope global de CSS (custom properties)
+:root {
+  --radius-sm: #{$radius-sm};
+  --radius-md: #{$radius-md};
+  --radius-lg: #{$radius-lg};
+  --radius-xl: #{$radius-xl};
+}
+
+// Clases utilitarias para demostración
+.radius-box {
+  width: 60px;
+  height: 60px;
+  background: #212121;
+}
+
+.radius-sm {
+  border-radius: var(--radius-sm);
+}
+
+.radius-md {
+  border-radius: var(--radius-md);
+}
+
+.radius-lg {
+  border-radius: var(--radius-lg);
+}
+
+.radius-xl {
+  border-radius: var(--radius-xl);
+}

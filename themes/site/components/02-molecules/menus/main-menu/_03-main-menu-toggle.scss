@@ -1,0 +1,67 @@
+/* Toggle */
+.toggle-expand {
+  @include link;
+
+  display: none !important;
+  position: absolute;
+  top: 1rem;
+  margin-left: -1rem;
+  margin-top: -1rem;
+  padding: $space;
+  width: 100vw;
+  text-decoration: none;
+
+  /* See main-menu.js */
+  &--open {
+    background-color: clr(accent);
+  }
+
+  @include breakpoint('medium') {
+    display: none;
+  }
+
+  &__text {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: bold;
+
+    .toggle-expand--open & {
+      color: clr(background);
+    }
+  }
+
+  /* SVG icon */
+  &__icon {
+    height: $space;
+    width: $space;
+    margin: 0 auto;
+  }
+
+  &__open {
+    display: inline-block;
+    float: right;
+    text-align: center;
+
+    .toggle-expand--open & {
+      display: none;
+    }
+
+    svg {
+      fill: clr(text);
+    }
+  }
+
+  &__close {
+    display: none;
+    float: right;
+    text-align: center;
+
+    .toggle-expand--open & {
+      display: inline-block;
+    }
+
+    svg {
+      fill: clr(text, inverse);
+    }
+  }
+}

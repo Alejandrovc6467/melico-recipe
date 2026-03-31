@@ -1,0 +1,101 @@
+@import '~normalize.css/normalize';
+@import '~breakpoint-sass/stylesheets/breakpoint';
+@import '../node_modules/bootstrap/scss/_functions.scss';
+@import '../node_modules/bootstrap/scss/_variables.scss';
+@import '../node_modules/bootstrap/scss/mixins/_breakpoints.scss';
+@import '../node_modules/bootstrap/scss/_maps.scss';
+@import '../node_modules/bootstrap/scss/_utilities.scss';
+
+// Components
+@import '00-base/**/*.scss';
+@import '01-atoms/**/*.scss';
+@import '02-molecules/**/*.scss';
+@import '03-organisms/**/*.scss';
+@import '04-templates/**/*.scss';
+@import '05-pages/*.scss';
+
+.ck-content {
+  h2 {
+    margin-bottom: 16px;
+  }
+
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-bottom: 8px;
+  }
+
+  p {
+    margin-bottom: 16px;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+
+  a {
+    text-decoration: underline !important;
+    color: #0034a0 !important;
+
+    span {
+      color: #0034a0;
+    }
+  }
+
+  a.button {
+    border: none !important;
+    background: transparent !important;
+    color: #0034a0 !important;
+    font-size: initial !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    min-height: unset !important;
+    min-width: unset !important;
+    text-decoration: underline !important;
+  }
+
+  li {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  figcaption {
+    caption-side: bottom;
+    color: #454e54;
+    font-size: 0.75em;
+    outline-offset: -1px;
+    padding: 0.6em;
+    text-align: center;
+  }
+
+  @include medium {
+    img.align-left,
+    figure.align-left {
+      margin-right: 24px;
+      margin-bottom: 16px;
+    }
+
+    img.align-right,
+    figure.align-right {
+      margin-left: 24px;
+      margin-bottom: 16px;
+    }
+  }
+
+  .ck.ck-editor__editable_inline > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Arreglo al area administrativa introducidos por imports para mejorar el CKEditor5
+.media-library-item .media-library-item__remove.button,
+.media-library-item .media-library-item__remove.button:hover {
+  border-radius: 6px;
+  min-width: 32px;
+}
+
+.js-form-type-select::after {
+  content: '';
+}

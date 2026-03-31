@@ -1,0 +1,46 @@
+/* A */
+.main-menu__link,
+.menu-principal__link {
+  display: block;
+  padding: 8px 0;
+  text-decoration: none;
+
+  &--with-sub {
+    width: 80%;
+  }
+
+  @include breakpoint('medium') {
+    position: relative;
+    display: inline-block;
+
+    &::after {
+      display: inline-block;
+      content: '>';
+      margin-left: $space;
+    }
+
+    &--sub::after {
+      display: none;
+    }
+  }
+}
+
+/*
+ * Sub Navigation Links
+ */
+
+/* A (Nested) */
+.main-menu__link--sub,
+.menu-principal__link--sub {
+  padding-left: $space;
+}
+
+.main-menu--sub-2,
+.menu-principal--sub-2 {
+  background-color: clr(highlight, bright);
+}
+
+.main-menu__link--sub-2,
+.menu-principal__link--sub-2 {
+  padding-left: $space;
+}

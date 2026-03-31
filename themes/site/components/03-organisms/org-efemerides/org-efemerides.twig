@@ -1,0 +1,66 @@
+<section class="org-efemerides">
+  <div class="container">
+
+  {% set body = featured.description %}
+    <div class="org-efemerides__grid">
+    <div class="org-efemerides-left">
+    <div class="org-efemerides-header">
+    {% include "@atoms/buttons/button.twig" with {
+      button_content: label,
+      button_url: '#',
+      button_modifiers: ['tertiary'],
+      button_icon: {
+        icon_name: 'tag-seccion',
+        icon_height: 24,
+        icon_width: 24,
+        directory: ''
+      },
+    } %}
+
+    {# Título (heading) #}
+    {% include "@atoms/text/headings/_heading.twig" with {
+      heading_level: 4,
+      heading: 'Próxima a celebrar:',
+      heading_base_class: 'h4',
+    } only %}
+    </div>
+      <div class="org-efemerides__item org-efemerides__item--featured">
+        {% include "@molecules/basic-card/basic-card.twig" with {
+          card__title: featured.title,
+          card__date: featured.date,
+          card__month: featured.month,
+          card__description: body,
+          card__url: featured.url,
+        } %}
+      </div>
+    </div>
+
+      <div class="org-efemerides__column">
+        {% for item in items %}
+          <div class="org-efemerides__item">
+            {% include "@molecules/basic-card/basic-card.twig" with {
+              card__title: item.title,
+              card__date: item.date,
+              card__month: item.month,
+              card__url: item.url
+            } %}
+          </div>
+        {% endfor %}
+
+        <div class="org-efemerides__actions">
+          {% include "@atoms/buttons/button.twig" with {
+            button_content: efemerides_more_link['#title'],
+							button_url: efemerides_more_link['#url'],
+            button_modifiers: ['secondary', 'large'],
+            button_icon: {
+              icon_name: 'flecha-derecha',
+              icon_height: 24,
+              icon_width: 24,
+              directory: ''
+            }
+          } %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

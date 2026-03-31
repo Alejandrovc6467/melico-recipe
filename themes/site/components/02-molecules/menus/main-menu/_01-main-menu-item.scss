@@ -1,0 +1,55 @@
+/* LI */
+.main-menu__item,
+.menu-principal__item {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Expand Button */
+.expand-sub {
+  position: relative;
+  display: block;
+  cursor: pointer;
+
+  /* Down triangle */
+  &::after {
+    content: '';
+    display: inline-block;
+    width: var(--spacing-sm);
+    height: var(--spacing-sm);
+    border-right: 2px solid var(--tpms-negro);
+    border-bottom: 2px solid var(--tpms-negro);
+    transform: rotate(45deg);
+    vertical-align: bottom;
+    transition: transform 0.5s ease;
+  }
+
+  /* See main-menu.js */
+  &--open {
+    background-color: clr(accent, bright);
+    color: clr(neutral);
+
+    &::after {
+      margin-top: -20px;
+      border-top-color: transparent;
+      border-bottom: 15px solid;
+    }
+  }
+}
+
+/*
+ * Sub Navigation
+ */
+
+/* LI (Nested) */
+.main-menu__item--sub,
+.menu-principal__item--sub {
+  @include breakpoint('medium') {
+    display: block;
+
+    &:not(:first-child) {
+      border-top: 1px solid clr(highlight);
+    }
+  }
+}

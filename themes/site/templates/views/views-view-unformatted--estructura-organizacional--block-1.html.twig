@@ -1,0 +1,38 @@
+{#
+/**
+ * @file
+ * Theme override to display a view of unformatted rows.
+ *
+ * Available variables:
+ * - title: The title of this group of rows. May be empty.
+ * - rows: A list of the view's row items.
+ *   - attributes: The row's HTML attributes.
+ *   - content: The row's content.
+ * - view: The view object.
+ * - default_row_class: A flag indicating whether default classes should be
+ *   used on rows.
+ *
+ * @see template_preprocess_views_view_unformatted()
+ */
+#}
+<div class="estructura-bloque espacio-secciones">
+
+  {% if title %}
+    <h3 class="titulo-seccion">{{ title }}</h3>
+  {% endif %}
+
+  <div class="wrapper-cards">
+    {% if estructura_items is defined %}
+      {% for item in estructura_items %}
+        {% include "@molecules/mini-card/mini-card.twig" with {
+          card__title: item.titulo_card,
+          card__description: item.descripcion,
+          card__url__mas: item.url_mas,
+          card__txt__mas: item.url_mas_text,
+          card__target: '_self'
+        } %}
+      {% endfor %}
+    {% endif %}
+  </div>
+
+</div>

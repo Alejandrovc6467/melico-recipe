@@ -1,0 +1,22 @@
+{% set url_string = video_url|render|striptags|trim %}
+
+{# Extraer ID de YouTube #}
+{% set video_id = '' %}
+{% if 'v=' in url_string %}
+  {% set video_id = url_string|split('v=')[1]|split('&')[0] %}
+{% elseif 'youtu.be/' in url_string %}
+  {% set video_id = url_string|split('youtu.be/')[1]|split('?')[0] %}
+{% endif %}
+
+<a href="{{ url_string }}" target="_blank" class="video-thumbnail">
+  <div class="video-thumbnail__wrapper">
+    <img 
+      src="https://img.youtube.com/vi/{{ video_id }}/maxresdefault.jpg" 
+      alt="{{ video_title }}" 
+      class="video-thumbnail__image"
+    >
+    <div class="video-thumbnail__overlay">
+      <div class="video-thumbnail__play-icon"></div>
+    </div>
+  </div>
+</a>

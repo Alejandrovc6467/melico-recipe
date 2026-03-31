@@ -1,0 +1,16 @@
+<h2>{{ radius_heading }}</h2>
+
+<ul class="radius-list">
+  {% for item in radius_items %}
+    <li class="radius-item">
+      <div class="radius-label">
+        <strong>{{ item.label }}</strong>
+        <div>{{ item.value }}</div>
+        {% if item.note %}
+          <small>{{ item.note }}</small>
+        {% endif %}
+      </div>
+      <div class="radius-box {{ item.class }}"></div>
+    </li>
+  {% endfor %}
+</ul>

@@ -1,0 +1,140 @@
+.news-list {
+  &__title {
+    margin-bottom: var(--spacing-xl);
+    text-transform: uppercase;
+    display: flex;
+    justify-content: flex-start;
+
+    @include xl {
+      margin-bottom: var(--spacing-xxl);
+      justify-content: center;
+    }
+
+    h2 {
+      color: $azul-presi;
+      position: relative;
+      padding-bottom: var(--spacing-xxs);
+      display: inline-flex;
+      align-items: center;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 156px;
+        height: 2px;
+        background-color: $oro-libertad;
+      }
+    }
+  }
+
+  &__grid {
+    margin-bottom: var(--spacing-xl);
+
+    @include xl {
+      margin-bottom: var(--spacing-xxl);
+    }
+  }
+
+  &__featured-wrapper {
+    margin-bottom: var(--spacing-lg);
+
+    @include xl {
+      margin-bottom: 0;
+    }
+  }
+
+  &__item--featured {
+    height: 100%;
+
+    .basic-card {
+      height: 100%;
+    }
+  }
+
+  &__column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+
+  &__item {
+    .basic-card--news-horizontal {
+      .basic-card__image {
+        margin-bottom: 0;
+      }
+
+      .basic-card__wrapper {
+        padding: 0;
+      }
+
+      .basic-card__title {
+        .h3,
+        .h4,
+        .h5 {
+          white-space: normal;
+        }
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--spacing-lg);
+    width: 100%;
+
+    @include xl {
+      margin-top: var(--spacing-xxl);
+    }
+
+    .button {
+      width: 100%;
+      box-sizing: border-box;
+
+      @include xl {
+        width: 394px;
+        max-width: 394px;
+      }
+    }
+  }
+
+  .basic-card {
+    &__wrapper {
+      padding: 0;
+
+      .basic-card__title {
+        .h3,
+        .h4,
+        .h5 {
+          white-space: normal;
+        }
+      }
+    }
+
+    &__image {
+      margin-bottom: var(--spacing-lg);
+
+      @include xl {
+        margin-bottom: var(--spacing-xl);
+      }
+    }
+
+    &--news {
+      @include xl {
+        max-width: 100%;
+      }
+    }
+
+    &--news-horizontal {
+      @include xl {
+        max-width: 100%;
+      }
+
+      .basic-card__image {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

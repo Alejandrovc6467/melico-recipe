@@ -1,0 +1,96 @@
+{#
+/**
+ * @file
+ * Theatre Seats CTA Organism
+ * 
+ * Available variables:
+ * - pretitle: Small text above the heading (e.g., "Teatro Popular Melico Salazar")
+ * - heading: Main heading text
+ * - cta_label: Button text
+ * - cta_url: Button URL
+ * - description: Paragraph text below the button
+ * - image_left: Object with 'src' and 'alt' for left image
+ * - image_right: Object with 'src' and 'alt' for right image
+ * - has_gray_background: Agrega la clase para fondo gris.
+ * - has_margin: Controla si se aplica el margen inferior.
+ */
+#}
+{% set has_gray_background = has_gray_background is defined ? has_gray_background : false %}
+{% set has_margin = has_margin is defined ? has_margin : true %}
+{% set heading_level = has_gray_background ? 2 : 3 %}
+
+<section class="theatre-seats-cta{% if has_margin %} section-margin{% endif %}{% if has_gray_background %} theatre-seats-cta--fondo-gris{% endif %}">
+  <div class="container">
+    <div class="row">
+
+      <div class="column column__left theatre-seats-cta__content">
+      
+        {# Pretitle #}
+        {% if pretitle %}
+          {% include "@atoms/text/headings/_heading.twig" with {
+            heading_level: 4,
+            heading: pretitle,
+            heading_base_class: 'theatre-seats-cta__pretitle',
+          } only %}
+        {% endif %}
+
+        {# Main Heading #}
+        {% if heading %}
+          {% include "@atoms/text/headings/_heading.twig" with {
+            heading_level: heading_level,
+            heading: heading,
+            heading_base_class: 'theatre-seats-cta__heading'
+          } only %}
+        {% endif %}
+
+        {# CTA Button #}
+        {% if cta_label and cta_url %}
+          <div class="theatre-seats-cta__cta">
+            {% include "@atoms/buttons/button.twig" with {
+              button_content: cta_label,
+              button_url: cta_url,
+              button_modifiers: ['primary', 'medium'],
+            } %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="column column__right theatre-seats-cta__gallery">
+
+          {# Description #}
+          {% if galery_text %}
+            {% include "@atoms/text/text/01-paragraph.twig" with {
+              paragraph_content: galery_text,
+              paragraph_base_class: 'theatre-seats-cta__description',
+            } %}
+          {% endif %}
+
+        <div class="theatre-seats-cta__gallery-container">
+          {% if image_left %}
+            <div class="theatre-seats-cta__image-wrapper">
+              {% if image_left.src is defined %}
+                {% include "@atoms/images/image/_image.twig" with {
+                  image_base_class: 'theatre-seats-cta__image',
+                  image_src: image_left.src,
+                  image_alt: image_left.alt
+                } %}
+              {% endif %}
+            </div>
+          {% endif %}
+
+          {% if image_right %}
+            <div class="theatre-seats-cta__image-wrapper">
+              {% if image_right.src is defined %}
+                {% include "@atoms/images/image/_image.twig" with {
+                  image_base_class: 'theatre-seats-cta__image',
+                  image_src: image_right.src,
+                  image_alt: image_right.alt
+                } %}
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

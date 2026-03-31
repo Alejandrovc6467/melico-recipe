@@ -1,0 +1,7 @@
+grid_heading: 'GRID SYSTEM'
+grid_description: '12 columnas | Gutter: 24px (12px a cada lado) | Max: 1320px'
+rows:
+  - columns: [3, 3, 3, 3]
+  - columns: [6, 6]
+  - columns: [4, 8]
+  - columns: [12]

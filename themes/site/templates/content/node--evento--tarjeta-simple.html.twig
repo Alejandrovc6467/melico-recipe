@@ -1,0 +1,39 @@
+{#
+/**
+ * @file
+ * Theme override to display an Evento node in view mode "tarjeta_simple".
+ *
+ * Available variables:
+ * - node: The node entity.
+ * - label: (optional) The title of the node.
+ * - content: All node items.
+ * - url: URL of the node.
+ * - attributes: HTML attributes for the containing element.
+ * - view_mode: View mode; for example, "teaser" or "full".
+ *
+ * @see template_preprocess_node()
+ */
+#}
+
+{%
+  set classes = [
+    'node',
+    'node--type--' ~ node.bundle|clean_class,
+    node.isPromoted() ? 'node--promoted',
+    node.isSticky() ? 'node--sticky',
+    not node.isPublished() ? 'node--unpublished',
+    view_mode ? 'node--view-mode--' ~ view_mode|clean_class,
+    'event-card-node',
+  ]
+%}
+
+<article{{ attributes.addClass(classes) }}>
+  {% include "@molecules/event-card/event-card.twig" with {
+    card__image__rendered: content.field_imagen|default(null),
+    card__title: label.0,
+    card__category: content.field_institucion is defined ? content.field_institucion|render|striptags|trim : '',
+    card__location: content.field_lugar is defined ? content.field_lugar|render|striptags|trim : '',
+    card__url: url,
+    card__heading_level: 4,
+  } only %}
+</article>

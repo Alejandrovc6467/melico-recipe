@@ -1,0 +1,31 @@
+// @use "../../../00-base/00-default/01-variables" as *;
+// @use "../../../00-base/01-colors/00-colors-vars" as *;
+// @use "../../../00-base/03-spacing/spacing" as *;
+
+// Storybook styling
+.icons-demo {
+  display: flex;
+  flex-wrap: wrap;
+
+  .icon {
+    height: 100px;
+    padding: $spacing-xs;
+    width: 100px;
+
+    @media (prefers-color-scheme: dark) {
+      fill: clr(accent, bright);
+    }
+  }
+
+  pre {
+    background-color: clr(neutral);
+    font-size: 0.8rem;
+    margin: 0;
+    text-align: center;
+  }
+}
+
+.icons-demo__item {
+  border: 1px solid clr(neutral);
+  margin: $spacing-xs;
+}

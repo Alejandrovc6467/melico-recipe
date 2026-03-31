@@ -1,0 +1,15 @@
+<div class="artist-card">
+  <a href="{{ card_url|default('#') }}" class="artist-card__link">
+    <div class="artist-card__image-wrapper">
+      {% include "@atoms/images/image/_image.twig" with {
+        image_src: card_image,
+        image_alt: image_alt,
+        image_blockname: 'artist-card__img'
+      } %}
+      <div class="artist-card__overlay"></div>
+    </div>
+    <div class="artist-card__content">
+      <h4 class="artist-card__title">{{ card_title }}</h4>
+    </div>
+  </a>
+</div>

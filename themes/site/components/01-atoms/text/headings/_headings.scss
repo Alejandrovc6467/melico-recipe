@@ -1,0 +1,149 @@
+// Colores base
+$color-heading: var(--tpms-negro);
+$color-link: var(--tpms-negro);
+$color-link-hover: clr(grey-2);
+
+// Heading font family from tokens
+$font-heading: var(--font-heading);
+// H1 Headline
+@mixin heading-h1 {
+  font-family: $font-heading;
+  font-size: 2.5rem; // 40px
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: $color-heading;
+  margin: 0;
+
+  @include large {
+    font-size: 3.25rem; // 52px
+    line-height: 1.5; // 78px
+  }
+}
+// H2 Headline
+@mixin heading-h2 {
+  font-family: $font-heading;
+  font-size: 2rem; // 32px
+  line-height: 1.5;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: $color-heading;
+  margin: 0;
+
+  @include large {
+    font-size: 2.625rem; // 42px
+    line-height: 1.4762; // 62px
+  }
+}
+// H3 Headline
+@mixin heading-h3 {
+  font-family: $font-heading;
+  font-size: 1.5rem; // 24px
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--tpms-azul-presi);
+  margin: 0;
+
+  @include large {
+    font-size: 2rem; // 32px
+    line-height: 2.5rem; // 40px
+  }
+}
+// H4 Subtitle Medium
+@mixin heading-h4 {
+  font-family: $font-heading;
+  font-size: 1.125rem; // 18px
+  line-height: 1.3334; //24px
+  font-weight: 700;
+  letter-spacing: 0;
+  color: $color-heading;
+  margin: 0;
+
+  @include large {
+    font-size: 1.5rem; // 24px
+    line-height: 1.3334; // 24px
+    font-weight: 600;
+  }
+}
+// H5 Subtitle Regular
+@mixin heading-h5 {
+  font-family: $font-heading;
+  font-size: 1.125rem;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: var(--ls-tight);
+  color: $color-heading;
+  margin: 0;
+
+  @include large {
+    font-size: 1.25rem;
+    line-height: 1.35;
+    letter-spacing: 0;
+  }
+}
+// Aplicación global
+h1,
+.h1 {
+  @include heading-h1;
+}
+
+h2,
+.h2 {
+  @include heading-h2;
+}
+
+h3,
+.h3 {
+  @include heading-h3;
+}
+
+h4,
+.h4 {
+  @include heading-h4;
+}
+
+h5,
+h6,
+.h5,
+.h6 {
+  @include heading-h5;
+}
+
+// ============================================================================
+// DECORATIVE MODIFIERS - Agregar icono y/o linea decorativa
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  display: inline-flex;
+  align-items: center;
+}
+
+.heading__icon {
+  width: 20px;
+  height: 20px;
+  margin-left: var(--spacing-md);
+  background-image: url('../assets/icons/title-icon.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  flex-shrink: 0;
+
+  // Responsive (mobile)
+  @include large {
+    width: var(--spacing-lg);
+    height: var(--spacing-lg);
+  }
+}
+
+.heading__line {
+  display: block;
+  width: 156px;
+  height: 2px;
+  margin-top: 4px;
+  background-color: var(--tpms-oro-libertad, #cfac65);
+}

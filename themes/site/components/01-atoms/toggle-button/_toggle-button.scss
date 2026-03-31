@@ -1,0 +1,189 @@
+.toggle-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  color: currentColor;
+
+  svg {
+    fill: currentColor;
+  }
+
+  // Tamaños
+  &--sm {
+    padding: 4px;
+  }
+
+  &--md {
+    padding: 8px;
+  }
+
+  &--lg {
+    padding: 20px;
+  }
+
+  // Estilos visuales
+  &--stroke-white {
+    border: 1px solid var(--tpms-blanco);
+
+    svg {
+      filter: invert(99%) sepia(99%) saturate(13%) hue-rotate(210deg)
+        brightness(104%) contrast(100%);
+    }
+
+    &:hover {
+      border-color: var(--tpms-azul-cielo);
+
+      svg {
+        filter: invert(38%) sepia(93%) saturate(6447%) hue-rotate(220deg)
+          brightness(91%) contrast(93%);
+      }
+    }
+
+    &.is-selected {
+      border-color: var(--tpms-azul-presi);
+
+      svg {
+        filter: invert(10%) sepia(39%) saturate(3532%) hue-rotate(210deg)
+          brightness(92%) contrast(89%);
+      }
+    }
+
+    &.is-disabled,
+    &:disabled {
+      border-color: var(--gris-neblina);
+      pointer-events: none;
+
+      svg {
+        filter: invert(79%) sepia(0%) saturate(17%) hue-rotate(313deg)
+          brightness(100%) contrast(90%);
+      }
+    }
+  }
+
+  &--fill-black {
+    background: var(--tpms-negro);
+
+    svg {
+      filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(358deg)
+        brightness(106%) contrast(100%);
+    }
+
+    &:hover {
+      background: var(--tpms-azul-cielo);
+    }
+
+    &.is-selected {
+      background: var(--tpms-azul-presi);
+    }
+
+    &.is-disabled,
+    &:disabled {
+      background: var(--tpms-blanco);
+      pointer-events: none;
+
+      svg {
+        filter: invert(79%) sepia(0%) saturate(17%) hue-rotate(313deg)
+          brightness(100%) contrast(90%);
+      }
+    }
+  }
+
+  &--icon-padding {
+    background: transparent;
+    color: var(--tpms-negro);
+
+    &:hover {
+      color: var(--tpms-azul-cielo);
+
+      svg {
+        filter: invert(17%) sepia(100%) saturate(4520%) hue-rotate(222deg)
+          brightness(96%) contrast(86%);
+      }
+    }
+
+    &.is-selected {
+      color: var(--tpms-azul-presi);
+
+      svg {
+        filter: invert(11%) sepia(18%) saturate(6013%) hue-rotate(207deg)
+          brightness(93%) contrast(91%);
+      }
+    }
+
+    &.is-disabled,
+    &:disabled {
+      color: var(--gris-neblina);
+      pointer-events: none;
+
+      svg {
+        filter: invert(79%) sepia(0%) saturate(17%) hue-rotate(313deg)
+          brightness(100%) contrast(90%);
+      }
+    }
+  }
+
+  &--stroke-black {
+    border: 1px solid var(--tpms-negro);
+
+    &:hover {
+      border-color: var(--tpms-azul-cielo);
+
+      svg {
+        filter: invert(17%) sepia(100%) saturate(4520%) hue-rotate(222deg)
+          brightness(96%) contrast(86%);
+      }
+    }
+
+    &.is-selected {
+      border-color: var(--tpms-azul-presi);
+
+      svg {
+        filter: invert(14%) sepia(8%) saturate(7486%) hue-rotate(194deg)
+          brightness(93%) contrast(95%);
+      }
+    }
+
+    &.is-disabled,
+    &:disabled {
+      border-color: var(--gris-neblina);
+      pointer-events: none;
+
+      svg {
+        filter: invert(79%) sepia(0%) saturate(17%) hue-rotate(313deg)
+          brightness(100%) contrast(90%);
+      }
+    }
+  }
+
+  &--fill-white {
+    background: var(--tpms-blanco);
+
+    &:hover {
+      svg {
+        filter: invert(21%) sepia(100%) saturate(1882%) hue-rotate(213deg)
+          brightness(104%) contrast(100%);
+      }
+    }
+
+    &.is-selected {
+      svg {
+        filter: invert(10%) sepia(39%) saturate(3532%) hue-rotate(210deg)
+          brightness(92%) contrast(89%);
+      }
+    }
+
+    &.is-disabled,
+    &:disabled {
+      pointer-events: none;
+
+      svg {
+        filter: invert(79%) sepia(0%) saturate(17%) hue-rotate(313deg)
+          brightness(100%) contrast(90%);
+      }
+    }
+  }
+}

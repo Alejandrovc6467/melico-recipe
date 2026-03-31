@@ -1,0 +1,8 @@
+// Bootstrap Grid System
+// Este archivo ahora usa el grid de Bootstrap con breakpoints personalizados
+// Los breakpoints se sobrescriben en _bootstrap-overrides.scss
+
+// Estilos adicionales específicos del proyecto
+.drupal-paragraph {
+  overflow: hidden;
+}

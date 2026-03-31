@@ -1,0 +1,79 @@
+name: 'Melico Recipe'
+description: 'Content type noticia, vista noticias_y_comunicados, tema site y admin Gin'
+type: Site
+
+install:
+  # Core
+  - node
+  - taxonomy
+  - media
+  - media_library
+  - image
+  - file
+  - text
+  - filter
+  - views
+  - language
+  # Contrib
+  - token
+  - metatag
+  - pathauto
+  - entityqueue
+  - viewfield
+  - paragraphs
+  - simple_sitemap
+  # Temas
+  - gin
+
+config:
+  actions:
+    system.theme:
+      simpleConfig:
+        admin: gin
+
+  import:
+    taxonomy:
+      - taxonomy.vocabulary.autores
+      - taxonomy.vocabulary.categorias_de_noticias
+      - language.content_settings.taxonomy_term.categorias_de_noticias
+    media:
+      - media.type.image
+      - core.entity_view_mode.media.noticia_952x472
+      - core.entity_view_display.media.image.noticia_952x472
+    image:
+      - image.style.card_noticia
+      - image.style.noticia_952x472
+    node:
+      - field.storage.node.field_autor
+      - field.storage.node.field_categorias_de_noticias
+      - field.storage.node.field_imagen_noticia
+      - field.storage.node.field_metatags
+      - node.type.noticia
+      - core.base_field_override.node.noticia.title
+      - language.content_settings.node.noticia
+      - field.field.node.noticia.body
+      - field.field.node.noticia.field_autor
+      - field.field.node.noticia.field_categorias_de_noticias
+      - field.field.node.noticia.field_imagen_noticia
+      - field.field.node.noticia.field_metatags
+      - core.entity_form_display.node.noticia.default
+      - core.entity_view_display.node.noticia.default
+      - core.entity_view_display.node.noticia.full
+      - core.entity_view_display.node.noticia.teaser
+    views:
+      - views.view.noticias_y_comunicados
+      - views.view.lista_de_noticias
+      - views.view.noticias_destacadas
+    entityqueue:
+      - entityqueue.entity_queue.noticias_destacadas
+      - entityqueue.entity_queue.noticias_sala_de_prensa
+      - entityqueue.entity_queue.noticias_viceministerio
+    metatag:
+      - metatag.settings
+      - metatag.metatag_defaults.global
+      - metatag.metatag_defaults.node
+      - metatag.metatag_defaults.node__noticia
+    pathauto:
+      - pathauto.pattern.noticias
+    simple_sitemap:
+      - simple_sitemap.bundle_settings.default.node.noticia

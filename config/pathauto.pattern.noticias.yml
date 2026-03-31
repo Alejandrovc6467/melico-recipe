@@ -1,0 +1,21 @@
+langcode: es
+status: true
+dependencies:
+  module:
+    - node
+id: noticias
+label: Noticias
+type: 'canonical_entities:node'
+pattern: '/sala-de-prensa/noticias/[node:title]'
+selection_criteria:
+  7ccaf510-0d2c-4a92-9234-254a36d8d2e1:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 7ccaf510-0d2c-4a92-9234-254a36d8d2e1
+    context_mapping:
+      node: node
+    bundles:
+      noticia: noticia
+selection_logic: and
+weight: -5
+relationships: {  }

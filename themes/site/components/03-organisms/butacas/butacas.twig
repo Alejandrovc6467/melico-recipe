@@ -1,0 +1,64 @@
+{#
+/**
+ * @file
+ * Butacas Component (Organism)
+ * Displays theater seating capacity information in a grid layout
+ *
+ * Available variables:
+ * - butacas_title: Main title (default: 'Butacas')
+ * - butacas_items: Array of seating information objects
+ *   Each item contains:
+ *   - capacity: Number of seats
+ *   - label: Description label
+ * - butacas_modifiers: Array of BEM modifiers
+ * - butacas_blockname: BEM blockname
+ * - butacas_base_class: Base class (default: 'butacas')
+ */
+#}
+
+{% set butacas_base_class = butacas_base_class|default('butacas') %}
+
+<section {{ bem(butacas_base_class, butacas_modifiers, butacas_blockname, ['section-margin']) }}>
+  <div class="container">
+
+    {# Main Title #}
+    {% if title %}
+      {% include "@atoms/text/headings/_heading.twig" with {
+          heading_level: 3,
+          heading: title,
+          heading_base_class: 'butacas__title',
+      } only %}
+    {% endif %}
+
+    {# Description #}
+    {% if description %}
+      {% include "@atoms/text/text/01-paragraph.twig" with {
+        paragraph_content: description,
+        paragraph_base_class: 'servicios_extra__description',
+      } %}
+    {% endif %}
+   
+    <div class="row {{ butacas_base_class }}__grid">
+      {% for item in butacas_items %}
+        <div class="col-12 col-md-6 col-lg-3 {{ butacas_base_class }}__item">
+          <div class="{{ butacas_base_class }}__icon-wrapper">
+            <span class="{{ butacas_base_class }}__icon"></span>
+            <span class="{{ butacas_base_class }}__capacity">
+              {% if item.capacity %}
+                {{ item.capacity }}
+              {% endif %}
+            </span>
+          </div>
+          
+          <div class="{{ butacas_base_class }}__info">
+            <span class="{{ butacas_base_class }}__label">
+              {% if item.label %}
+               {{ item.label }}
+              {% endif %}
+            </span>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>

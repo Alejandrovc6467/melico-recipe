@@ -1,0 +1,7 @@
+inline_menu_items:
+  - title: 'Contactos'
+    url: '#'
+  - title: 'Servicios'
+    url: '#'
+  - title: 'Convocatorias'
+    url: '#'

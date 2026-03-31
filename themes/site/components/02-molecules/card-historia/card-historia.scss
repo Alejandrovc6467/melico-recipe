@@ -1,0 +1,124 @@
+.card-historia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+
+  // Image
+  &__image-wrapper {
+    width: 100%;
+    height: 200px;
+    margin-bottom: var(--spacing-md);
+    overflow: hidden;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+  }
+
+  // Timeline
+  &__timeline {
+    position: relative;
+    width: 100%;
+    margin-bottom: var(--spacing-xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--spacing-xl);
+  }
+
+  &__timeline-point {
+    position: relative;
+    width: var(--spacing-xl);
+    height: var(--spacing-xl);
+    border-radius: 50%;
+    background-color: $white;
+    border: 6px solid var(--grey-3);
+    z-index: 2;
+    transition: all 0.3s ease;
+  }
+
+  // Content
+  &__content {
+    text-align: center;
+    max-width: 400px;
+  }
+
+  // Paragraph wrapper modifiers - Estos son los divs wrapper
+  &__paragraph {
+    // El <p> hijo (historia-slider__paragraph) heredará estos estilos
+    p {
+      margin: 0;
+    }
+
+    &--event-title {
+      p {
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 21px;
+        margin-bottom: var(--spacing-xs);
+        color: var(--gris-neblina);
+        transition: color 0.3s ease;
+      }
+    }
+
+    &--event-date {
+      p {
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 21px;
+        margin-bottom: var(--spacing-xs);
+        color: var(--gris-neblina);
+        transition: color 0.3s ease;
+      }
+    }
+
+    &--event-description {
+      p {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 21px;
+        color: var(--gris-neblina);
+        margin: 0;
+        transition: color 0.3s ease;
+      }
+    }
+  }
+
+ 
+  // ESTADOS ACTIVE - Para Storybook y para uso standalone de la molécula
+  &--active {
+    // Imagen activa
+    .card-historia__image,
+    .historia-slider__image {
+      opacity: 1;
+    }
+
+    // Timeline point activo
+    .card-historia__timeline-point,
+    .historia-slider__timeline-point {
+      border: 6px solid var(--tpms-oro-libertad);
+    }
+
+    // Textos activos
+    .card-historia__paragraph--event-title p,
+    .historia-slider__paragraph--event-title {
+      color: var(--tpms-azul-cielo);
+    }
+
+    .card-historia__paragraph--event-date p,
+    .historia-slider__paragraph--event-date {
+      color: var(--tpms-azul-cielo);
+    }
+
+    .card-historia__paragraph--event-description p,
+    .historia-slider__paragraph--event-description {
+      color: var(--tpms-azul-presi);
+    }
+  }
+}

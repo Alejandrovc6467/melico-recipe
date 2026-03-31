@@ -1,0 +1,38 @@
+{#
+/**
+ * @file
+ * Template para el paragraph Línea de Tiempo Historia
+ * 
+ * Renderiza el componente historia-slider con datos de Drupal
+ * 
+ * Available variables (desde Drupal):
+ * - paragraph: Entidad paragraph completa
+ * - content: Todos los campos renderizados del paragraph
+ *   - content.field_titulo: Campo título del timeline
+ *   - content.field_subheading: Campo subtítulo del timeline
+ *   - content.field_items_historias: Referencia a paragraphs item_historia
+ * 
+ * Campos del paragraph item_historia:
+ *   - field_titulo: Título del evento
+ *   - field_subheading: Fecha del evento
+ *   - field_descripcion: Descripción del evento
+ *   - field_imagen: Imagen del evento
+ */
+#}
+
+{%
+  set classes = [
+    'drupal-paragraph',
+    'paragraph--type--' ~ paragraph.bundle|clean_class,
+    view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+    not paragraph.isPublished() ? 'paragraph--unpublished'
+  ]
+%}
+
+<section{{ attributes.addClass(classes) }}>
+    {% include "@organisms/tpms-sliders/historia-slider/historia-slider.twig" with {
+        heading_title: heading_title,
+        heading_subtitle: heading_subtitle,
+        slider_items: slider_items,
+    } %}
+</section>

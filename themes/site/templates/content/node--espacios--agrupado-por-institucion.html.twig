@@ -1,0 +1,38 @@
+{#
+/**
+ * Node Espacios - View mode: agrupado_por_institucion
+ * Renderiza un espacio como Event Card
+ * Image style viene del formatter configurado en Drupal
+ */
+#}
+
+{% set image_uri = content.field_imagen[0]['#uri'] ?? null %}
+{% set image_style = content.field_imagen.0['#image_style'] ?? null %}
+{% set image_url = null %}
+{% set image_alt = null %}
+
+{% if image_uri and image_style %}
+	{% set image_url = file_url(image_uri | image_style(image_style)) %}
+{% endif %}
+
+{% if image_uri and image_style %}
+  {% set image_alt = content.field_imagen.0['#item'].alt %}
+{% endif %}
+{% set category = content.field_localidad is defined
+  ? content.field_localidad|render|striptags|trim
+  : '' %}
+
+{% set location = content.field_lugar_espacio is defined
+  ? content.field_lugar_espacio|render|striptags|trim
+  : '' %}
+
+{% include "@molecules/event-card/event-card.twig" with {
+  card__image__src: image_url,
+  card__image__alt: image_alt,
+  card__category: category,
+  card__title: node.label,
+  card__location: location,
+  card__url: path('entity.node.canonical', {'node': node.id}),
+  card__heading_level: 4,
+  card_version: 'second'
+} only %}

@@ -1,0 +1,18 @@
+<div class="eventos-por-provincia">
+  {% include "@atoms/text/headings/_heading.twig" with {
+    heading_level: 3,
+    heading: title,
+    heading_base_class: 'h3',
+  } only %}
+  <div class="eventos-por-provincia__grid">
+    {% for provincia in provincias %}
+      <div class="evento-provincia-card">
+          {% include "@atoms/images/image/responsive-image.twig" with {
+            image_src: file_url(provincia.imagen),
+            image_alt: card__image__alt,
+          } %}
+        <div class="evento-provincia-card__label">{{ provincia.nombre }}</div>
+      </div>
+    {% endfor %}
+  </div>
+</div>

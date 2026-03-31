@@ -1,0 +1,35 @@
+
+{%
+  set classes = [
+    'field__item',
+    'field__item-label-' ~ label_display,
+  ]
+%}
+<div{{attributes.addClass(classes)}}>
+	{% if slider_items|length > 0 %}
+
+		{% set billboard_items = [] %}
+
+		{% for item in slider_items %}
+			{% set billboard_items = billboard_items|merge([{
+        image: item.image ? file_url(item.image) : null,
+        title: item.large_title|default(''),
+        category: item.categoria|default(''),
+        location: item.lugar|default(''),
+        url: item.url|default(view_more_url|default('#')),
+        image_alt: item.image_alt|default('')
+      }]) %}
+		{% endfor %}
+
+		{% include "@organisms/tpms-sliders/billboard-slider/billboard-slider.twig" with {
+      slider_base_class: 'billboard-slider',
+      heading_title: heading_title,
+      heading_description: heading_description,
+      button_text: button_text,
+      button_url: button_url,
+      show_star_icon: true,
+      slider_items: billboard_items
+    } only %}
+
+	{% endif %}
+</div>

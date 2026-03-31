@@ -1,0 +1,10 @@
+{% set card_txt = item.card__txt__mas|default('Ver Más') %}
+<div {{ bem('item', [], card_list_base_class) }}>
+  {% include "@molecules/mini-card/mini-card.twig" with {
+    card__title: item.card__title,
+    card__description: item.card__description,
+    card__url__mas: item.card__url__mas,
+    card__txt__mas: card_txt,
+    card__target: item.card__target|default(null)
+  } only %}
+</div>

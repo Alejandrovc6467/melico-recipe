@@ -1,0 +1,103 @@
+.butacas {
+  // Title
+  &__title {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    color: var(--tpms-azul-presi);
+  }
+
+  // Description
+  &__description {
+    margin-bottom: var(--spacing-xl);
+    color: var(--grey-2);
+    width: 100%;
+    max-width: 611px;
+  }
+
+  // Grid Container (usando Bootstrap row)
+  &__grid {
+    gap: 32px;
+    max-width: 1440px;
+    margin: 0;
+
+    @include medium {
+      gap: var(--spacing-lg);
+    }
+  }
+
+  // Individual Item (Bootstrap maneja el layout)
+  &__item {
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    padding: 0;
+    height: auto;
+    max-width: 341px;
+    gap: var(--spacing-sm);
+
+    @include medium {
+      min-height: 123px;
+      gap: var(--spacing-lg);
+    }
+  }
+
+  // Icon Wrapper
+  &__icon-wrapper {
+    background-color: var(--grey-4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 19px;
+  }
+
+  // Icon (agregado desde CSS)
+  &__icon {
+    display: block;
+    width: 50px;
+    height: 50px;
+    background-image: url('../assets/icons/armchair.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    @include medium {
+      width: 58px;
+      height: 58px;
+    }
+  }
+
+  // Capacity Number
+  &__capacity {
+    font-family: $font-heading;
+    font-size: 2.675rem;
+    line-height: 1.5;
+    font-weight: 700;
+    color: var(--tpms-azul-presi);
+  }
+
+  // Info Container
+  &__info {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: var(--spacing-xs);
+    max-width: 190px; // cambiar en movil a 190px
+
+    @include medium {
+      max-width: 116px;
+    }
+  }
+
+  // Label Text
+  &__label {
+    font-family: $font-heading;
+    font-size: 1.5rem;
+    line-height: 2.125rem;
+    color: var(--tpms-azul-presi);
+    font-weight: 600;
+    max-width: 200px;
+  }
+}

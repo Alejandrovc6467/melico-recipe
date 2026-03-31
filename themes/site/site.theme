@@ -1,0 +1,3074 @@
+<?php
+
+use Drupal\node\NodeInterface;
+use Drupal\views\Views;
+use Drupal\views\ViewExecutable;
+use Drupal\file\Entity\File;
+use Drupal\file\FileInterface;
+use Drupal\media\MediaInterface;
+use Drupal\image\Entity\ImageStyle;
+use Drupal\Core\Url;
+use Drupal\Core\Form\FormState;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Render\Element;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\Core\Link;
+use Drupal\paragraphs\ParagraphInterface;
+use Drupal\Component\Utility\Unicode;
+use Drupal\media\Entity\Media;
+use Drupal\taxonomy\TermInterface;
+use Drupal\node\Entity\Node;
+use Drupal\Core\Cache\CacheableMetadata;
+
+
+/** 
+ * @file
+ * Functions to support theming.
+ */
+
+function tpms_preprocess_html(&$variables)
+{
+  $test = 'Xdebug funcionando';
+  $node = \Drupal::request()->attributes->get('node');
+
+  $variables['#attached']['library'][] = 'tpms/font-resizer';
+  $variables['#attached']['library'][] = 'tpms/menu';
+  $variables['#attached']['library'][] = 'tpms/filtros_noticias';
+  $variables['#attached']['library'][] = 'tpms/search_expand';
+  $variables['#attached']['library'][] = 'tpms/sticky_header_offset';
+
+  if ($node instanceof \Drupal\node\NodeInterface) {
+    $token_service = \Drupal::token();
+    $text = 'Título del nodo: [node:title]';
+    $replaced = $token_service->replace($text, ['node' => $node]);
+
+    $variables['title'] = $replaced;
+  }
+}
+
+function tpms_preprocess_webform(array &$variables)
+{
+  $variables['#attached']['library'][] = 'tpms/webforms-js';
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for page templates.
+ */
+function tpms_preprocess_page(array &$variables)
+{
+  $variables['tpms_sections'] = [];
+
+  if (!empty($variables['node']) && $variables['node'] instanceof NodeInterface) {
+    $node = $variables['node'];
+
+    if (
+      $node->bundle() === 'institucion'
+      && $node->hasField('field_secciones')
+      && !$node->get('field_secciones')->isEmpty()
+    ) {
+      $view_mode = 'full';
+      $display_id = "node.{$node->bundle()}.{$view_mode}";
+      $display = \Drupal::entityTypeManager()
+        ->getStorage('entity_view_display')
+        ->load($display_id);
+
+      if ($display && ($component = $display->getComponent('field_secciones'))) {
+        $variables['tpms_sections'] = $node->get('field_secciones')->view($component);
+      } else {
+        $variables['tpms_sections'] = $node->get('field_secciones')->view(['label' => 'hidden']);
+      }
+    }
+  }
+
+  $route_match = \Drupal::routeMatch();
+  if (!$route_match || $route_match->getRouteName() !== 'entity.node.canonical') {
+    return;
+  }
+
+  $node = $route_match->getParameter('node');
+  if (!($node instanceof NodeInterface) || $node->bundle() !== 'evento') {
+    return;
+  }
+
+  if (!isset($variables['page']['sidebar']) || !is_array($variables['page']['sidebar'])) {
+    $variables['page']['sidebar'] = [];
+  }
+
+  $variables['page']['sidebar']['indice_de_eventos'] = [
+    '#type' => 'view',
+    '#name' => 'indice_de_eventos',
+    '#display_id' => 'block_1',
+    '#arguments' => [$node->id()],
+    '#weight' => -10,
+    '#cache' => [
+      'contexts' => ['route'],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function tpms_preprocess_node(array &$variables)
+{
+  if (
+    empty($variables['node'])
+    || !($variables['node'] instanceof NodeInterface)
+  ) {
+    return;
+  }
+
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = $variables['node'];
+
+  if (!$node->hasField('field_mostrar_titulo_pagina')) {
+    return;
+  }
+
+  $value = $node->get('field_mostrar_titulo_pagina')->value;
+  $show_title = $value === '1';
+  $variables['show_page_title'] = $show_title;
+
+  // Ensure canonical node pages honor show_page_title even when view mode isn't "full".
+  $route_match = \Drupal::routeMatch();
+  if ($route_match && $route_match->getRouteName() === 'entity.node.canonical') {
+    $route_node = $route_match->getParameter('node');
+    if ($route_node instanceof NodeInterface && $route_node->id() === $node->id()) {
+      $variables['page'] = true;
+    }
+  }
+
+  if (!$show_title && !empty($variables['page']) && isset($variables['content']['title'])) {
+    unset($variables['content']['title']);
+  }
+}
+
+function tpms_theme_suggestions_page_alter(array &$suggestions, array $variables): void
+{
+  $current_path = \Drupal::service('path.current')->getPath();
+  $alias = \Drupal::service('path_alias.manager')->getAliasByPath($current_path);
+
+  if (str_starts_with($alias, '/institucion')) {
+    $suggestions[] = 'page__institucion';
+  }
+}
+/**
+ * Implements hook_preprocess_HOOK() for field templates.
+ */
+function tpms_preprocess_field(array &$variables)
+{
+  $element = $variables['element'] ?? [];
+  if (($element['#field_name'] ?? '') !== 'title' || ($element['#entity_type'] ?? '') !== 'node') {
+    return;
+  }
+
+  $node = $element['#object'] ?? NULL;
+  if (!($node instanceof NodeInterface)) {
+    return;
+  }
+
+  $route_match = \Drupal::routeMatch();
+  if (!$route_match || $route_match->getRouteName() !== 'entity.node.canonical') {
+    return;
+  }
+
+  $route_node = $route_match->getParameter('node');
+  if (!($route_node instanceof NodeInterface) || $route_node->id() !== $node->id()) {
+    return;
+  }
+
+  if (!$node->hasField('field_mostrar_titulo_pagina')) {
+    return;
+  }
+
+  $value = $node->get('field_mostrar_titulo_pagina')->value;
+  $show_title = $value === '1';
+  $variables['show_page_title'] = $show_title;
+
+  if (!$show_title) {
+    $variables['items'] = [];
+    $variables['label_hidden'] = TRUE;
+    $variables['element']['#access'] = FALSE;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for menu-local-tasks templates.
+ */
+function tpms_preprocess_menu_local_tasks(&$variables)
+{
+  if (!empty($variables['primary']) && is_array($variables['primary'])) {
+    $variables['primary']['#attached']['library'][] = 'tpms/local-tasks-tabs';
+
+    foreach (Element::children($variables['primary']) as $key) {
+      $variables['primary'][$key]['#level'] = 'primary';
+    }
+  }
+
+  if (!empty($variables['secondary']) && is_array($variables['secondary'])) {
+    $variables['secondary']['#attached']['library'][] = 'tpms/local-tasks-tabs';
+
+    foreach (Element::children($variables['secondary']) as $key) {
+      $variables['secondary'][$key]['#level'] = 'secondary';
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for menu-local-task templates.
+ */
+function tpms_preprocess_menu_local_task(&$variables)
+{
+  if (!isset($variables['link']['#options']['attributes']['class'])) {
+    $variables['link']['#options']['attributes']['class'] = [];
+  }
+
+  $variables['link']['#options']['attributes']['class'][] = 'tabs__link';
+  $variables['link']['#options']['attributes']['class'][] = 'js-tabs-link';
+
+  if (!empty($variables['is_active'])) {
+    $variables['link']['#options']['attributes']['class'][] = 'is-active';
+  }
+
+  if (isset($variables['element']['#level'])) {
+    $variables['level'] = $variables['element']['#level'];
+  }
+}
+
+/**
+ * Preprocess region to inject Newsletter block in footer.
+ */
+function tpms_preprocess_region(array &$variables)
+{
+  if (($variables['region'] ?? '') !== 'footer') {
+    return;
+  }
+
+  if (empty($variables['elements']) || !is_array($variables['elements'])) {
+    return;
+  }
+
+  // Precalcula el logo del footer con image style (solo Drupal).
+  if (!isset($variables['elements']['tpms_footer_logo_src'])) {
+    $uri = NULL;
+
+    // 1) Preferimos el URI que expone el bloque de branding.
+    if (
+      isset($variables['elements']['tpms_marcadelsitio_2']['content']['site_logo']['#uri'])
+      && is_string($variables['elements']['tpms_marcadelsitio_2']['content']['site_logo']['#uri'])
+    ) {
+      $uri = $variables['elements']['tpms_marcadelsitio_2']['content']['site_logo']['#uri'];
+    }
+    // 2) Fallback: settings del theme (consistente entre usuarios).
+    else {
+      $uri = \Drupal::config('tpms.settings')->get('logo.path');
+    }
+
+    // 3) Último fallback: logo resuelto por el tema activo.
+    if (!is_string($uri) || $uri === '') {
+      $uri = \Drupal::theme()->getActiveTheme()->getLogo();
+    }
+
+    if (is_string($uri) && $uri !== '') {
+      $uri = str_replace('public://sites/default/files/', 'public://', $uri);
+      if (str_starts_with($uri, '/sites/default/files/')) {
+        $uri = 'public://' . substr($uri, strlen('/sites/default/files/'));
+      }
+
+      $style = ImageStyle::load('logo_footer');
+      $variables['elements']['tpms_footer_logo_src'] = $style
+        ? $style->buildUrl($uri)
+        : $uri;
+    }
+  }
+
+  $block_storage = \Drupal::entityTypeManager()->getStorage('block_content');
+  $block_config_storage = \Drupal::entityTypeManager()->getStorage('block');
+
+  foreach ($variables['elements'] as $key => $element) {
+    if (!is_array($element)) {
+      continue;
+    }
+
+    $plugin_id = NULL;
+    if (isset($element['#plugin_id']) && is_string($element['#plugin_id'])) {
+      $plugin_id = $element['#plugin_id'];
+    } elseif (isset($element['#configuration']['id']) && is_string($element['#configuration']['id'])) {
+      $plugin_id = $element['#configuration']['id'];
+    } elseif (is_string($key) && $key === 'tpms_newsletter') {
+      $block_config = $block_config_storage->load($key);
+      if ($block_config) {
+        $plugin_id = $block_config->getPluginId();
+      }
+    }
+
+    if (!is_string($plugin_id) || $plugin_id === '') {
+      continue;
+    }
+
+    $plugin_id = (string) $plugin_id;
+
+    // Simplenews
+    if (
+      $plugin_id === 'simplenews_subscription_block'
+      || str_starts_with($plugin_id, 'simplenews_subscription_block:')
+      || (is_string($key) && $key === 'tpms_simplenewssubscription')
+    ) {
+      $variables['elements']['tpms_newsletter_form'] ??= $element;
+      unset($variables['elements'][$key]);
+      continue;
+    }
+
+    // Block content: newsletter
+    if (str_starts_with($plugin_id, 'block_content:')) {
+      $uuid = substr($plugin_id, 14);
+      if (!$uuid) {
+        continue;
+      }
+
+      $found = $block_storage->loadByProperties(['uuid' => $uuid]);
+      if (!$found) {
+        continue;
+      }
+
+      $block = reset($found);
+      if ($block->bundle() !== 'newsletter') {
+        continue;
+      }
+
+      if ($block->hasField('field_titulo') && !$block->get('field_titulo')->isEmpty()) {
+        $variables['elements']['tpms_newsletter_title'] =
+          $block->get('field_titulo')->view(['label' => 'hidden']);
+      }
+
+      if ($block->hasField('field_description') && !$block->get('field_description')->isEmpty()) {
+        $variables['elements']['tpms_newsletter_description'] =
+          $block->get('field_description')->view(['label' => 'hidden']);
+      }
+
+      unset($variables['elements'][$key]);
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for
+ * viewfield-item--field-reference--noticias-destacadas.html.twig.
+ */
+function tpms_preprocess_viewfield_item__field_reference__noticias_destacadas(array &$variables)
+{
+  if ($view = Views::getView('noticias_destacadas')) {
+    $view->setDisplay($variables['element']['#display_id']);
+    $view->execute();
+
+    $items = [];
+    /** @var \Drupal\views\ResultRow $row */
+    foreach ($view->result as $row) {
+      /** @var NodeInterface $node */
+      $node = $row->_entity;
+
+      $image_url = NULL;
+
+      if ($node->hasField('field_imagen_noticia') && !$node->get('field_imagen_noticia')->isEmpty()) {
+        /** @var MediaInterface $media */
+        $media = $node->get('field_imagen_noticia')->entity;
+
+        if (
+          $media instanceof MediaInterface
+          && $media->hasField('field_media_image')
+          && !$media->get('field_media_image')->isEmpty()
+        ) {
+
+          /** @var FileInterface $file */
+          $file = $media->get('field_media_image')->entity;
+
+          if ($file instanceof FileInterface) {
+            $uri = $file->getFileUri();
+            /** @var ImageStyle $style */
+            $style = ImageStyle::load('full');
+            if ($style) {
+              $image_url = $style->buildUrl($uri);
+            }
+          }
+        }
+      }
+
+      $items[] = [
+        'title' => $node->label(),
+        'url'   => $node->toUrl()->toString(),
+        'image' => $image_url,
+      ];
+    }
+
+    $variables['slider_items'] = $items;
+
+    $display = $view->display_handler;
+    $use_more       = $display->getOption('use_more');
+    $link_display   = $display->getOption('link_display');
+    $custom_path    = $display->getOption('link_url');
+    $more_text      = $display->getOption('use_more_text');
+
+    if ($use_more && $link_display === 'custom_url' && !empty($custom_path)) {
+      // Construye la URL (interna o externa).
+      $variables['view_more_url']  = Url::fromUri('internal:' . $custom_path)->toString();
+      $variables['view_more_text'] = $more_text;
+    }
+  }
+}
+
+function tpms_preprocess_paragraph__imagen_texto(&$variables)
+{
+  $paragraph = $variables['paragraph'];
+
+  // Título
+  $variables['tpms_titulo'] = !$paragraph->get('field_titulo')->isEmpty()
+    ? $paragraph->field_titulo->value
+    : NULL;
+
+  // Formato de imagen (cuadrada o panorámica)
+  // $variables['tpms_image_format'] = (
+  //   !$paragraph->get('field_imagen_con_formato')->isEmpty() &&
+  //   !$paragraph->field_imagen_con_formato->entity->get('field_imagen_a_la_derecha')->isEmpty() &&
+  //   $paragraph->field_imagen_con_formato->entity->field_imagen_a_la_derecha->value == 1
+  // ) ? 'panoramica' : 'cuadrada';
+
+  // Imagen
+  $variables['tpms_imagen'] = $variables['content']['field_imagen'];
+
+  // Posición de imagen
+  $variables['tpms_image_position'] = (
+    !$paragraph->get('field_imagen_a_la_derecha')->isEmpty() &&
+    $paragraph->field_imagen_a_la_derecha->value == 1
+  ) ? 'derecha' : 'izquierda';
+
+  // Lugar
+  $variables['tpms_lugar'] = !$paragraph->get('field_lugar')->isEmpty()
+    ? $paragraph->field_lugar->value
+    : NULL;
+
+  // Categorías (array de nombres)
+  $categorias = [];
+  if (!$paragraph->get('field_categoria')->isEmpty()) {
+    foreach ($paragraph->field_categoria as $term_item) {
+      if ($term_item->entity) {
+        $categorias[] = $term_item->entity->label();
+      }
+    }
+  }
+  $variables['tpms_categorias'] = $categorias;
+
+  // Botón: solo si tiene texto Y URL
+  if (
+    !$paragraph->get('field_boton')->isEmpty() &&
+    $paragraph->field_boton->entity
+  ) {
+    $boton = $paragraph->field_boton->entity;
+
+    // Verificamos que field_link tenga contenido válido
+    if (
+      !$boton->get('field_link')->isEmpty() &&
+      !empty($boton->field_link->title) &&
+      $boton->field_link->first()->getUrl()
+    ) {
+      $variables['tpms_color_button'] = $boton->field_color_de_fondo->color;
+      $variables['tpms_texto_imagen_button_content'] = $boton->field_link->title;
+      $variables['texto_imagen_button_url'] = $boton->field_link->first()->getUrl()->toString();
+    }
+  }
+
+  // Contenido procesado
+  if (!$paragraph->get('field_contenido')->isEmpty()) {
+    $variables['tpms_contenido'] = [
+      '#type' => 'processed_text',
+      '#text' => $paragraph->field_contenido->value,
+      '#format' => $paragraph->field_contenido->format,
+    ];
+  }
+
+  if (!$paragraph->get('field_rango_de_fecha')->isEmpty()) {
+    $fecha_raw = $paragraph->field_rango_de_fecha->daterangepicker;
+
+    if (!empty($fecha_raw)) {
+      [$inicio_raw, $fin_raw] = explode(' - ', $fecha_raw);
+
+      $inicio = \DateTime::createFromFormat('m/d/Y h:i A', $inicio_raw);
+      $fin = \DateTime::createFromFormat('m/d/Y h:i A', $fin_raw);
+
+      // Verificar si inicio y fin son el mismo día (misma fecha exacta)
+      $mismo_dia = (
+        $inicio && $fin &&
+        $inicio->format('Y-m-d') === $fin->format('Y-m-d')
+      );
+
+      if ($inicio && $fin && !$mismo_dia) {
+        $meses = [
+          1 => 'enero',
+          2 => 'febrero',
+          3 => 'marzo',
+          4 => 'abril',
+          5 => 'mayo',
+          6 => 'junio',
+          7 => 'julio',
+          8 => 'agosto',
+          9 => 'septiembre',
+          10 => 'octubre',
+          11 => 'noviembre',
+          12 => 'diciembre',
+        ];
+
+        $formateado = $inicio->format('j') . ' de ' . $meses[(int)$inicio->format('n')];
+
+        if (
+          $inicio->format('n') != $fin->format('n') ||
+          $inicio->format('j') != $fin->format('j')
+        ) {
+          $formateado .= ' - ' . $fin->format('j') . ' de ' . $meses[(int)$fin->format('n')];
+        }
+
+        $formateado .= ' ' . $fin->format('Y');
+
+        $variables['tpms_fecha_rango'] = $formateado;
+      }
+    }
+  }
+}
+
+function tpms_preprocess_paragraph__titulo_de_pagina(&$variables)
+{
+  $paragraph = $variables['paragraph'] ?? NULL;
+  if (!$paragraph || !method_exists($paragraph, 'getParentEntity')) {
+    return;
+  }
+
+  $parent = $paragraph->getParentEntity();
+  if (!($parent instanceof NodeInterface)) {
+    return;
+  }
+
+  if (!$parent->hasField('field_mostrar_titulo_pagina')) {
+    return;
+  }
+
+  $value = $parent->get('field_mostrar_titulo_pagina')->value;
+  if ($value !== '1') {
+    if (isset($variables['elements'])) {
+      $variables['elements']['#access'] = FALSE;
+    }
+    $variables['#access'] = FALSE;
+  }
+}
+
+/**
+ * Preprocess for viewfield (wrapper).
+ * Aquí SÍ existe $variables['entity'] (el Paragraph).
+ */
+function tpms_preprocess_viewfield(array &$variables): void
+{
+  $host = $variables['entity'] ?? NULL;
+  if (!$host instanceof ParagraphInterface) {
+    return;
+  }
+
+  // Inyectar el paragraph host dentro de cada item para que lo lea viewfield_item.
+  if (!empty($variables['items']) && is_array($variables['items'])) {
+    foreach ($variables['items'] as $delta => &$item) {
+      if (is_array($item) && isset($item['element']) && is_array($item['element'])) {
+        $item['element']['#host_entity'] = $host;
+      } elseif (is_array($item)) {
+        $item['#host_entity'] = $host;
+      }
+    }
+  }
+}
+/**
+ * Implements hook_preprocess_HOOK() for
+ * viewfield-item--ultimos-eventos.html.twig.
+ */
+function tpms_preprocess_viewfield_item__ultimos_eventos(array &$variables)
+{
+  if ($view = Views::getView('ultimos_eventos')) {
+    $view->setDisplay('block_1');
+    $view->execute();
+
+    $items = [];
+    /** @var \Drupal\views\ResultRow $row */
+    foreach ($view->result as $row) {
+      /** @var NodeInterface $node */
+      $node = $row->_entity;
+
+      $image_url = NULL;
+
+      $image_alt = '';
+
+      if ($node->hasField('field_imagen') && !$node->get('field_imagen')->isEmpty()) {
+        /** @var \Drupal\media\MediaInterface $media */
+        $media = $node->get('field_imagen')->entity;
+
+        if (
+          $media instanceof \Drupal\media\MediaInterface
+          && $media->hasField('field_media_image')
+          && !$media->get('field_media_image')->isEmpty()
+        ) {
+          $image_alt = (string) $media->get('field_media_image')->alt;
+
+          /** @var \Drupal\file\FileInterface $file */
+          $file = $media->get('field_media_image')->entity;
+
+          if ($file instanceof \Drupal\file\FileInterface) {
+            $uri = $file->getFileUri();
+
+            /** @var \Drupal\image\Entity\ImageStyle $style */
+            $style = \Drupal\image\Entity\ImageStyle::load('cartelera_418x427');
+            if ($style) {
+              $image_url = $style->buildUrl($uri);
+            }
+          }
+        }
+      }
+
+      /** @var \Drupal\node\Entity\Node $node */
+      $date_items = $node->get('field_fechas_evento'); // FieldItemListInterface
+
+      if (!$date_items->isEmpty()) {
+        /** @var \Drupal\smart_date\Plugin\Field\FieldType\SmartDateItem $first_item */
+        $first_item = $date_items->first();
+        $start_timestamp = $first_item->value;
+
+        $count = $date_items->count();
+        /** @var \Drupal\smart_date\Plugin\Field\FieldType\SmartDateItem $last_item */
+        $last_item = $date_items->get($count - 1);
+        $end_timestamp = $last_item->end_value ?: $last_item->value;
+
+        /** @var \Drupal\Core\Datetime\DateFormatterInterface $df */
+        $df = \Drupal::service('date.formatter');
+
+        $start_formatted = $df->format($start_timestamp, 'custom', 'j \d\e F');
+        $end_formatted   = $df->format($end_timestamp,   'custom', 'j \d\e F');
+        $year            = $df->format($end_timestamp,   'custom', 'Y');
+
+        if ($start_formatted === $end_formatted) {
+          $finish_date = "{$start_formatted} {$year}";
+        } else {
+          $finish_date = "{$start_formatted} – {$end_formatted} {$year}";
+        }
+      } else {
+        $finish_date = NULL;
+      }
+
+      /** @var \Drupal\taxonomy\Entity\Term[] $terms */
+      /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $terms */
+
+      if ($node->get('field_institucion')->entity) {
+        $categoria = $node->get('field_institucion')->entity->title->value;
+      }
+
+
+      $link_field = $node->get('field_enlace_externo')->first();
+      $external_link = [];
+      if ($link_field) {
+        $external_link = [
+          'uri' => $link_field->uri,
+          'title' => $link_field->title
+        ];
+      }
+
+      $node_url = $node->toUrl('canonical', ['absolute' => TRUE])->toString();
+      /** @var NodeInterface|null $institucion */
+      $institucion = ($node->hasField('field_institucion') && !$node->get('field_institucion')->isEmpty())
+        ? $node->field_institucion->entity
+        : null;
+      $institucion_title = ($institucion && $institucion->hasField('title') && !$institucion->get('title')->isEmpty())
+        ? $institucion->title->value
+        : '';
+
+      $large_title = $institucion_title ? $node->label() . ' | ' . $institucion_title : $node->label();
+      $lugar = $node->get('field_lugar')->value;
+
+      $items[] = [
+        'large_title' => $large_title,
+        'url'   => $node->toUrl()->toString(),
+        'image' => $image_url,
+        'date' => $finish_date,
+        'lugar' => $lugar,
+        'categoria' => $categoria,
+        'external_link' => $external_link,
+        'node_url' => $node_url,
+        'image_alt' => $image_alt,
+      ];
+    }
+    $variables['slider_items'] = $items;
+
+
+    $display = $view->display_handler;
+    $use_more       = $display->getOption('use_more');
+    $link_display   = $display->getOption('link_display');
+    $custom_path    = $display->getOption('link_url');
+    $more_text      = $display->getOption('use_more_text');
+
+    // if ($use_more && $link_display === 'custom_url' && !empty($custom_path)) {
+    //   $variables['view_more_url']  = Url::fromUri('internal:' . $custom_path)->toString();
+    //   $variables['view_more_text'] = $more_text;
+    // }
+    /**
+     * ===== Sacar datos desde el paragraph (title, description, link) =====
+     * Host entity del viewfield-item.
+     */
+    $host = $variables['element']['#host_entity'] ?? NULL;
+    // Fallback por si la estructura cambia.
+    if (!$host && isset($variables['element']['#content']['#host_entity'])) {
+      $host = $variables['element']['#content']['#host_entity'];
+    }
+
+    if ($host instanceof ParagraphInterface) {
+
+      // Título
+      $variables['heading_title'] = (!$host->get('field_heading')->isEmpty())
+        ? $host->get('field_heading')->value
+        : '';
+
+      // Descripción (texto largo)
+      $variables['heading_description'] = (!$host->get('field_description')->isEmpty())
+        ? $host->get('field_description')->value
+        : '';
+
+      // Botón (link)
+      $variables['button_text'] = '';
+      $variables['button_url'] = '';
+
+      if ($host->hasField('field_link') && !$host->get('field_link')->isEmpty()) {
+        $link = $host->get('field_link')->first();
+        $variables['button_text'] = $link->title ?? '';
+        $variables['button_url'] = $link->getUrl()->toString();
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for
+ * viewfield-item--lista-de-fondos-concursables.html.twig.
+ */
+function tpms_preprocess_viewfield_item__lista_de_fondos_concursables(array &$variables)
+{
+  if ($view = Views::getView('lista_de_fondos_concursables')) {
+    $view->setDisplay($variables["content"]['#display_id']);
+    $view->execute();
+
+    /** @var \Drupal\Core\Render\RendererInterface $renderer */
+    $renderer = \Drupal::service('renderer');
+
+    $form_state = (new FormState())
+      ->setStorage([
+        'view' => $view,
+        'display' => &$view->display_handler->display,
+        'rerender' => TRUE,
+      ])
+      ->setMethod('get')
+      ->setAlwaysProcess()
+      ->disableRedirect();
+    $form_state->set('rerender', NULL);
+    $form = \Drupal::formBuilder()->buildForm(
+      '\Drupal\views\Form\ViewsExposedForm',
+      $form_state
+    );
+
+    $pager_render_array = $view->pager->render($view->pager->options);
+    $pager_html = $renderer->renderRoot($pager_render_array);
+
+    $items = [];
+    /** @var \Drupal\views\ResultRow $row */
+    foreach ($view->result as $row) {
+      /** @var NodeInterface $node */
+      $node = $row->_entity;
+
+      $title = $node->label();
+      $node_url = $node->toUrl('canonical', ['absolute' => TRUE])->toString();
+      $summary = '';
+      if ($node->hasField('body') && !$node->get('body')->isEmpty()) {
+        $body_item = $node->get('body')->first();
+        $raw_text = !empty($body_item->summary) ? $body_item->summary : $body_item->value;
+        if (!empty($raw_text)) {
+          $plain_text = trim(strip_tags($raw_text));
+          $summary = Unicode::truncate($plain_text, 200, TRUE, TRUE);
+        }
+      }
+
+      $items[] = [
+        'node' => $node,
+        'title' => $title,
+        'url' => $node_url,
+        'summary' => $summary,
+      ];
+    };
+
+    $variables['items'] = $items;
+    $variables['pager_html'] = $pager_html;
+    $variables['exposed_form'] = $form;
+  }
+}
+
+function tpms_preprocess_paragraph__artists_section(array &$variables)
+{
+  $paragraph = $variables['paragraph'] ?? NULL;
+  if (!$paragraph) {
+    return;
+  }
+
+  $variables['section_title'] = $paragraph->hasField('field_titulo') && !$paragraph->get('field_titulo')->isEmpty()
+    ? $paragraph->get('field_titulo')->value
+    : NULL;
+
+  $variables['section_description'] = $paragraph->hasField('field_description') && !$paragraph->get('field_description')->isEmpty()
+    ? $paragraph->get('field_description')->value
+    : NULL;
+
+  $variables['section_has_margin'] = TRUE;
+  if ($paragraph->hasField('field_margen_inferior') && !$paragraph->get('field_margen_inferior')->isEmpty()) {
+    $variables['section_has_margin'] = (bool) $paragraph->get('field_margen_inferior')->value;
+  }
+
+  $items = [];
+  if ($paragraph->hasField('field_artistas') && !$paragraph->get('field_artistas')->isEmpty()) {
+    foreach ($paragraph->get('field_artistas')->referencedEntities() as $item) {
+      $title = $item->hasField('field_titulo') && !$item->get('field_titulo')->isEmpty()
+        ? $item->get('field_titulo')->value
+        : '';
+
+      $url = '#';
+      if ($item->hasField('field_link') && !$item->get('field_link')->isEmpty()) {
+        try {
+          $url = $item->get('field_link')->first()->getUrl()->toString();
+        } catch (\Throwable $e) {
+          $url = '#';
+        }
+      }
+
+      $image = NULL;
+      $image_alt = '';
+      if ($item->hasField('field_imagen') && !$item->get('field_imagen')->isEmpty()) {
+        $media = $item->get('field_imagen')->entity;
+        if ($media && $media->hasField('field_media_image') && !$media->get('field_media_image')->isEmpty()) {
+          $image_item = $media->get('field_media_image')->first();
+          $image_alt = (string) ($image_item?->alt ?? '');
+          $file = $media->get('field_media_image')->entity;
+          if ($file) {
+            $uri = $file->getFileUri();
+            $style = ImageStyle::load('artists_section_342x419');
+            $image = $style
+              ? $style->buildUrl($uri)
+              : \Drupal::service('file_url_generator')->generateString($uri);
+          }
+        }
+      }
+
+      $items[] = [
+        'title' => $title,
+        'url' => $url,
+        'image' => $image,
+        'image_alt' => $image_alt,
+      ];
+    }
+  }
+
+  $variables['artists'] = $items;
+}
+
+function tpms_preprocess_paragraph__cta(array &$variables)
+{
+  $paragraph = $variables['paragraph'];
+
+  // Inicialización segura
+  $variant = $paragraph->hasField('field_variante_de_cta') && !$paragraph->get('field_variante_de_cta')->isEmpty()
+    ? $paragraph->get('field_variante_de_cta')->value
+    : '';
+
+  $variables['cta_has_margin'] = TRUE;
+  if (
+    $variant === 'cta_basico_oscuro' &&
+    $paragraph->hasField('field_margen_inferior') &&
+    !$paragraph->get('field_margen_inferior')->isEmpty()
+  ) {
+    $variables['cta_has_margin'] = (bool) $paragraph->get('field_margen_inferior')->value;
+  }
+
+  // Mapeo de variantes a modificadores
+  $modifiers_map = [
+    'cta_basico' => 'default',
+    'cta_basico_oscuro' => 'dark',
+    'cta_oscuro_con_imagen' => 'rectangular',
+  ];
+  $variables['cta_modifier'] = $modifiers_map[$variant] ?? 'default';
+
+  // Título
+  $variables['cta_title'] = $paragraph->hasField('field_titulo') && !$paragraph->get('field_titulo')->isEmpty()
+    ? $paragraph->get('field_titulo')->value
+    : NULL;
+
+  // Descripción
+  $variables['cta_description'] = $paragraph->hasField('field_description') && !$paragraph->get('field_description')->isEmpty()
+    ? $paragraph->get('field_description')->value
+    : NULL;
+
+  // Subheading (para tagline)
+  $button_content_tag = $paragraph->hasField('field_subheading') && !$paragraph->get('field_subheading')->isEmpty()
+    ? $paragraph->get('field_subheading')->value
+    : NULL;
+
+  $variables['cta_button_content_tag'] = $button_content_tag;
+
+  if (!empty($button_content_tag)) {
+    $variables['tagline'] = [
+      'tagline' => true,
+      'button_modifiers_tag' => ['tertiary-border'],
+      'button_icon_tag' => [
+        'icon_name' => 'tag-seccion',
+        'icon_height' => 32,
+        'icon_width' => 32,
+      ],
+    ];
+  }
+
+  // Determinar modifiers del botón
+  if (in_array($variant, ['cta_basico_oscuro'])) {
+    $button_modifier = ['secondary'];
+  } elseif (in_array($variant, ['cta_oscuro_con_imagen'])) {
+    $button_modifier = ['tertiary-border'];
+  } else {
+    $button_modifier = ['primary', 'medium'];
+  }
+
+  // Botón
+  if (
+    $paragraph->hasField('field_boton') &&
+    !$paragraph->get('field_boton')->isEmpty()
+  ) {
+    $variables['cta_buttons'] = []; // Array para almacenar todos los botones
+
+    foreach ($paragraph->get('field_boton') as $item) {
+      if (!$item->entity instanceof \Drupal\Core\Entity\EntityInterface) {
+        continue;
+      }
+
+      $boton = $item->entity;
+      $button_data = [];
+
+      // Procesar archivo o enlace si existe
+      if (
+        $boton->hasField('field_archivo') &&
+        !$boton->get('field_archivo')->isEmpty()
+      ) {
+        $file_id = $boton->field_archivo->target_id;
+        $media = \Drupal\media\Entity\Media::load($file_id);
+
+        if ($media && $media->hasField('field_media_file')) {
+          $file_id = $media->field_media_file->target_id;
+          $file = \Drupal\file\Entity\File::load($file_id);
+
+          if ($file) {
+            if ($button_modifier == ['tertiary']) {
+              $icon_name = 'download';
+              $button_modifier = ['tertiary', 'medium'];
+            } else {
+              $icon_name = 'download';
+              $button_modifier = ['tertiary', 'medium'];
+            }
+
+            if (!$boton->field_titulo->isEmpty()) {
+              $button_name = $boton->field_titulo->value;
+            } else {
+              $button_name = $file->getFilename();
+            }
+
+            $button_data = [
+              'button_content' => $button_name,
+              'button_url' => $file->createFileUrl(),
+              'button_modifiers' => $button_modifier,
+              'button_icon' => [
+                'icon_name' => $icon_name,
+                'icon_height' => 24,
+                'icon_width' => 24,
+                'directory' => ' '
+              ],
+              'button_is_download' => true
+            ];
+          }
+        }
+      } elseif (
+        $boton->hasField('field_link') &&
+        !$boton->get('field_link')->isEmpty() &&
+        $boton->field_link->first()->getUrl()
+      ) {
+        if ($button_modifier == ['tertiary-border']) {
+          $button_icon = [
+            'icon_name' => 'mini_right',
+            'icon_height' => 24,
+            'icon_width' => 24,
+            'directory' => ' '
+          ];
+        } else {
+          $button_icon = [];
+        }
+
+        $button_data = [
+          'button_content' => $boton->field_link->title,
+          'button_url' => $boton->field_link->first()->getUrl()->toString(),
+          'button_modifiers' => $button_modifier,
+          'button_icon' => $button_icon,
+        ];
+      }
+
+      if (!empty($button_data)) {
+        $variables['cta_buttons'][] = $button_data;
+      }
+    }
+  }
+
+  // Imagen
+  if ($variables['content']['field_imagen']) {
+    $variables['cta_image'] = $variables['content']['field_imagen'];
+  }
+}
+
+function tpms_views_pre_render(ViewExecutable $view)
+{
+  $datatables_views = [
+    'lista_de_documentos',
+    'lista_funcionarios',
+    'transparencia',
+  ];
+
+  if (in_array($view->id(), $datatables_views, TRUE)) {
+
+    $view->element['#attached']['library'][] = 'tpms/datatables';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for views_view.
+ */
+function tpms_preprocess_views_view(&$variables)
+{
+  $view = $variables['view'];
+  if ($variables['view']->id() === 'lista_de_documentos') {
+    $variables['#attached']['library'][] = 'tpms/datatables';
+  }
+  if ($variables['view']->id() === 'lista_de_terminos_transparencia') {
+    $variables['#attached']['library'][] = 'tpms/tree_menu';
+  }
+  if ($view->id() === 'indice_de_eventos') {
+    $variables['#attached']['library'][] = 'tpms/indice_eventos';
+  }
+  if ($view->id() === 'transparencia') {
+    $variables['#attached']['library'][] = 'tpms/datatables';
+    // Obtenemos el primer argumento contextual (el TID).
+    if (!empty($view->args[0]) && is_numeric($view->args[0])) {
+      $tid = $view->args[0];
+      // Cargamos la entidad del término.
+      $term = \Drupal::entityTypeManager()
+        ->getStorage('taxonomy_term')
+        ->load($tid);
+      if ($term) {
+        // Hacemos disponible el nombre para Twig.
+        $variables['term_name'] = $term->getName();
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for views_view.
+ *
+ * Añade una sugerencia específica para la vista 'transparencia' y su page_1.
+ */
+function tpms_theme_suggestions_views_view_alter(array &$suggestions, array $variables)
+{
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $variables['view'];
+
+  $view_id = $view->id();
+  $display_id = $view->current_display;
+
+  // Sugerencias genéricas para todas las vistas
+  $suggestions[] = 'views_view__' . $view_id;
+  $suggestions[] = 'views_view__' . $view_id . '__' . $display_id;
+
+  // Sugerencias específicas (mantener compatibilidad)
+  if ($view->id() === 'transparencia' && $view->current_display === 'page_1') {
+    $suggestions[] = 'views_view__transparencia__page_1';
+  }
+
+  if ($view_id === 'programas_artisticos' && $display_id === 'block_1') {
+    $suggestions[] = 'views_view__programas_artisticos__block_1';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for
+ * viewfield-item--lista-de-noticias--block-1.html.twig.
+ */
+function tpms_preprocess_viewfield_item__noticias_y_comunicados(array &$variables)
+{
+
+  if ($view = Views::getView($variables['content']['#name'])) {
+    $view->setDisplay($variables['content']['#display_id']);
+    $view->execute();
+
+    $items = [];
+    $featured = null;
+
+    /** @var \Drupal\views\ResultRow $row */
+    foreach ($view->result as $index => $row) {
+      /** @var NodeInterface $node */
+      $node = $row->_entity;
+
+      $image_url = NULL;
+      $image_alt = '';
+
+      if ($node->hasField('field_imagen_noticia') && !$node->get('field_imagen_noticia')->isEmpty()) {
+        /** @var MediaInterface $media */
+        $media = $node->get('field_imagen_noticia')->entity;
+
+        if (
+          $media instanceof MediaInterface
+          && $media->hasField('field_media_image')
+          && !$media->get('field_media_image')->isEmpty()
+        ) {
+          $image_item = $media->get('field_media_image')->first();
+          if ($image_item) {
+            $image_alt = (string) $image_item->alt;
+          }
+
+          /** @var FileInterface $file */
+          $file = $media->get('field_media_image')->entity;
+
+          if ($file instanceof FileInterface) {
+            $uri = $file->getFileUri();
+            /** @var ImageStyle $style */
+            if ($index === 0) {
+              $style = ImageStyle::load('noticia_952x472');
+            } else {
+              $style = ImageStyle::load('card_noticia');
+            }
+
+            if ($style) {
+              $image_url = $style->buildUrl($uri);
+            }
+          }
+        }
+      }
+
+      $title = $node->label();
+      $node_url = $node->toUrl('canonical', ['absolute' => TRUE])->toString();
+
+      $formatted_date = \Drupal::service('date.formatter')
+        ->format($node->created->value, 'custom', 'F j, Y');
+
+      if ($node->field_categorias_de_noticias->target_id) {
+        $term = \Drupal\taxonomy\Entity\Term::load($node->field_categorias_de_noticias->target_id);
+        $category_name = $term->getName();
+      }
+
+      $item_data = [
+        'image' => $image_url,
+        'image_alt' => $image_alt,
+        'title' => $title,
+        'date' => $formatted_date,
+        'category' => $category_name,
+        'summary' =>  $node->get('body')->summary,
+        'url' => $node_url
+      ];
+
+      if ($index === 0) {
+        $featured = $item_data;
+      } else {
+        $items[] = $item_data;
+      }
+    };
+
+    $variables['featured'] = $featured;
+    $variables['noticias_items'] = $items;
+  }
+
+  $paragraph = NULL;
+  if (!empty($variables['element']['#paragraph']) && $variables['element']['#paragraph'] instanceof ParagraphInterface) {
+    $paragraph = $variables['element']['#paragraph'];
+  } elseif (!empty($variables['entity']) && $variables['entity'] instanceof ParagraphInterface) {
+    $paragraph = $variables['entity'];
+  }
+
+  if ($paragraph && $paragraph->hasField('field_link') && !$paragraph->get('field_link')->isEmpty()) {
+    $link_item = $paragraph->get('field_link')->first();
+    if ($link_item && $link_item->getUrl()) {
+      $variables['button_url'] = $link_item->getUrl()->toString();
+      if (!empty($link_item->title)) {
+        $variables['button_text'] = $link_item->title;
+      }
+    }
+  }
+
+  if ($paragraph && $paragraph->hasField('field_heading') && !$paragraph->get('field_heading')->isEmpty()) {
+    $variables['noticias_title'] = $paragraph->get('field_heading')->value;
+  }
+}
+
+/**
+ * Implements hook_preprocess_node__evento().
+ */
+function tpms_preprocess_node__evento(array &$variables)
+{
+  if ($variables['view_mode'] !== 'full') {
+    return;
+  }
+
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = $variables['node'] ?? NULL;
+  if (!($node instanceof NodeInterface)) {
+    return;
+  }
+
+  $variables['evento_title'] = $node->label();
+
+  $variables['evento_description'] = NULL;
+  if ($node->hasField('field_tabla_informativa') && !$node->get('field_tabla_informativa')->isEmpty()) {
+    $variables['evento_description'] = [
+      '#type' => 'processed_text',
+      '#text' => $node->field_tabla_informativa->value,
+      '#format' => $node->field_tabla_informativa->format,
+    ];
+  }
+
+  $variables['evento_date_range'] = NULL;
+  if ($node->hasField('field_fechas_evento') && !$node->get('field_fechas_evento')->isEmpty()) {
+    $date_items = $node->get('field_fechas_evento');
+    $first_item = $date_items->first();
+    $last_item = $date_items->get($date_items->count() - 1);
+
+    $start_timestamp = $first_item->value;
+    $end_timestamp = $last_item->end_value ?: $last_item->value;
+
+    $df = \Drupal::service('date.formatter');
+    $start_formatted = $df->format($start_timestamp, 'custom', 'j \\d\\e F');
+    $end_formatted = $df->format($end_timestamp, 'custom', 'j \\d\\e F');
+    $year = $df->format($end_timestamp, 'custom', 'Y');
+
+    if ($start_formatted === $end_formatted) {
+      $variables['evento_date_range'] = "{$start_formatted} {$year}";
+    } else {
+      $variables['evento_date_range'] = "{$start_formatted} - {$end_formatted} {$year}";
+    }
+  }
+
+  $variables['evento_lugar'] = NULL;
+  if ($node->hasField('field_lugar') && !$node->get('field_lugar')->isEmpty()) {
+    $variables['evento_lugar'] = $node->get('field_lugar')->value;
+  }
+
+  $variables['evento_institucion'] = NULL;
+  if ($node->hasField('field_institucion') && !$node->get('field_institucion')->isEmpty()) {
+    $institution = $node->get('field_institucion')->entity;
+    if ($institution instanceof EntityInterface) {
+      $variables['evento_institucion'] = $institution->label();
+    }
+  }
+
+  $variables['evento_links'] = [];
+  if ($node->hasField('field_enlace_externo') && !$node->get('field_enlace_externo')->isEmpty()) {
+    foreach ($node->get('field_enlace_externo') as $link_item) {
+      $url = $link_item->getUrl();
+      if (!$url) {
+        continue;
+      }
+      $value = $link_item->getValue();
+      $variables['evento_links'][] = [
+        'title' => $value['title'] ?? $url->toString(),
+        'url' => $url->toString(),
+        'target' => $value['options']['attributes']['target'] ?? '_self',
+      ];
+    }
+  }
+
+  $variables['evento_image'] = NULL;
+  if ($node->hasField('field_imagen') && !$node->get('field_imagen')->isEmpty()) {
+    $media = $node->get('field_imagen')->entity;
+    if (
+      $media instanceof MediaInterface
+      && $media->hasField('field_media_image')
+      && !$media->get('field_media_image')->isEmpty()
+    ) {
+      $file = $media->get('field_media_image')->entity;
+      if ($file instanceof FileInterface) {
+        $uri = $file->getFileUri();
+        $style = ImageStyle::load('eventosingle');
+        $image_url = $style
+          ? $style->buildUrl($uri)
+          : \Drupal::service('file_url_generator')->generateString($uri);
+
+        $variables['evento_image'] = [
+          'src' => $image_url,
+          'alt' => $media->field_media_image->alt ?? '',
+        ];
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_node__noticia().
+ */
+function tpms_preprocess_node__noticia(array &$variables)
+{
+
+  // Solo en full view mode.
+  if ($variables['view_mode'] !== 'full') {
+    return;
+  }
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = $variables['node'];
+  // Fecha formateada: "28 de Enero"
+  $variables['noticia_date'] = \Drupal::service('date.formatter')
+    ->format($node->getCreatedTime(), 'custom', 'j \\d\\e F', null, $node->language()->getId());
+
+
+  // Carga tu vista "lista_de_noticias" display "block_1".
+  if ($view = Views::getView('lista_de_noticias')) {
+    $view->setDisplay('block_1');
+    $view->execute();
+
+    // Lista de notiicas y comunicados (cards)
+    $items = [];
+    /** @var \Drupal\views\ResultRow $row */
+    foreach ($view->result as $index => $row) {
+      /** @var NodeInterface $node */
+      $node = $row->_entity;
+
+      $image_url = NULL;
+
+      if ($node->hasField('field_imagen_noticia') && !$node->get('field_imagen_noticia')->isEmpty()) {
+        /** @var MediaInterface $media */
+        $media = $node->get('field_imagen_noticia')->entity;
+
+        if (
+          $media instanceof MediaInterface
+          && $media->hasField('field_media_image')
+          && !$media->get('field_media_image')->isEmpty()
+        ) {
+
+          /** @var FileInterface $file */
+          $file = $media->get('field_media_image')->entity;
+
+          if ($file instanceof FileInterface) {
+            $uri = $file->getFileUri();
+
+            /** @var ImageStyle $style */
+            $style = ImageStyle::load('card_noticia');
+
+            if ($style) {
+              $image_url = $style->buildUrl($uri);
+            }
+          }
+        }
+      }
+
+      $title = $node->label();
+      $node_url = $node->toUrl('canonical', ['absolute' => TRUE])->toString();
+
+      $formatted_date = \Drupal::service('date.formatter')
+        ->format($node->created->value, 'custom', 'F j, Y');
+
+      if ($node->field_categorias_de_noticias->target_id) {
+        $term = \Drupal\taxonomy\Entity\Term::load($node->field_categorias_de_noticias->target_id);
+        $category_name = $term->getName();
+      }
+
+      $item_data = [
+        'image' => $image_url,
+        'title' => $title,
+        'date' => $formatted_date,
+        'category' => $category_name,
+        'summary' =>  $node->get('body')->summary,
+        'url' => $node_url
+      ];
+
+      $items[] = $item_data;
+    };
+
+    $variables['noticias_items'] = $items;
+  }
+}
+
+/**
+ * Implements hook_preprocess_node__efemeride().
+ */
+function tpms_preprocess_node__efemeride(array &$variables)
+{
+  // Solo en full view mode.
+  if ($variables['view_mode'] !== 'full') {
+    return;
+  }
+
+  // Carga la view.
+  if ($view = Views::getView('efemerides')) {
+    $view->setDisplay('block_4');
+    $view->execute();
+
+    $display = $view->display_handler;
+
+    // 2) Comprueba si el "Ver todas" está activo:
+    if ($display->getOption('use_more')) {
+      // 3) Toma el texto y la ruta tal cual lo configuraste:
+      $text = $display->getOption('use_more_text');
+      $path = $display->getOption('link_url');
+
+      // 4) Construye la URL (interna o externa):
+      if (preg_match('#^https?://#', $path)) {
+        $url = Url::fromUri($path);
+      } else {
+        $url = Url::fromUserInput($path);
+      }
+
+      // 5) Genera el render array del link:
+      $link = Link::fromTextAndUrl($text, $url)->toRenderable();
+      // (Opcional) añade clases CSS:
+      $link['#attributes']['class'] = ['button', 'button--small'];
+
+      // 6) Pásalo a Twig:
+      $variables['efemerides_more_link'] = $link;
+    }
+
+
+    $items = [];
+
+    /** @var \Drupal\views\ResultRow $row */
+    foreach ($view->result as $row) {
+      /** @var NodeInterface $node */
+      $node = $row->_entity;
+
+      // 1) Título y URL
+      $title    = $node->label();
+      $node_url = $node->toUrl('canonical', ['absolute' => TRUE])->toString();
+
+      // 2) Día: extraemos el valor integer
+      $day = $node->get('field_dia')->value;
+
+      // 3) Mes: extraemos el valor y luego su label desde allowed_values
+      $mes_value = $node->get('field_mes')->value;
+      // allowed_values es un array [1 => 'Enero', 2 => 'Febrero', ...]
+      $allowed = $node
+        ->get('field_mes')
+        ->getFieldDefinition()
+        ->getSetting('allowed_values');
+      $month_label = isset($allowed[$mes_value]) ? $allowed[$mes_value] : $mes_value;
+
+      // 4) Construimos la fecha legible
+      $date = $day . ' de ' . $month_label;
+
+      $items[] = [
+        'title' => $title,
+        'day'  => $day,
+        'month' => $month_label,
+        'url'   => $node_url,
+      ];
+    }
+
+    // Pasamos al template
+    $variables['efemerides_items'] = $items;
+  }
+}
+
+function tpms_preprocess_viewfield_item__lista_de_noticias__block_4(array &$variables)
+{
+  if ($view = Views::getView('lista_de_noticias')) {
+    $view->setDisplay('block_4');
+    $view->execute();
+
+    $items = [];
+
+    /** @var \Drupal\views\ResultRow $row */
+    foreach ($view->result as $index => $row) {
+      /** @var \Drupal\node\NodeInterface $node */
+      $node = $row->_entity;
+
+      $image_url = NULL;
+
+      if ($node->hasField('field_imagen_noticia') && !$node->get('field_imagen_noticia')->isEmpty()) {
+        /** @var \Drupal\media\MediaInterface $media */
+        $media = $node->get('field_imagen_noticia')->entity;
+
+        if (
+          $media instanceof MediaInterface &&
+          $media->hasField('field_media_image') &&
+          !$media->get('field_media_image')->isEmpty()
+        ) {
+          /** @var \Drupal\file\FileInterface $file */
+          $file = $media->get('field_media_image')->entity;
+
+          if ($file instanceof FileInterface) {
+            $uri = $file->getFileUri();
+            $style = ImageStyle::load('card_noticia');
+            if ($style) {
+              $image_url = $style->buildUrl($uri);
+            }
+          }
+        }
+      }
+
+      $title = $node->label();
+      $node_url = $node->toUrl('canonical', ['absolute' => TRUE])->toString();
+      $formatted_date = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'custom', 'F j, Y');
+
+      $category_name = '';
+      if (!$node->get('field_categorias_de_noticias')->isEmpty()) {
+        $term = \Drupal\taxonomy\Entity\Term::load($node->get('field_categorias_de_noticias')->target_id);
+        if ($term) {
+          $category_name = $term->getName();
+        }
+      }
+      $card_alt =  $media->field_media_image->alt;
+      $item_data = [
+        'card__image__src' => $image_url,
+        'card__title' => $title,
+        'card__date' => $formatted_date,
+        'card__category' => $category_name,
+        'card__description' => $node->get('body')->summary ?? '',
+        'card__url' => $node_url,
+        'card__image__alt' => $card_alt,
+      ];
+
+      $items[] = $item_data;
+    }
+    $tags = [
+      'previous' => 'Anterior',
+      'next'     => 'Siguiente',
+    ];
+
+    $variables['cards'] = $items;
+    $pager = $view->renderPager($tags);
+    $variables['pager'] = \Drupal::service('renderer')->renderRoot($pager);
+  }
+}
+
+function tpms_preprocess_viewfield_item__lista_instituciones__block_1(array &$variables)
+{
+  if ($view = \Drupal\views\Views::getView('lista_instituciones')) {
+    $view->setDisplay('block_1');
+    $view->execute();
+
+    $items = [];
+
+    /** @var \Drupal\views\ResultRow $row */
+    foreach ($view->result as $index => $row) {
+      /** @var \Drupal\group\Entity\Group $group */
+      $group = $row->_entity;
+
+      $image_url = NULL;
+
+      // Obtener imagen desde media field
+      if ($group->hasField('field_imagen') && !$group->get('field_imagen')->isEmpty()) {
+        /** @var \Drupal\media\MediaInterface $media */
+        $media = $group->get('field_imagen')->entity;
+
+        if (
+          $media instanceof MediaInterface &&
+          $media->hasField('field_media_image') &&
+          !$media->get('field_media_image')->isEmpty()
+        ) {
+          /** @var \Drupal\file\FileInterface $file */
+          $file = $media->get('field_media_image')->entity;
+
+          if ($file instanceof FileInterface) {
+            $uri = $file->getFileUri();
+            $style = ImageStyle::load('eventolista');
+            if ($style) {
+              $image_url = $style->buildUrl($uri);
+            }
+          }
+        }
+      }
+
+      $title = $group->label();
+      $group_url = $group->toUrl('canonical', ['absolute' => TRUE])->toString();
+      $formatted_date = \Drupal::service('date.formatter')->format($group->getCreatedTime(), 'custom', 'd F Y');
+
+      $category_name = '';
+      if ($group->hasField('field_categorias_del_event') && !$group->get('field_categorias_del_event')->isEmpty()) {
+        $term = Term::load($group->get('field_categorias_del_event')->target_id);
+        if ($term) {
+          $category_name = $term->getName();
+        }
+      }
+
+      $category_names = [];
+
+      if ($group->hasField('field_categorias_del_event') && !$group->get('field_categorias_del_event')->isEmpty()) {
+        foreach ($group->get('field_categorias_del_event') as $item) {
+          $term = Term::load($item->target_id);
+          if ($term) {
+            $category_names[] = $term->getName();
+          }
+        }
+      }
+
+
+      $description = '';
+      if ($group->hasField('field_body') && !$group->get('field_body')->isEmpty()) {
+        $body_item = $group->get('field_body')->first();
+
+        $raw_text = !empty($body_item->summary)
+          ? $body_item->summary
+          : $body_item->value;
+
+        $plain = strip_tags($raw_text);
+        $description = Unicode::truncate($plain, 200, TRUE, TRUE);
+      }
+
+      $items[] = [
+        'card__image__src' => $image_url,
+        'card__title' => $title,
+        'card__date' => $formatted_date,
+        'card__category' => $category_names,
+        'card__description' => $description,
+        'card__url' => $group_url,
+      ];
+    }
+    $variables['title'] = $view->getTitle();
+    $variables['cards'] = $items;
+    $pager = $view->renderPager([
+      'previous' => t('Anterior'),
+      'next' => t('Siguiente'),
+    ]);
+    $variables['pager'] = \Drupal::service('renderer')->renderRoot($pager);
+  }
+}
+
+
+function tpms_form_views_exposed_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id)
+{
+  if ($form["#id"] === 'views-exposed-form-lista-instituciones-block-1') {
+    // Categorias
+    /*if ($form['field_categorias_del_event_target_id']) {
+      foreach ($form['field_categorias_del_event_target_id']['#options'] as $key => $value) {
+        if (!mcj_term_is_assigned($key, 'field_categorias_del_event', 'institucion')) {
+          unset($form['field_categorias_del_event_target_id']['#options'][$key]);
+        }
+      }
+    }*/
+    // Tipo Instituciones
+    if ($form['tipo_de_institucion']) {
+      foreach ($form['tipo_de_institucion']['#options'] as $key => $value) {
+        if (!tpms_term_is_assigned($key, 'field_tipo_de_institucion', 'institucion')) {
+          unset($form['tipo_de_institucion']['#options'][$key]);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Check if term is assigned to any group
+ */
+function tpms_term_is_assigned($tid, $term_field, $gtype)
+{
+  $groups = \Drupal::entityTypeManager()->getStorage('group')->loadByProperties([
+    'type' => $gtype,
+    $term_field => $tid,
+  ]);
+
+  return count($groups) > 0;
+}
+
+/**
+ * Implements hook_preprocess_viewfield_item__efemerides__block_2().
+ */
+function tpms_preprocess_viewfield_item__efemerides__block_2(array &$variables)
+{
+  // ***Elemento destacado (featured)***: obtener primer nodo del display block_2.
+  $featured = NULL;
+  if ($view = Views::getView('efemerides')) {
+    $view->setDisplay('block_2');
+    $view->preExecute();
+    $view->execute();
+    if (!empty($view->result)) {
+      /** @var \Drupal\node\NodeInterface $node */
+      $node = $view->result[0]->_entity;
+      // Título y descripción.
+      $title = $node->getTitle();
+      $description = tpms_truncate_html($node->body->value, 500, '...');
+      // Día: obtener valor y luego etiqueta desde allowed_values.
+      $day_val = $node->get('field_dia')->value;
+      $day_allowed = $node->get('field_dia')->getFieldDefinition()->getSetting('allowed_values');
+      $day_label = isset($day_allowed[$day_val]) ? $day_allowed[$day_val] : '';
+      // Mes: análogo.
+      $month_val = $node->get('field_mes')->value;
+      $month_allowed = $node->get('field_mes')->getFieldDefinition()->getSetting('allowed_values');
+      $month_label = isset($month_allowed[$month_val]) ? $month_allowed[$month_val] : '';
+      // URL canónica del nodo.
+      $url = $node->toUrl()->toString();
+      $featured = [
+        'title' => $title,
+        'description' => $description,
+        'date' => $day_label,
+        'month' => $month_label,
+        'url' => $url,
+      ];
+    }
+  }
+
+  // ***Elementos adicionales (items)***: obtener otros nodos del display attachment_1.
+  $items = [];
+  if ($view = Views::getView('efemerides')) {
+    $view->setDisplay('block_3');
+    $view->preExecute();
+    $view->execute();
+    foreach ($view->result as $row) {
+      /** @var \Drupal\node\NodeInterface $node */
+      $node = $row->_entity;
+      $title = $node->getTitle();
+      // Día y mes: obtener etiquetas.
+      $day_val = $node->get('field_dia')->value;
+      $day_allowed = $node->get('field_dia')->getFieldDefinition()->getSetting('allowed_values');
+      $day_label = isset($day_allowed[$day_val]) ? $day_allowed[$day_val] : '';
+      $month_val = $node->get('field_mes')->value;
+      $month_allowed = $node->get('field_mes')->getFieldDefinition()->getSetting('allowed_values');
+      $month_label = isset($month_allowed[$month_val]) ? $month_allowed[$month_val] : '';
+      $url = $node->toUrl()->toString();
+      $items[] = [
+        'title' => $title,
+        'date' => $day_label,
+        'month' => $month_label,
+        'url' => $url,
+      ];
+    }
+
+    $display = $view->display_handler;
+
+    // 2) Comprueba si el "Ver todas" está activo:
+    if ($display->getOption('use_more')) {
+      // 3) Toma el texto y la ruta tal cual lo configuraste:
+      $text = $display->getOption('use_more_text');
+      $path = $display->getOption('link_url');
+
+      // 4) Construye la URL (interna o externa):
+      if (preg_match('#^https?://#', $path)) {
+        $url = Url::fromUri($path);
+      } else {
+        $url = Url::fromUserInput($path);
+      }
+
+      // 5) Genera el render array del link:
+      $link = Link::fromTextAndUrl($text, $url)->toRenderable();
+      // (Opcional) añade clases CSS:
+      $link['#attributes']['class'] = ['button', 'button--small'];
+
+      // 6) Pásalo a Twig:
+      $variables['efemerides_more_link'] = $link;
+    }
+  }
+
+  // Asignar variables al template Twig.
+  $variables['featured'] = $featured;
+  $variables['items'] = $items;
+  $variables['efemerides_title'] = t('Efemérides destacadas');
+}
+
+function tpms_preprocess_viewfield_item__efemerides__block_1(array &$variables)
+{
+
+  // ***Elementos adicionales (items)***: obtener otros nodos del display attachment_1.
+  $items = [];
+  if ($view = Views::getView('efemerides')) {
+    $view->setDisplay('block_1');
+    $view->preExecute();
+    $view->execute();
+    foreach ($view->result as $row) {
+      /** @var \Drupal\node\NodeInterface $node */
+      $node = $row->_entity;
+      $title = $node->getTitle();
+      $description  = $node->body->value ? $node->body->value : '';
+      // Día y mes: obtener etiquetas.
+      $day_val = $node->get('field_dia')->value;
+      $day_allowed = $node->get('field_dia')->getFieldDefinition()->getSetting('allowed_values');
+      $day_label = isset($day_allowed[$day_val]) ? $day_allowed[$day_val] : '';
+      $month_val = $node->get('field_mes')->value;
+      $month_allowed = $node->get('field_mes')->getFieldDefinition()->getSetting('allowed_values');
+      $month_label = isset($month_allowed[$month_val]) ? $month_allowed[$month_val] : '';
+      $url = $node->toUrl()->toString();
+      $items[] = [
+        'title' => $title,
+        'description' => $description,
+        'date' => $day_label,
+        'month' => $month_label,
+        'url' => $url,
+      ];
+    }
+
+    $display = $view->display_handler;
+
+    if ($display->getOption('use_more')) {
+      $text = $display->getOption('use_more_text');
+      $path = $display->getOption('link_url');
+
+      if (preg_match('#^https?://#', $path)) {
+        $url = Url::fromUri($path);
+      } else {
+        $url = Url::fromUserInput($path);
+      }
+    }
+    $pager = $view->renderPager([
+      'previous' => t('Anterior'),
+      'next' => t('Siguiente'),
+    ]);
+    $variables['pager'] = \Drupal::service('renderer')->renderRoot($pager);
+  }
+
+  $variables['items'] = $items;
+}
+
+function tpms_page_attachments_alter(array &$attachments)
+{
+  $attachments['#attached']['html_head'][] = [
+    [
+      '#type' => 'html_tag',
+      '#tag' => 'meta',
+      '#attributes' => [
+        'name' => 'viewport',
+        'content' => 'width=device-width, initial-scale=1, viewport-fit=cover',
+      ],
+    ],
+    'viewport',
+  ];
+
+  // Preload del CSS principal
+  $attachments['#attached']['html_head'][] = [
+    [
+      '#type' => 'html_tag',
+      '#tag' => 'link',
+      '#attributes' => [
+        'rel' => 'preload',
+        'href' => '/' . \Drupal::theme()->getActiveTheme()->getPath() . '/dist/css/style.css',
+        'as' => 'style',
+      ],
+    ],
+    'tpms_preload_css',
+  ];
+
+}
+
+/**
+ * Prepara y estructura las variables necesarias para renderizar el componente de efemérides.
+ *
+ * Esta función obtiene los nodos de efemérides desde la vista correspondiente, extrae y organiza
+ * los datos relevantes (título, descripción, día, mes y URL) para cada efeméride, y configura
+ * la paginación y el enlace "ver más" si están habilitados en la vista. Los datos procesados
+ * se asignan a las variables que serán utilizadas en la plantilla Twig del componente.
+ */
+
+function tpms_truncate_html($html, $limit = 500, $ending = '...')
+{
+  $plain = trim(strip_tags($html));
+  if (mb_strlen($plain) <= $limit) {
+    return $html;
+  }
+  $count = 0;
+  $truncated = '';
+  $dom = new DOMDocument();
+  libxml_use_internal_errors(true);
+  $dom->loadHTML('<?xml encoding="utf-8" ?>' . $html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+  $body = $dom->getElementsByTagName('body')->item(0);
+  $processed = false;
+  if ($body && $body->childNodes && $body->childNodes->length > 0) {
+    foreach ($body->childNodes as $node) {
+      $fragment = '';
+      tpms_truncate_html_node($node, $limit, $count, $fragment, $ending);
+      $truncated .= $fragment;
+      if ($count >= $limit) {
+        break;
+      }
+    }
+    $processed = true;
+  }
+  // Fallback: intentar procesar el primer hijo del documento
+  if (!$processed && $dom->childNodes && $dom->childNodes->length > 0) {
+    foreach ($dom->childNodes as $node) {
+      $fragment = '';
+      tpms_truncate_html_node($node, $limit, $count, $fragment, $ending);
+      $truncated .= $fragment;
+      if ($count >= $limit) {
+        break;
+      }
+    }
+    $processed = true;
+  }
+  // Fallback final: texto plano truncado
+  if (!$processed) {
+    $truncated = mb_substr($plain, 0, $limit) . $ending;
+  }
+  return $truncated;
+}
+/**
+ * Trunca un fragmento de HTML a un número máximo de caracteres, preservando etiquetas.
+ *
+ * Esta función toma un string HTML y lo recorta a un límite de caracteres especificado,
+ * intentando mantener la estructura HTML válida y agregando un sufijo (por defecto '...')
+ * si el texto es truncado. Si el HTML es muy simple o no puede ser procesado como DOM,
+ * realiza un truncado plano del texto.
+ *
+ * @param string $html
+ *   El contenido HTML a truncar.
+ * @param int $limit
+ *   El número máximo de caracteres permitidos (por defecto 500).
+ * @param string $ending
+ *   El texto a añadir al final si se trunca (por defecto '...').
+ *
+ * @return string
+ *   El HTML truncado, preservando etiquetas en lo posible.
+ */
+
+function tpms_truncate_html_node($node, $limit, &$count, &$output, $ending)
+{
+  if ($count >= $limit) {
+    return;
+  }
+  if ($node->nodeType === XML_TEXT_NODE) {
+    $text = $node->nodeValue;
+    $remaining = $limit - $count;
+    if (mb_strlen($text) > $remaining) {
+      $output .= mb_substr($text, 0, $remaining) . $ending;
+      $count += $remaining;
+    } else {
+      $output .= $text;
+      $count += mb_strlen($text);
+    }
+  } elseif ($node->nodeType === XML_ELEMENT_NODE) {
+    $output .= '<' . $node->nodeName;
+    if ($node->hasAttributes()) {
+      foreach ($node->attributes as $attr) {
+        $output .= ' ' . $attr->nodeName . '="' . htmlspecialchars($attr->nodeValue) . '"';
+      }
+    }
+    $output .= '>';
+    foreach ($node->childNodes as $child) {
+      mcj_truncate_html_node($child, $limit, $count, $output, $ending);
+      if ($count >= $limit) {
+        break;
+      }
+    }
+    $output .= '</' . $node->nodeName . '>';
+  }
+}
+
+/**
+ * Implements hook_preprocess_viewfield for tipos_de_instituciones block_1.
+ */
+function tpms_preprocess_viewfield_item__tipos_de_instituciones__block_1(array &$variables)
+{
+  // Cargar y ejecutar la vista que lista términos de taxonomía.
+  if ($view = Views::getView('tipos_de_instituciones')) {
+    $view->setDisplay('block_1');
+    $view->execute();
+
+    $items = [];
+
+    /** @var \Drupal\views\ResultRow $row */
+    foreach ($view->result as $row) {
+      /** @var Term $term */
+      $term = $row->_entity;
+      $title = $term->getName();
+
+      // Inicializar imagen vacía
+      $image = ['url' => '', 'alt' => ''];
+
+      // Obtener imagen desde field_imagen_org_type
+      if ($term->hasField('field_imagen_org_type') && !$term->get('field_imagen_org_type')->isEmpty()) {
+        $media = $term->get('field_imagen_org_type')->entity;
+        if ($media instanceof MediaInterface && $media->hasField('field_media_image') && !$media->get('field_media_image')->isEmpty()) {
+          $file = $media->get('field_media_image')->entity;
+          if ($file instanceof FileInterface) {
+            $uri = $file->getFileUri();
+            if ($style = ImageStyle::load('full')) {
+              $image['url'] = $style->buildUrl($uri);
+            }
+            $image['alt'] = $media->get('field_media_image')->alt ?? '';
+          }
+        }
+      }
+
+      $items[] = [
+        'category'       => $title,
+        'image'          => $image,
+        'term_id'  => $term->id(),
+      ];
+    }
+
+    $variables['items'] = $items;
+
+    if (
+      !empty($variables['element']['#paragraph']) &&
+      $variables['element']['#paragraph'] instanceof ParagraphInterface &&
+      !empty($variables['element']['#content']['#view']) &&
+      $variables['element']['#content']['#view'] instanceof ViewExecutable
+    ) {
+      $paragraph = $variables['element']['#paragraph'];
+
+      $titulo = $paragraph->get('field_titulo')->value;
+      $descripcion = $paragraph->get('field_descripcion_tipos_ins')->value;
+
+      // 2. Procesar field_link
+      $link_item = $paragraph->get('field_link')->first();
+      $link_uri = '';
+      $link_title = '';
+
+      if ($link_item) {
+        $uri = $link_item->uri;
+        $link_uri = Url::fromUri($uri)->toString();
+        $link_title = $link_item->title ?: $link_uri;
+      }
+
+      // 3. Estructura para Twig
+      $variables['cta'] = [
+        'title' => $titulo,
+        'body'  => $descripcion,
+        'url'   => [
+          'uri'  => $link_uri,
+          'text' => $link_title,
+        ],
+      ];
+    }
+  }
+}
+
+function tpms_preprocess_paragraph__nuestras_instituciones_carrusel(&$variables)
+{
+  if (
+    isset($variables['paragraph']) &&
+    $variables['paragraph'] instanceof ParagraphInterface &&
+    isset($variables['content']['field_reference']) &&
+    is_array($variables['content']['field_reference'])
+  ) {
+    // field_reference puede tener varios items (delta 0,1,2…).
+    foreach ($variables['content']['field_reference'] as &$item) {
+      if (is_array($item)) {
+        // “Transportamos” la entidad párrafo para que el hook de Viewfield
+        // pueda leerla más tarde:
+        $item['#paragraph'] = $variables['paragraph'];
+      }
+    }
+  }
+}
+
+function tpms_preprocess_paragraph__view_reference(&$variables)
+{
+  if (
+    isset($variables['paragraph']) &&
+    $variables['paragraph'] instanceof ParagraphInterface &&
+    isset($variables['content']['field_reference']) &&
+    is_array($variables['content']['field_reference'])
+  ) {
+    foreach ($variables['content']['field_reference'] as &$item) {
+      if (is_array($item)) {
+        $item['#paragraph'] = $variables['paragraph'];
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for group templates.
+ */
+function tpms_preprocess_group(array &$variables)
+{
+  $group = $variables['group'];
+
+  // Solo para el bundle "institucion" en view mode "full".
+  $view_mode = $variables['elements']['#view_mode'] ?? ($variables['view_mode'] ?? '');
+  if ($group->bundle() !== 'institucion' || $view_mode !== 'full') {
+    return;
+  }
+
+  $grupo = [
+    'title'         => $group->label(),
+    'image'         => ['url' => '', 'alt' => ''],
+    'provincia'     => '',
+    'external_link' => NULL,
+    'body'          => '',
+    'categorias'    => [],
+  ];
+
+  // 1. Imagen principal (field_imagen) via Media → File → ImageStyle.
+  if ($group->hasField('field_imagen') && !$group->get('field_imagen')->isEmpty()) {
+    $media = $group->get('field_imagen')->entity;
+    if (
+      $media instanceof MediaInterface
+      && $media->hasField('field_media_image')
+      && !$media->get('field_media_image')->isEmpty()
+    ) {
+
+      $file = $media->get('field_media_image')->entity;
+      if ($file instanceof FileInterface) {
+        $uri = $file->getFileUri();
+
+        // Aplica el estilo de imagen 'full' (ajusta si es otro).
+        if ($style = ImageStyle::load('full')) {
+          $grupo['image']['url'] = $style->buildUrl($uri);
+        }
+
+        // Alt del subcampo.
+        $grupo['image']['alt'] = $media->get('field_media_image')->alt ?? '';
+      }
+    }
+  }
+
+  // 2. Provincia (field_provincia).
+  if ($group->hasField('field_provincia') && !$group->get('field_provincia')->isEmpty()) {
+    $prov = $group->get('field_provincia')->first()->entity;
+    $grupo['provincia'] = $prov ? $prov->label() : '';
+  }
+
+  // 3. Enlace externo (field_enlace_externo).
+  if ($group->hasField('field_enlace_externo') && !$group->get('field_enlace_externo')->isEmpty()) {
+    $link_item = $group->get('field_enlace_externo')->first();
+    $url       = $link_item->getUrl();
+    $value     = $link_item->getValue();
+    $grupo['external_link'] = [
+      'uri'    => $url->toString(),
+      'title'  => $value['title']   ?? $url->toString(),
+      'target' => $value['options']['attributes']['target'] ?? '_self',
+    ];
+  }
+
+  // 4. Cuerpo de texto (field_body).
+  if ($group->hasField('field_body') && !$group->get('field_body')->isEmpty()) {
+    $body = $group->get('field_body')->first()->getValue();
+    $grupo['body'] = [
+      'value'  => $body['value'],
+      'format' => $body['format'],
+    ];
+  }
+
+  // 5. Categorías (field_categorias_del_event): nombre + icono raw.
+  if ($group->hasField('field_tipo_de_institucion') && !$group->get('field_tipo_de_institucion')->isEmpty()) {
+    $terms = $group->get('field_tipo_de_institucion')->referencedEntities();
+    foreach ($terms as $term) {
+      $grupo['categorias'][] = [
+        'name' => $term->getName(),
+      ];
+    }
+  }
+
+  // Inyecta todo en Twig.
+  $variables['grupo'] = $grupo;
+}
+
+/**
+ * @file
+ * Theme override for breadcrumbs, añadiendo un “< Volver” al final.
+ */
+function tpms_preprocess_breadcrumb(array &$variables)
+{
+  // Si no hay breadcrumb o solo un ítem, no hacemos nada.
+  if (empty($variables['breadcrumb']) || count($variables['breadcrumb']) < 2) {
+    $variables['breadcrumb'] = [];
+    return;
+  }
+
+  $items = $variables['breadcrumb'];
+
+  $target_url = NULL;
+  for ($i = count($items) - 1; $i >= 0; --$i) {
+    if (!empty($items[$i]['url'])) {
+      $target_url = $items[$i]['url'];
+      break;
+    }
+  }
+
+  if ($target_url === NULL) {
+    $target_url = Url::fromRoute('<front>');
+  }
+
+  $newItem = [
+    'text' => t('< Volver'),
+    'url'  => $target_url,
+  ];
+
+  $variables['breadcrumb'][] = $newItem;
+}
+
+function tpms_preprocess_paragraph__banner_principal(&$variables)
+{
+  $paragraph = $variables['paragraph'];
+
+  $slides = [];
+  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $variables['paragraph'];
+  $test = $paragraph->field_item_banner[0]->entity;
+
+
+  $slides = [];
+
+  if ($paragraph->hasField('field_item_banner') && !$paragraph->get('field_item_banner')->isEmpty()) {
+    foreach ($paragraph->get('field_item_banner')->referencedEntities() as $slide_p) {
+
+      // ===== Texto =====
+      $title = (!$slide_p->get('field_titulo')->isEmpty())
+        ? $slide_p->get('field_titulo')->value
+        : '';
+
+      $venue = (!$slide_p->get('field_subheading')->isEmpty())
+        ? $slide_p->get('field_subheading')->value
+        : '';
+
+      // En tu debug se ve que esto ya viene como string "MM/DD/YYYY ... - ...".
+      $date_items = [];
+      if (!$slide_p->get('field_rango_de_fecha')->isEmpty()) {
+        foreach ($slide_p->get('field_rango_de_fecha') as $item) {
+          $date_items[] = $item->daterangepicker;
+        }
+      }
+
+      // Formateo bonito
+      $items = [];
+      $locale = 'en_US';
+
+      foreach ($date_items as $range) {
+        $parts = array_map('trim', explode(' - ', $range));
+        if (count($parts) !== 2) continue;
+
+        $start = \DateTime::createFromFormat('m/d/Y h:i A', $parts[0]);
+        $end   = \DateTime::createFromFormat('m/d/Y h:i A', $parts[1]);
+        if (!$start || !$end) continue;
+
+        $fmtStartM = new \IntlDateFormatter($locale, \IntlDateFormatter::NONE, \IntlDateFormatter::NONE, $start->getTimezone()->getName(), \IntlDateFormatter::GREGORIAN, 'MMM');
+        $fmtEndM   = new \IntlDateFormatter($locale, \IntlDateFormatter::NONE, \IntlDateFormatter::NONE, $end->getTimezone()->getName(),   \IntlDateFormatter::GREGORIAN, 'MMM');
+
+        $startY = (int) $start->format('Y');
+        $endY   = (int) $end->format('Y');
+        $startD = (int) $start->format('j');
+        $endD   = (int) $end->format('j');
+
+        $startM = $fmtStartM->format($start);
+        $endM   = $fmtEndM->format($end);
+
+        $sameDay  = $start->format('Y-m-d') === $end->format('Y-m-d');
+        $sameYM   = $start->format('Y-m') === $end->format('Y-m');
+        $sameYear = $startY === $endY;
+
+        if ($sameDay) {
+          $text = "{$startD} {$startM}";
+          $items[] = ['text' => $text, 'year' => $startY, 'cross_year' => false, 'ts' => $start->getTimestamp()];
+        } else {
+          if ($sameYM) {
+            $text = "{$startD}-{$endD} {$startM}";
+            $items[] = ['text' => $text, 'year' => $startY, 'cross_year' => false, 'ts' => $start->getTimestamp()];
+          } elseif ($sameYear) {
+            $text = "{$startD} {$startM} - {$endD} {$endM}";
+            $items[] = ['text' => $text, 'year' => $startY, 'cross_year' => false, 'ts' => $start->getTimestamp()];
+          } else {
+            $text = "{$startD} {$startM}, {$startY} - {$endD} {$endM}, {$endY}";
+            $items[] = ['text' => $text, 'year' => null, 'cross_year' => true, 'ts' => $start->getTimestamp()];
+          }
+        }
+      }
+
+      usort($items, fn($a, $b) => $a['ts'] <=> $b['ts']);
+      $texts = array_values(array_unique(array_map(fn($i) => $i['text'], $items)));
+      $years = array_values(array_unique(array_filter(array_map(fn($i) => $i['year'], $items))));
+      $hasCrossYear = (bool) array_filter($items, fn($i) => !empty($i['cross_year']));
+
+      $date_text = '';
+      if (!empty($texts)) {
+        $date_text = (!$hasCrossYear && count($years) === 1)
+          ? implode(', ', $texts) . ', ' . $years[0]
+          : implode(', ', $texts);
+      }
+
+
+      // ===== Imagen (field_imagen) =====
+      $image_url = '';
+      $image_alt = '';
+      $image_style_name = null;
+
+      $view_mode = $variables['view_mode'] ?? 'default';
+      $bundle = $slide_p->bundle();
+
+      $display_id = "paragraph.{$bundle}.{$view_mode}";
+      $display = \Drupal::entityTypeManager()
+        ->getStorage('entity_view_display')
+        ->load($display_id);
+
+      $component = $display->getComponent('field_imagen');
+      $image_style_name = $component['settings']['image_style'];
+
+      $image_entity = $slide_p->get('field_imagen')->entity;
+
+      if ($image_entity instanceof Media) {
+        $img_item = $image_entity->get('field_media_image')->first();
+
+        if ($img_item && $img_item->entity) {
+          $uri = $img_item->entity->getFileUri();
+          $image_alt = $img_item->alt ?? '';
+
+          $style = ImageStyle::load($image_style_name);
+          $image_url = $style->buildUrl($uri);
+        }
+      }
+
+      // ===== Botones (field_boton) =====
+      // Se esperan hasta 2 referencias: 0 = Ver más, 1 = Comprar entradas
+      $more_url = '';
+      $more_label = '';
+      $tickets_url = '';
+      $tickets_label = '';
+
+      if ($slide_p->hasField('field_boton') && !$slide_p->get('field_boton')->isEmpty()) {
+        $buttons = $slide_p->get('field_boton')->referencedEntities();
+
+        // ===== Botón 0 => Ver más =====
+        if (!empty($buttons[0])) {
+          $btn = $buttons[0];
+
+          if ($btn->hasField('field_link') && !$btn->get('field_link')->isEmpty()) {
+            $link = $btn->get('field_link')->first()->getUrl()->toString();
+
+            // Label
+            $more_label = $btn->get('field_link')->first()->title ?? '';
+
+            // URL
+            $more_url = $link;
+          }
+        }
+
+        // ===== Botón 1 => Comprar entradas =====
+        if (!empty($buttons[1])) {
+          $btn = $buttons[1];
+
+          if ($btn->hasField('field_link') && !$btn->get('field_link')->isEmpty()) {
+            $link = $btn->get('field_link')->first()->getUrl()->toString();
+            // Label
+            $tickets_label = $btn->get('field_link')->first()->title ?? '';
+
+            // URL
+            $tickets_url = $link;
+          }
+        }
+      }
+
+
+      $slides[] = [
+        'image' => $image_url,
+        'image_alt' => $image_alt,
+        'title' => $title,
+        'venue' => $venue,
+        'date_range' => $date_text,
+        'more_url' => $more_url,
+        'more_label' => $more_label ?: 'Ver más',
+        'tickets_url' => $tickets_url,
+        'tickets_label' => $tickets_label ?: 'Comprar entradas',
+      ];
+    }
+  }
+
+  // Variables para el componente
+  $variables['slides'] = $slides;
+}
+
+/**
+ * Preprocess: View "programas-artisticos" display "block_1".
+ *
+ * Archivo twig: views-view--programas-artisticos--block-1.html.twig
+ * Hook: tpms_preprocess_views_view__programas_artisticos__block_1()
+ */
+function tpms_preprocess_viewfield_item__programas_artisticos__block_1(array &$variables): void
+{
+  $paragraph = NULL;
+  if (!empty($variables['element']['#paragraph']) && $variables['element']['#paragraph'] instanceof ParagraphInterface) {
+    $paragraph = $variables['element']['#paragraph'];
+  } elseif (!empty($variables['entity']) && $variables['entity'] instanceof ParagraphInterface) {
+    $paragraph = $variables['entity'];
+  }
+
+  if ($paragraph && $paragraph->hasField('field_heading') && !$paragraph->get('field_heading')->isEmpty()) {
+    $variables['programas_title'] = $paragraph->get('field_heading')->value;
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for views_view_grid_responsive.
+ */
+function tpms_theme_suggestions_views_view_grid_responsive_alter(array &$suggestions, array $variables)
+{
+  $view = $variables['view'];
+  $suggestions[] = 'views_view_grid_responsive__' . $view->id();
+  $suggestions[] = 'views_view_grid_responsive__' . $view->id() . '__' . $view->current_display;
+}
+
+
+function tpms_preprocess_views_view__lista_espacios__block_1(array &$variables)
+{
+  if (empty($variables['rows'])) {
+    $variables['espacios_groups'] = [];
+    return;
+  }
+
+  $renderer = \Drupal::service('renderer');
+  $groups = [];
+
+  foreach ($variables['rows'] as $group) {
+
+    if (empty($group['#rows'])) {
+      continue;
+    }
+
+    $institution_name = '';
+
+    if (!empty($group['#title'])) {
+      if (is_array($group['#title'])) {
+        $institution_name = trim(strip_tags(
+          $renderer->renderPlain($group['#title'])
+        ));
+      } else {
+        $institution_name = trim(strip_tags((string) $group['#title']));
+      }
+    }
+
+    $groups[] = [
+      'institution_name' => $institution_name,
+      'rows' => $group['#rows'],
+    ];
+  }
+
+  $variables['espacios_groups'] = $groups;
+}
+
+function tpms_preprocess_views_view__lista_espacios__block_2(array &$variables)
+{
+  $route_match = \Drupal::routeMatch();
+  $node = $route_match->getParameter('node');
+
+  if (is_numeric($node)) {
+    $node = Node::load((int) $node);
+  }
+
+  if ($node instanceof NodeInterface) {
+    $variables['host_node_title'] = $node->label();
+    $variables['host_node_id'] = $node->id();
+  }
+}
+
+
+
+/**
+ * Implements template_preprocess_paragraph() for informacion_con_iconos.
+ */
+function tpms_preprocess_paragraph__informacion_con_iconos(&$variables)
+{
+  /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
+  $paragraph = $variables['paragraph'];
+
+  // Validar que el paragraph tenga el campo de tipo de componente
+  if (!$paragraph->hasField('field_tipo_de_componente') || $paragraph->get('field_tipo_de_componente')->isEmpty()) {
+    return;
+  }
+
+  $component_type = $paragraph->get('field_tipo_de_componente')->value;
+
+  // Obtener título y descripción (comunes para variantes)
+  $variables['title'] = $paragraph->hasField('field_titulo') && !$paragraph->get('field_titulo')->isEmpty()
+    ? $paragraph->get('field_titulo')->value
+    : '';
+
+  $variables['description'] = $paragraph->hasField('field_description') && !$paragraph->get('field_description')->isEmpty()
+    ? $paragraph->get('field_description')->value
+    : '';
+
+  // Procesar items según el tipo de componente seleccionado
+  switch ($component_type) {
+
+    case 'butacas':
+      $items = [];
+      if ($paragraph->hasField('field_items_butacas') && !$paragraph->get('field_items_butacas')->isEmpty()) {
+        foreach ($paragraph->get('field_items_butacas') as $item) {
+          $entity = $item->entity;
+          if (!$entity) continue;
+
+          $items[] = [
+            'capacity' => $entity->hasField('field_capacidad') && !$entity->get('field_capacidad')->isEmpty()
+              ? $entity->get('field_capacidad')->value : '',
+            'label' => $entity->hasField('field_etiqueta') && !$entity->get('field_etiqueta')->isEmpty()
+              ? $entity->get('field_etiqueta')->value : '',
+          ];
+        }
+      }
+      $variables['butacas_items'] = $items;
+      break;
+
+    case 'variante_dorada':
+      $items = [];
+      if ($paragraph->hasField('field_items_variante_dorada') && !$paragraph->get('field_items_variante_dorada')->isEmpty()) {
+        foreach ($paragraph->get('field_items_variante_dorada') as $item) {
+          $entity = $item->entity;
+          if (!$entity) continue;
+
+          $icon_render = [];
+          if ($entity->hasField('field_icono') && !$entity->get('field_icono')->isEmpty()) {
+            $icon_render = $entity->get('field_icono')->view([
+              'label' => 'hidden',
+              'type' => 'iconify_icon',
+            ]);
+          }
+
+          $items[] = [
+            'icon' => $icon_render,
+            'title' => $entity->hasField('field_titulo') && !$entity->get('field_titulo')->isEmpty()
+              ? $entity->get('field_titulo')->value : '',
+            'description' => $entity->hasField('field_historico_descripcion') && !$entity->get('field_historico_descripcion')->isEmpty()
+              ? $entity->get('field_historico_descripcion')->value : '',
+          ];
+        }
+      }
+      $variables['variante_dorada_items'] = $items;
+      break;
+
+    case 'variante_azul':
+      $items = [];
+      if ($paragraph->hasField('field_items_variante_azul') && !$paragraph->get('field_items_variante_azul')->isEmpty()) {
+        foreach ($paragraph->get('field_items_variante_azul') as $item) {
+          $entity = $item->entity;
+          if (!$entity) continue;
+
+          $icon_render = [];
+          if ($entity->hasField('field_icono') && !$entity->get('field_icono')->isEmpty()) {
+            $icon_render = $entity->get('field_icono')->view([
+              'label' => 'hidden',
+              'type' => 'iconify_icon',
+            ]);
+          }
+
+          $items[] = [
+            'icon' => $icon_render,
+            'title' => $entity->hasField('field_titulo') && !$entity->get('field_titulo')->isEmpty()
+              ? $entity->get('field_titulo')->value : '',
+            'description' => $entity->hasField('field_historico_descripcion') && !$entity->get('field_historico_descripcion')->isEmpty()
+              ? $entity->get('field_historico_descripcion')->value : '',
+          ];
+        }
+      }
+      $variables['variante_azul_items'] = $items;
+      break;
+  }
+}
+
+/**
+ * Prepara las variables del paragraph Galería (título, imágenes y botón) 
+ * para ser pasadas al componente de Storybook.
+ */
+function tpms_preprocess_paragraph__galeria(&$variables)
+{
+  $paragraph = $variables['paragraph'];
+
+  $variables['gallery_title'] = $paragraph->field_titulo->value ?? '';
+
+  $variables['gallery_images'] = [];
+  if ($paragraph->hasField('field_image') && !$paragraph->field_image->isEmpty()) {
+    $file_url_generator = \Drupal::service('file_url_generator');
+    foreach ($paragraph->field_image as $delta => $media_item) {
+      if ($media_item->entity) {
+        $media = $media_item->entity;
+        if ($media->hasField('field_media_image') && !$media->field_media_image->isEmpty()) {
+          $image_field = $media->field_media_image->first();
+
+          $image_uri = $variables['content']['field_image'][$delta]['#uri'];
+          $image_style = $variables['content']['field_image'][$delta]['#image_style'];
+
+          $image_original_url = $file_url_generator->transformRelative(
+            $file_url_generator->generateAbsoluteString($image_uri),
+          );
+
+          $image_url = $image_original_url;
+          if (!empty($image_style)) {
+            $style = \Drupal\image\Entity\ImageStyle::load($image_style);
+            if ($style) {
+              $image_url = $style->buildUrl($image_uri);
+              $image_url = $file_url_generator->transformRelative($image_url);
+            }
+          }
+
+          $variables['gallery_images'][] = [
+            'image_src' => $image_url,
+            'image_original_src' => $image_original_url,
+            'image_alt' => $image_field->alt ?? '',
+          ];
+        }
+      }
+    }
+  }
+
+  if ($paragraph->hasField('field_boton') && !$paragraph->field_boton->isEmpty()) {
+    $boton_paragraph = $paragraph->field_boton->entity;
+    if ($boton_paragraph && $boton_paragraph->hasField('field_link') && !$boton_paragraph->field_link->isEmpty()) {
+      $link = $boton_paragraph->field_link->first();
+      $variables['gallery_button_text'] = $link->title ?? '';
+      $variables['gallery_button_url'] = $link->getUrl()->toString() ?? '';
+    }
+  }
+}
+
+
+
+function tpms_preprocess_views_view__espacios_relacionados2__block_1(array &$variables)
+{
+  $view = $variables['view'];
+
+  $count = isset($view->total_rows) ? (int) $view->total_rows : count($view->result);
+
+  $variables['espacios_count'] = $count;
+  $variables['title'] = $count . ' Espacios:';
+  unset($variables['espacios_items']);
+}
+
+function tpms_preprocess_node__espacios__espacios_relacionados(array &$variables)
+{
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $variables['node'];
+  if (!$node instanceof NodeInterface) {
+    return;
+  }
+
+  $label = $node->label();
+  $image_url = '';
+  $image_alt = $label;
+
+  if ($node->hasField('field_imagen') && !$node->get('field_imagen')->isEmpty()) {
+    $media = $node->get('field_imagen')->entity;
+
+    if ($media) {
+      $media_image_field = 'field_media_image';
+
+      if ($media->hasField($media_image_field) && !$media->get($media_image_field)->isEmpty()) {
+        $image_item = $media->get($media_image_field)->first();
+        $file = $image_item ? $image_item->entity : NULL;
+
+        if ($file) {
+          $image_url = \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri());
+        }
+
+        if ($image_item && !empty($image_item->alt)) {
+          $image_alt = $image_item->alt;
+        }
+      }
+    }
+  }
+
+  $variables['galeria_item'] = [
+    'image' => $image_url,
+    'alt' => $image_alt,
+    'label' => $label,
+  ];
+}
+
+
+function tpms_preprocess_viewfield_item__lista_centros_civicos_slider__block_1(array &$variables)
+{
+  $view = '';
+  if ($view = Views::getView($variables['content']['#name'])) {
+    $view->setDisplay($variables['content']['#display_id']);
+    $view->execute();
+  }
+
+  $items = [];
+
+  foreach ($view->result as $row) {
+    $node = $row->_entity ?? NULL;
+    if (!$node instanceof NodeInterface) {
+      continue;
+    }
+
+    $name = $node->label();
+
+    $media_image_field = $node->get('field_imagen')->entity;
+
+    if ($media_image_field && $media_image_field->hasField('field_media_image') && !$media_image_field->get('field_media_image')->isEmpty()) {
+      $image_url = $media_image_field->get('field_media_image')->view([
+        'label' => 'hidden',
+        'type' => 'image',
+        'settings' => [
+          'image_style' => '285x320_centros_civicos',
+        ],
+      ]);
+    }
+
+    $role = $node->hasField('field_subtitulo') && !$node->get('field_subtitulo')->isEmpty()
+      ? trim($node->get('field_subtitulo')->value)
+      : '';
+
+
+    $email = $node->hasField('field_correo') && !$node->get('field_correo')->isEmpty()
+      ? trim($node->get('field_correo')->value)
+      : '';
+
+    $phone = $node->hasField('field_telefono') && !$node->get('field_telefono')->isEmpty()
+      ? trim($node->get('field_telefono')->value)
+      : '';
+
+
+    $sede_label = 'SEDE';
+    $sede_text = '';
+
+    if ($node->hasField('field_ubicacion_sede') && !$node->get('field_ubicacion_sede')->isEmpty()) {
+      $term = $node->get('field_ubicacion_sede')->entity;
+
+      if ($term instanceof TermInterface) {
+        $sede_text = $term->label();
+      }
+    }
+
+    $body = [];
+
+    if ($node->hasField('field_descripcion') && !$node->get('field_descripcion')->isEmpty()) {
+      $text = trim($node->get('field_descripcion')->value);
+
+      if ($text) {
+        $body = array_values(
+          array_filter(
+            array_map('trim', preg_split("/\R\R+/", $text))
+          )
+        );
+      }
+    }
+
+
+    $items[] = [
+      'sede_label' => $sede_label,
+      'sede_text'  => $sede_text,
+      'role'       => $role,
+      'name'       => $name,
+      'email'      => $email,
+      'phone'      => $phone,
+      'image_url' => $image_url,
+      'body'       => $body,
+    ];
+  }
+
+  $paragraph = NULL;
+  if (!empty($variables['element']['#paragraph']) && $variables['element']['#paragraph'] instanceof ParagraphInterface) {
+    $paragraph = $variables['element']['#paragraph'];
+  } elseif (!empty($variables['entity']) && $variables['entity'] instanceof ParagraphInterface) {
+    $paragraph = $variables['entity'];
+  }
+
+  if ($paragraph && $paragraph->hasField('field_heading') && !$paragraph->get('field_heading')->isEmpty()) {
+    $variables['title_heading'] = $paragraph->get('field_heading')->value;
+  }
+  if ($paragraph && $paragraph->hasField('field_description') && !$paragraph->get('field_description')->isEmpty()) {
+    $variables['description_heading'] = $paragraph->get('field_description')->value;
+  }
+  $variables['ccp_intro'] = '';
+  $variables['ccp_items'] = $items;
+  $variables['content']['#access'] = FALSE;
+}
+/**
+ * Implements hook_preprocess_HOOK() for paragraph--archivos-adjuntos.
+ */
+function tpms_preprocess_paragraph__archivos_adjuntos(&$variables)
+{
+  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $variables['paragraph'];
+
+  // Obtener tipo de visualización
+  $variables['tipo_visualizacion'] = $paragraph->field_tipo_de_visualizacion->value ?? 'con_imagen';
+
+  // Extraer valores comunes
+  $variables['archivos_title'] = $paragraph->field_titulo->value ?? '';
+  $variables['archivos_description'] = $paragraph->field_descripcion->value ?? '';
+
+  // Construir array de archivos adjuntos
+  $variables['archivos_items'] = [];
+  if (!$paragraph->field_archivos_adjuntos->isEmpty()) {
+    foreach ($paragraph->field_archivos_adjuntos as $item) {
+      if ($item->entity) {
+        /** @var \Drupal\file\Entity\File $file */
+        $file = $item->entity;
+        $variables['archivos_items'][] = [
+          'label' => $item->description ?: $file->getFilename(),
+          'url' => $file->createFileUrl(),
+        ];
+      }
+    }
+  }
+
+  // Variables específicas según el tipo de visualización
+  if ($variables['tipo_visualizacion'] === 'con_imagen') {
+    // Procesar imagen con image style
+    $variables['archivos_image'] = NULL;
+    $variables['archivos_image_alt'] = '';
+
+    if (!$paragraph->field_imagen->isEmpty()) {
+      $image_uri = $variables['content']['field_imagen'][0]['#uri'] ?? NULL;
+      $image_style_name = $variables['content']['field_imagen'][0]['#image_style'] ?? NULL;
+
+      if ($image_uri && $image_style_name) {
+        // Aplicar image style
+        $image_style = ImageStyle::load($image_style_name);
+        if ($image_style) {
+          $variables['archivos_image'] = $image_style->buildUrl($image_uri);
+        }
+      } elseif ($image_uri) {
+        // Fallback: usar imagen sin style
+        $variables['archivos_image'] = \Drupal::service('file_url_generator')->generateAbsoluteString($image_uri);
+      }
+
+      // Obtener alt text
+      $variables['archivos_image_alt'] = $variables['content']['field_imagen'][0]['#item']->alt ?? '';
+    }
+  } else {
+    // Variable específica para componente simple
+    $variables['section_margin'] = $paragraph->field_activar_margen_de_seccion->value ?? TRUE;
+  }
+}
+
+
+
+function tpms_preprocess_paragraph__linea_de_tiempo_historia(&$variables)
+{
+  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $variables['paragraph'];
+
+  $slider_items = [];
+
+  // Obtener los items de historia referenciados
+  if ($paragraph->hasField('field_items_historias') && !$paragraph->get('field_items_historias')->isEmpty()) {
+
+    foreach ($paragraph->get('field_items_historias')->referencedEntities() as $item_paragraph) {
+
+      $image_url = NULL;
+      $image_style_name = NULL;
+      $image_alt = '';
+
+      // Obtener la imagen desde el campo de Media
+      if ($item_paragraph->hasField('field_imagen') && !$item_paragraph->get('field_imagen')->isEmpty()) {
+
+        // Obtener el display del paragraph para ver la configuración del image style
+        $display = \Drupal::service('entity_display.repository')
+          ->getViewDisplay('paragraph', $item_paragraph->bundle(), 'default');
+
+        if ($display) {
+          $field_config = $display->getComponent('field_imagen');
+          if ($field_config && isset($field_config['settings']['image_style'])) {
+            $image_style_name = $field_config['settings']['image_style'];
+          }
+        }
+
+        // Fallback si no se encuentra en el display
+        if (!$image_style_name) {
+          $image_style_name = 'large';
+        }
+
+        /** @var \Drupal\media\MediaInterface $media */
+        $media = $item_paragraph->get('field_imagen')->entity;
+
+        if ($media instanceof MediaInterface) {
+
+          // Auto-detectar el campo de imagen en la media
+          $image_field_name = NULL;
+          foreach ($media->getFieldDefinitions() as $field_name => $field_definition) {
+            if ($field_definition->getType() === 'image' && $media->hasField($field_name) && !$media->get($field_name)->isEmpty()) {
+              $image_field_name = $field_name;
+              break;
+            }
+          }
+
+          if ($image_field_name) {
+            /** @var \Drupal\file\FileInterface $file */
+            $file = $media->get($image_field_name)->entity;
+            $image_item = $media->field_media_image->first();
+            $image_alt = (string) ($image_item?->alt ?? '');
+
+            if ($file instanceof FileInterface) {
+              $image_uri = $file->getFileUri();
+
+              // Aplicar image style
+              $image_style = ImageStyle::load($image_style_name);
+              if ($image_style) {
+                $image_url = $image_style->buildUrl($image_uri);
+              } else {
+                // Fallback: imagen original
+                $image_url = \Drupal::service('file_url_generator')->generateAbsoluteString($image_uri);
+              }
+            }
+          }
+        }
+      }
+
+      // Obtener los demás campos
+      $item_title = $item_paragraph->hasField('field_titulo')
+        ? $item_paragraph->get('field_titulo')->value
+        : '';
+
+      $item_date = $item_paragraph->hasField('field_subheading')
+        ? $item_paragraph->get('field_subheading')->value
+        : '';
+
+      $item_description = $item_paragraph->hasField('field_descripcion')
+        ? $item_paragraph->get('field_descripcion')->value
+        : '';
+
+      // Agregar al array solo si hay datos válidos
+      if ($item_title || $image_url) {
+        $slider_items[] = [
+          'image' => $image_url,
+          'image_alt' => $image_alt,
+          'title' => $item_title,
+          'date' => $item_date,
+          'description' => $item_description,
+        ];
+      }
+    }
+  }
+
+  // Pasar los items procesados a la variable del template
+  $variables['slider_items'] = $slider_items;
+
+  // También pasar los campos principales
+  $variables['heading_title'] = $paragraph->hasField('field_titulo')
+    ? $paragraph->get('field_titulo')->value
+    : '';
+
+  $variables['heading_subtitle'] = $paragraph->hasField('field_subheading')
+    ? $paragraph->get('field_subheading')->value
+    : '';
+}
+
+function tpms_preprocess_viewfield_item__lista_cartelera__block_4(array &$variables)
+{
+  if ($view = Views::getView('lista_cartelera')) {
+    $view->setDisplay('block_4');
+    $view->execute();
+
+    $paragraph = NULL;
+    if (!empty($variables['element']['#paragraph']) && $variables['element']['#paragraph'] instanceof ParagraphInterface) {
+      $paragraph = $variables['element']['#paragraph'];
+    } elseif (!empty($variables['entity']) && $variables['entity'] instanceof ParagraphInterface) {
+      $paragraph = $variables['entity'];
+    }
+
+    if ($paragraph && $paragraph->hasField('field_heading') && !$paragraph->get('field_heading')->isEmpty()) {
+      $variables['title'] = $paragraph->get('field_heading')->value;
+    }
+  }
+}
+
+
+
+/**
+ * Implements hook_preprocess_paragraph__text_links_image().
+ */
+function tpms_preprocess_paragraph__text_links_image(array &$variables)
+{
+  $paragraph = $variables['paragraph'];
+
+  // Procesar título
+  $variables['title'] = $paragraph->hasField('field_titulo') && !$paragraph->get('field_titulo')->isEmpty()
+    ? $paragraph->get('field_titulo')->value
+    : NULL;
+
+  // Procesar imagen
+  $variables['imagen_url'] = NULL;
+  $variables['imagen_alt'] = '';
+
+  if ($paragraph->hasField('field_imagen') && !$paragraph->get('field_imagen')->isEmpty()) {
+    $image_field = $paragraph->get('field_imagen')->first();
+    if ($image_field && $image_field->entity) {
+      $media = $image_field->entity;
+      if ($media instanceof MediaInterface && $media->hasField('field_media_image')) {
+        $image_file_field = $media->get('field_media_image')->first();
+        if ($image_file_field && $image_file_field->entity) {
+          $file = $image_file_field->entity;
+          if ($file instanceof FileInterface) {
+            $variables['imagen_url'] = $file->createFileUrl();
+            $variables['imagen_alt'] = $image_file_field->alt ?? '';
+          }
+        }
+      }
+    }
+  }
+
+  // Procesar items
+  $variables['items'] = [];
+
+  if ($paragraph->hasField('field_item_text_image') && !$paragraph->get('field_item_text_image')->isEmpty()) {
+    foreach ($paragraph->get('field_item_text_image') as $item) {
+      if (!$item->entity instanceof ParagraphInterface) {
+        continue;
+      }
+
+      $item_paragraph = $item->entity;
+
+      // Extraer valores del item
+      $item_titulo = $item_paragraph->hasField('field_titulo') && !$item_paragraph->get('field_titulo')->isEmpty()
+        ? $item_paragraph->get('field_titulo')->value
+        : NULL;
+
+      $item_numero_ley = $item_paragraph->hasField('field_subheading') && !$item_paragraph->get('field_subheading')->isEmpty()
+        ? $item_paragraph->get('field_subheading')->value
+        : NULL;
+
+      // Procesar el botón
+      $button_label = NULL;
+      $button_url = NULL;
+      $archivo_url = NULL;
+
+      if ($item_paragraph->hasField('field_boton') && !$item_paragraph->get('field_boton')->isEmpty()) {
+        $boton_field = $item_paragraph->get('field_boton')->first();
+
+        if ($boton_field && $boton_field->entity instanceof ParagraphInterface) {
+          $boton_entity = $boton_field->entity;
+
+          // Obtener el título del botón
+          if ($boton_entity->hasField('field_titulo') && !$boton_entity->get('field_titulo')->isEmpty()) {
+            $button_label = $boton_entity->get('field_titulo')->value;
+          }
+
+          // Verificar si tiene un archivo (Media)
+          if ($boton_entity->hasField('field_archivo') && !$boton_entity->get('field_archivo')->isEmpty()) {
+            $file_id = $boton_entity->get('field_archivo')->target_id;
+            $media = Media::load($file_id);
+
+            if ($media && $media->hasField('field_media_file') && !$media->get('field_media_file')->isEmpty()) {
+              $media_file_id = $media->get('field_media_file')->target_id;
+              $file = File::load($media_file_id);
+
+              if ($file instanceof FileInterface) {
+                $archivo_url = $file->createFileUrl();
+                // Si no hay título, usar nombre del archivo
+                if (!$button_label) {
+                  $button_label = $file->getFilename();
+                }
+              }
+            }
+          }
+
+          // Verificar si tiene un link (URL) - solo si no hay archivo
+          if (!$archivo_url && $boton_entity->hasField('field_link') && !$boton_entity->get('field_link')->isEmpty()) {
+            $link_field = $boton_entity->get('field_link')->first();
+            if ($link_field && $link_field->getUrl()) {
+              $button_url = $link_field->getUrl()->toString();
+              // Si no hay título, usar el título del link
+              if (!$button_label && $link_field->title) {
+                $button_label = $link_field->title;
+              }
+            }
+          }
+        }
+      }
+
+      // Agregar item al array solo si tiene contenido
+      if ($item_titulo || $item_numero_ley || $button_label) {
+        $variables['items'][] = [
+          'titulo' => $item_titulo,
+          'numero_ley' => $item_numero_ley,
+          'button_label' => $button_label,
+          'button_url' => $button_url,
+          'archivo_url' => $archivo_url,
+        ];
+      }
+    }
+  }
+}

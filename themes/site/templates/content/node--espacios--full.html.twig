@@ -1,0 +1,41 @@
+{#
+/**
+ * @file
+ * Template para Content Type: Espacios (View Mode: Full)
+ * 
+ * Available variables:
+ * - node: The node entity with access to all fields
+ * - content: All node fields rendered with their display settings
+ * - label: The node title
+ * - url: Direct URL of the current node
+ */
+#}
+
+{# ------- Iimprimir field institucion espacio -------- #}
+{{content.field_institucion_espacio}}
+
+{% set image_uri = content.field_imagen[0]['#uri'] ?? null %}
+{% set image_style = content.field_imagen.0['#image_style'] ?? null %}
+{% if image_style %}
+  {% set image_url = file_url(image_uri | image_style(image_style)) %}
+{% endif %}
+{% set image_alt = content.field_imagen.0['#item'].alt|default('') %}
+
+{# ------- obtner los datos de espacio (nodo actual) ----------- #}
+<article{{ attributes.addClass('node', 'node--type-' ~ node.bundle|clean_class, 'node--view-mode-' ~ view_mode|clean_class) }}>
+  {% include "@organisms/detalle-institucion/detalle-institucion.twig" with {
+    detalle_institucion_title: node.title.value,
+    detalle_institucion_image: image_url,
+    detalle_institucion_image_alt: image_alt,
+    detalle_institucion_description: node.field_descripcion.value,
+    cta_primary_label: node.field_enlaces_de_interes.0.title,
+    cta_primary_url: node.field_enlaces_de_interes.0.uri,
+    cta_secondary_label: node.field_enlaces_de_interes.1.title,
+    cta_secondary_url: node.field_enlaces_de_interes.1.uri,
+  } %}
+</article>
+
+{# ------- content para los paragraphs agregados desde Drupal site-building ---- #}
+<div{{ content_attributes }}>
+  {{ content|without('field_imagen', 'field_descripcion', 'field_enlaces_de_interes' , 'field_institucion_espacio') }}
+</div>

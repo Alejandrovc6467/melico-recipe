@@ -1,0 +1,138 @@
+{% set header__base_class = 'header' %}
+
+<header {{ bem(header__base_class) }} class="header-mobile">
+
+	<input type="checkbox" class="checkbox" id="menu-toggle"/>
+
+	<div class="header__top-wrapper">
+		<div {{ bem('top', [], header__base_class) }}>
+
+			{% block header__branding %}
+				<div class="logo">
+					<div {{ bem('branding', [], header__base_class) }}>
+						{% if header__logo_src %}
+							<a href="{{ logo_link__url|default('/') }}" class="logo-link">
+								<img src="{{ header__logo_src }}" alt="Logo Melico Salazar" fetchpriority="high">
+							</a>
+						{% elseif page.header_branding and page.header_branding|render|striptags|trim %}
+							{# Si hay contenido en el bloque header_branding, usarlo #}
+							{{ page.header_branding }}
+						{% else %}
+							{# Fallback: usar el SVG del tema si no hay bloque configurado #}
+							{# Usar la ruta directa al archivo SVG en assets/images/ #}
+							{# Nota: Después de compilar con webpack, el archivo estará en dist/images/header-logo.svg #}
+							{# Si prefieres usar la ruta compilada, cambia a: '/themes/custom/tpms/dist/images/header-logo.svg' #}
+							{% set logo_svg_path = directory is defined and directory ? '/' ~ directory ~ '/assets/images/header-logo.svg' : '/themes/custom/tpms/assets/images/header-logo.svg' %}
+								<a href="{{ logo_link__url|default('/') }}" class="logo-link"> <img src="{{ logo_svg_path }}" alt="Logo Melico Salazar" fetchpriority="high">
+							</a>
+						{% endif %}
+					</div>
+				</div>
+			{% endblock %}
+
+			<div class="container-right">
+				<div {{ bem('font_size', [], header__base_class) }}>
+					<div class="font-resizer desktop">
+						<button class="font-resizer__button is-active" data-size="1rem">
+							<label>A</label>
+						</button>
+						<button class="font-resizer__button" data-size="1.5rem">
+							<label>A</label>
+						</button>
+						<button class="font-resizer__button" data-size="1.8rem">
+							<label>A</label>
+						</button>
+					</div>
+				</div>
+
+				<div class="search-menu">
+					<div {{ bem('searchform', [], header__base_class) }}>
+						{% block header__search %}
+							{{ elements.tpms_formularioexpuestobuscador_tpmsblock_1 }}
+						{% endblock %}
+					</div>
+				</div>
+
+				<div class="close_open">
+					<label for="menu-toggle" class="open">
+						<svg width="24" height="24" viewbox="0 0 24 24" fill="none">
+							<path d="M3 12H21M3 6H21M3 18H21" stroke="#CFAC65" stroke-width="2" stroke-linecap="round"/>
+						</svg>
+					</label>
+					<label for="menu-toggle" class="close">
+						<svg width="24" height="24" viewbox="0 0 24 24" fill="none">
+							<path d="M18 6L6 18M6 6L18 18" stroke="#CFAC65" stroke-width="2" stroke-linecap="round"/>
+						</svg>
+					</label>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="header-bottom">
+		<div class="menu menu_content">
+
+			<div class="search-menu-mobile">
+
+				<div class="header__font_size">
+					<div class="font-resizer mobile">
+						<button class="font-resizer__button is-active" data-size="1rem">
+							<label>A</label>
+						</button>
+						<button class="font-resizer__button" data-size="1.5rem">
+							<label>A</label>
+						</button>
+						<button class="font-resizer__button" data-size="1.8rem">
+							<label>A</label>
+						</button>
+					</div>
+				</div>
+				<div {{ bem('searchform', [], header__base_class) }}>
+						{{ elements.tpms_formularioexpuestobuscador_tpmsblock_1 }}
+				</div>
+			</div>
+
+			<div {{ bem('menu_items container', [], header__base_class) }}>
+				{% block header__menu %}
+					{% if menu_items %}
+						<nav class="main-nav">
+							<ul class="main-menu">
+								{% for item in menu_items %}
+									<li class="{{ item.below ? 'menu-item--has-children has-children' : '' }}">
+										<a href="{{ item.url }}" class="menu__item-menu">
+											{{ item.title }}
+										</a>
+										{% if item.below %}
+											{% set submenu_id = 'submenu-' ~ loop.index %}
+											{% include "@atoms/toggle-button/toggle-button.twig" with {
+                        icon_name: 'flecha-abajo-default',
+                        icon_width: '16',
+                        icon_height: '16',
+                        button_extra_classes: ['submenu-toggle'],
+                        button_data_attributes: {
+                          'aria-expanded': 'false',
+                          'aria-haspopup': 'true',
+                          'aria-controls': submenu_id,
+                          'aria-label': 'Abrir submenú de ' ~ item.title
+                        }
+                      } only %}
+											<ul class="submenu" id="{{ submenu_id }}">
+												{% for subitem in item.below %}
+													<li>
+														<a href="{{ subitem.url }}">{{ subitem.title }}</a>
+													</li>
+												{% endfor %}
+											</ul>
+										{% endif %}
+									</li>
+								{% endfor %}
+							</ul>
+						</nav>
+					{% endif %}
+				{% endblock %}
+			</div>
+		</div>
+	</div>
+
+</header>

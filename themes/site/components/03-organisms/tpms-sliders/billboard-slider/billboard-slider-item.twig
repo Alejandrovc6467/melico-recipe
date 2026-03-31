@@ -1,0 +1,29 @@
+{#
+/**
+ * Billboard Slider Item
+ * 
+ * Individual slide item for the billboard slider
+ * Uses the event-card molecule
+ * 
+ * Variables:
+ * - item__base_class: Base class from parent slider
+ * - item: Object containing:
+ *   - image: Image source
+ *   - title: Event title
+ *   - category: Event category
+ *   - location: Event location
+ *   - url: Link URL
+ */
+#}
+
+<li class="splide__slide" role="presentation">
+  {% include "@molecules/event-card/event-card.twig" with {
+    card__image__src: item.image,
+    card__image__alt: item.image_alt,
+    card__title: item.title,
+    card__category: item.category,
+    card__location: item.location,
+    card__url: item.url,
+    card__heading_level: 3,
+  } only %}
+</li>

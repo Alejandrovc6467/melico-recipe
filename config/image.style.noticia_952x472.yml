@@ -1,0 +1,20 @@
+langcode: es
+status: true
+dependencies: {  }
+name: noticia_952x472
+label: 'Noticia (952×472)'
+effects:
+  f69ca05c-1084-47fb-b3cc-965fae11bfe7:
+    uuid: f69ca05c-1084-47fb-b3cc-965fae11bfe7
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 952
+      height: 472
+      anchor: center-center
+  77ec9c21-f09a-4cf5-90f7-1169ddceb2cf:
+    uuid: 77ec9c21-f09a-4cf5-90f7-1169ddceb2cf
+    id: image_convert
+    weight: 2
+    data:
+      extension: webp

@@ -1,0 +1,21 @@
+{#
+/**
+ * @file
+ * Theme implementation for Paragraph Titulo Especial
+ *
+ * Available variables:
+ * - paragraph: Full paragraph entity.
+ * - content: All paragraph items.
+ *   - content.field_titulo: Campo de título
+ *   - content.field_descripcion: Campo de descripción
+ * - attributes: HTML attributes for the containing element.
+ * - view_mode: View mode; for example, "preview" or "full".
+ *
+ * @see template_preprocess_paragraph()
+ */
+#}
+
+{% include "@organisms/titulo-especial/titulo-especial.twig" with {
+  titulo: paragraph.field_titulo.value,
+  descripcion: paragraph.field_descripcion.value,
+} only %}

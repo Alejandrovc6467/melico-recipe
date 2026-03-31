@@ -1,0 +1,14 @@
+{%
+  set classes = [
+    'region',
+    'region--' ~ region|clean_class,
+    'grid-full',
+    'layout--pass--content-medium',
+  ]
+%}
+
+{% if content %}
+  <div{{ attributes.addClass(classes) }}>
+    {{ content }}
+  </div>
+{% endif %}

@@ -1,0 +1,26 @@
+title: '5 Espacios:'
+
+espacios_items:
+  - image: 'https://picsum.photos/seed/escenario1/600/400'
+    alt: 'Vista del escenario principal con asientos y escenografía'
+    label: 'Escenario'
+
+  - image: 'https://picsum.photos/seed/vestibulo1/600/400'
+    alt: 'Vestíbulo principal con piso rosa y columnas'
+    label: 'Vestíbulo Principal'
+
+  - image: 'https://picsum.photos/seed/cafe1/600/400'
+    alt: 'Café con paredes verdes y barra de madera'
+    label: 'Café'
+
+  - image: 'https://picsum.photos/seed/sala-ensayos1/600/400'
+    alt: 'Sala de ensayos con piso de madera y ventanales'
+    label: 'Sala de Ensayos'
+
+  - image: 'https://picsum.photos/seed/escenario2/600/400'
+    alt: 'Vista alternativa del escenario'
+    label: 'Escenario'
+
+  - image: 'https://picsum.photos/seed/vestibulo1/600/400'
+    alt: 'Vestíbulo principal con piso rosa y columnas'
+    label: 'Vestíbulo Principal'

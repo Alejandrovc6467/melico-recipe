@@ -1,0 +1,37 @@
+.espacios {
+  // Institution header
+  &__institution-header {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  // Grid layout
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(342px, 1fr));
+    gap: var(--spacing-lg);
+    margin: 0 auto;
+  }
+
+  &__grid-item {
+    width: 100%;
+    //max-width: 346px;
+    //margin: 0 auto;
+  }
+
+  &__h3--institution-title {
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    font-weight: 700;
+    color: var(--tpms-azul-presi);
+    font-family: $font-heading;
+
+    @include large {
+      font-size: 2rem;
+      line-height: 1.25;
+    }
+  }
+
+  &__h4--institution-pretitle {
+    color: var(--tpms-oro-libertad);
+  }
+}

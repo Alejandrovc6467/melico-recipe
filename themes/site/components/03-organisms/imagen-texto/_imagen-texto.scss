@@ -1,0 +1,195 @@
+.imagen-texto {
+  &__wrapper {
+    display: flex;
+    flex-flow: column;
+    gap: var(--spacing-xl);
+    width: 100%;
+    @include medium {
+      flex-flow: row nowrap;
+    }
+  }
+
+  &__categorias {
+    display: flex;
+    gap: var(--spacing-lg);
+    margin-bottom: 19px;
+    @include medium {
+      margin-bottom: var(--spacing-md);
+    }
+
+    .button {
+      min-width: auto;
+      min-height: auto;
+      justify-content: normal;
+      flex-direction: row-reverse;
+      text-transform: capitalize;
+      color: var(--tpms-negro);
+      cursor: initial;
+
+      &:hover {
+        color: var(--tpms-negor);
+      }
+
+      svg {
+        margin: 0 8px 0 0;
+        background-color: #c3c3c3;
+        border-radius: 3px;
+
+        use {
+          filter: brightness(0) saturate(100%) invert(100%) sepia(0%)
+            saturate(318%) hue-rotate(49deg) brightness(115%) contrast(100%);
+        }
+      }
+    }
+  }
+
+  &__date {
+    display: inline-block;
+    padding: 8px;
+    background-color: var(--tpms-azul-presi);
+    border-radius: var(--radius-sm);
+    color: var(--tpms-blanco);
+    margin-bottom: var(--spacing-md);
+  }
+
+  &__title {
+    .h2 {
+      line-height: 2.8rem;
+      margin-top: 0;
+      margin-bottom: var(--spacing-md);
+      color: var(--tpms-azul-presi);
+    }
+
+    // Título como párrafo para la variante small
+    &-paragraph {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.5;
+      color: var(--tpms-azul-presi);
+      margin: 0 0 var(--spacing-xs);
+    }
+  }
+
+  &__lugar {
+    color: #575757;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  &__text {
+    color: var(--grey-2);
+
+    h3 {
+      @include heading-h3;
+
+      color: var(--tpms-azul-presi);
+      margin-bottom: var(--spacing-lg);
+    }
+  }
+
+  &--derecha {
+    .imagen-texto__wrapper {
+      flex-direction: column;
+      @include medium {
+        flex-direction: row-reverse;
+      }
+    }
+  }
+
+  &__media {
+    img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+  }
+
+  &__content {
+    flex: 1;
+    .h1 {
+      overflow-wrap: anywhere;
+      word-break: normal;
+    }
+  }
+
+  &__boton {
+    margin-top: 1rem;
+    margin-bottom: var(--spacing-xl);
+
+    @include medium {
+      margin-bottom: 0;
+    }
+
+    a {
+      display: flex;
+
+      @include medium {
+        display: inline-flex;
+      }
+    }
+  }
+
+  &--evento {
+    align-items: flex-start;
+
+    .imagen-texto__wrapper {
+      gap: var(--spacing-xl) var(--spacing-xxxl);
+    }
+
+    .imagen-texto__content {
+      .wrapper-new-style {
+        margin-bottom: var(--spacing-md);
+      }
+    }
+
+    .imagen-texto__institucion {
+      color: var(--tpms-oro-libertad);
+      margin: 0 0 var(--spacing-xs);
+    }
+
+    .imagen-texto__lugar {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px var(--spacing-sm);
+      border: 1px solid var(--gris-neblina);
+      border-radius: 10px;
+      color: var(--grey-2);
+      font-weight: 600;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .imagen-texto__text {
+      color: var(--grey-1);
+
+      table {
+        border-collapse: collapse;
+      }
+
+      td,
+      th {
+        padding: 4px var(--spacing-xl) 4px 0;
+        vertical-align: top;
+        border: 0;
+      }
+
+      td:last-child,
+      th:last-child {
+        padding-right: 0;
+      }
+    }
+
+    .imagen-texto__actions {
+      display: flex;
+      gap: var(--spacing-lg);
+      flex-direction: column;
+      width: auto;
+      margin-top: 32px;
+
+      @include medium {
+        width: max-content;
+      }
+    }
+  }
+}

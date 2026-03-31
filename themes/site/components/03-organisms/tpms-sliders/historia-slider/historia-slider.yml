@@ -1,0 +1,28 @@
+heading_title: 'El Historial del Teatro'
+heading_subtitle: 'Scroll para conocer la historia'
+
+slider_items:
+  - image: 'https://wpapi.larepublica.net/wp-content/uploads/2018/04/201804201543570.faceflar-1024x536.jpg'
+    title: 'Obra "Lorem Ipsum dolor"'
+    date: 'Diciembre 1921'
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per Alejandro Vasquez Cordero, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum'
+
+  - image: 'https://wpapi.larepublica.net/wp-content/uploads/2018/04/201804201543570.faceflar-1024x536.jpg'
+    title: 'Obra "Lorem Ipsum dolor"'
+    date: 'Diciembre 1922'
+    description: 'Horem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per'
+
+  - image: 'https://wpapi.larepublica.net/wp-content/uploads/2018/04/201804201543570.faceflar-1024x536.jpg'
+    title: 'Obra "Lorem Ipsum dolor"'
+    date: 'Diciembre 1923'
+    description: 'Horem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per'
+
+  - image: 'https://wpapi.larepublica.net/wp-content/uploads/2018/04/201804201543570.faceflar-1024x536.jpg'
+    title: 'Obra "Lorem Ipsum dolor"'
+    date: 'Diciembre 1924'
+    description: 'Horem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per'
+
+  - image: 'https://m.media-amazon.com/images/M/MV5BNzJmMmMyNzUtMjFkNS00MGY5LTlkMGYtODFmMzAyNGExNDE4XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg'
+    title: 'Obra "Lorem Ipsum dolor"'
+    date: 'Diciembre 1925'
+    description: 'Horem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per'

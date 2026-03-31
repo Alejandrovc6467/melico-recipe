@@ -1,0 +1,127 @@
+// Mixin base de párrafo
+@mixin paragraph(
+  $font-family: var(--font-body),
+  $font-size: 1rem,
+  $font-weight: 400,
+  $line-height: 1.5,
+  $letter-spacing: 0,
+  $margin: 0
+) {
+  font-family: $font-family;
+  font-size: $font-size;
+  font-weight: $font-weight;
+  line-height: $line-height;
+  letter-spacing: $letter-spacing;
+  margin: $margin;
+  overflow: hidden;
+}
+
+// Global strong/bold
+strong,
+b {
+  font-weight: 700;
+}
+
+// Estilos base
+.paragraph {
+  @include paragraph();
+
+  // Body Variants
+  &--semi-bold {
+    font-weight: 600;
+  }
+
+  &--bold,
+  strong {
+    font-weight: 700;
+  }
+
+  // Small Body
+  &--small {
+    @include paragraph($font-size: 0.875rem, $line-height: 1.5);
+  }
+
+  &--small-semi-bold {
+    @include paragraph(
+      $font-size: 0.875rem,
+      $line-height: 1.5,
+      $font-weight: 600
+    );
+  }
+
+  &--small-bold {
+    @include paragraph(
+      $font-size: 0.875rem,
+      $line-height: 1.5,
+      $font-weight: 700
+    );
+  }
+
+  // Mini Body
+  &--mini {
+    @include paragraph($font-size: 0.75rem, $line-height: 1.5);
+  }
+
+  &--mini-bold {
+    @include paragraph(
+      $font-size: 0.75rem,
+      $line-height: 1.5,
+      $font-weight: 600
+    );
+  }
+
+  // Button (con letter-spacing 4%)
+  &--button {
+    @include paragraph(
+      $font-size: 1rem,
+      $line-height: 1.5,
+      $font-weight: 700,
+      $letter-spacing: 0.04em
+    );
+
+    text-transform: uppercase;
+  }
+
+  // Link (con letter-spacing 0.5%)
+  &--link {
+    @include paragraph(
+      $font-size: 1rem,
+      $line-height: 1.5,
+      $letter-spacing: 0.005em
+    );
+
+    text-decoration: underline;
+  }
+
+  // Color variants
+  @each $name, $color in $defaultColors {
+    &--color-#{$name} {
+      color: $color;
+    }
+  }
+}
+
+// Etiqueta <p> usa por defecto la clase .paragraph
+p {
+  @extend .paragraph;
+}
+
+// Separador estético
+.hr {
+  border-style: solid;
+  border-width: 1px 0 0;
+  color: currentColor;
+}
+
+blockquote {
+  font-style: italic;
+  margin-left: 0;
+  margin-right: 0;
+  overflow: hidden;
+  padding-left: 1.5em;
+  border-left: 2px solid var(--gris-neblina);
+
+  p {
+    padding-right: 1.5em;
+  }
+}

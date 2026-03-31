@@ -1,0 +1,93 @@
+{# melico-hero-slider.twig #}
+
+{{ attach_library('tpms/splide') }}
+
+{% set base_class = base_class|default('melico-hero-slider') %}
+{% set first = slides|first %}
+
+<div class="{{ base_class }}">
+  <div class="splide" aria-label="{{ aria_label|default('Eventos destacados del Teatro Melico') }}">
+    <div class="splide__track">
+      <ul class="splide__list">
+        {% for slide in slides %}
+          {% set is_first = loop.first %}
+          <li
+            class="splide__slide"
+            data-title="{{ slide.title|default('')|e('html_attr') }}"
+            data-venue="{{ slide.venue|default('')|e('html_attr') }}"
+            data-date="{{ slide.date_range|default('')|e('html_attr') }}"
+            data-more-url="{{ slide.more_url|default('')|e('html_attr') }}"
+            data-more-label="{{ slide.more_label|default('Ver más')|e('html_attr') }}"
+            data-tickets-url="{{ slide.tickets_url|default('')|e('html_attr') }}"
+            data-tickets-label="{{ slide.tickets_label|default('Comprar entradas')|e('html_attr') }}"
+          >
+            <article class="{{ base_class }}__slide">
+              <div class="{{ base_class }}__image-wrapper">
+                {% if slide.image %}
+                  <img
+                    class="{{ base_class }}__image"
+                    src="{{ file_url(slide.image) }}"
+                    alt="{{ slide.image_alt|default(slide.title) }}"
+                    loading="{{ is_first ? 'eager' : 'lazy' }}"
+                    fetchpriority="{{ is_first ? 'high' : 'auto' }}"
+                    decoding="async"
+                  />
+                {% endif %}
+              </div>
+            </article>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    {# BLOQUE AZUL ÚNICO (FUERA DEL TRACK) #}
+    <div class="{{ base_class }}__bottom">
+      <div class="{{ base_class }}__inner">
+        <header class="{{ base_class }}__header">
+          {% include "@atoms/text/headings/_heading.twig" with {
+            heading_level: 3,
+            heading: first.title|default(''),
+            heading_base_class: base_class ~ '__title'
+          } only %}
+
+          {% include "@atoms/text/headings/_heading.twig" with {
+            heading_level: 4,
+            heading: first.venue|default(''),
+            heading_base_class: base_class ~ '__venue'
+          } only %}
+
+          {% include "@atoms/text/text/01-paragraph.twig" with {
+            paragraph_content: first.date_range|default(''),
+            paragraph_modifiers: ['bold'],
+            paragraph_base_class: base_class ~ '__date'
+          } %}
+        </header>
+
+        <div class="{{ base_class }}__actions">
+          <div data-action="more">
+            {% include "@atoms/buttons/button.twig" with {
+              button_content: first.more_label|default('Ver más'),
+              button_url: first.more_url|default('#'),
+              button_modifiers: ['tertiary']
+            } only %}
+          </div>
+          <div data-action="tickets">
+            {% include "@atoms/buttons/button.twig" with {
+              button_content: first.tickets_label|default('Comprar entradas'),
+              button_url: first.tickets_url|default('#'),
+              button_modifiers: ['secondary']
+            } only %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="{{ base_class }}__controls">
+      <div class="splide__arrows">
+        <button class="splide__arrow splide__arrow--prev" type="button" aria-label="Anterior"><span>&lt;</span></button>
+        <button class="splide__arrow splide__arrow--next" type="button" aria-label="Siguiente"><span>&gt;</span></button>
+      </div>
+      <ul class="splide__pagination"></ul>
+    </div>
+  </div>
+</div>

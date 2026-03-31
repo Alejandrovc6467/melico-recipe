@@ -1,0 +1,23 @@
+{{ attach_library('tpms/splide') }}
+<div class="splide-double-carousel">
+	<div class="main-slider">
+		{% include "@organisms/tpms-sliders/netflix-slider/main-slider/main-slider.twig" with {
+			items: items,
+			url:cta.url.uri
+		}%}
+	</div>
+	<div class="thumbnail-content">
+		<div class="info-instituciones">
+			<div class="cta-instituciones">
+				<h2>{{cta.title}}</h2>
+				<p>{{cta.body}}</p>
+				<a href="{{cta.url.uri}}" class="button button--primary button--large">{{cta.url.text}}</a>
+			</div>
+		</div>
+		<div class="thumbnail-slider">
+			{% include "@organisms/tpms-sliders/netflix-slider/thumbnail-slider/thumbnail-slider.twig" with {
+				items: items
+			}%}
+		</div>
+	</div>
+</div>

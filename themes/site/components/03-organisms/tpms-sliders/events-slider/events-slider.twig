@@ -1,0 +1,46 @@
+{% set slider_base_class = slider_base_class|default('events-slider') %}
+{{ attach_library('tpms/splide') }}
+<div {{ bem(slider_base_class, slider__modifiers, slider__block_name) }}>
+  <div {{ bem('wrapper', [], slider_base_class) }}>
+    <div {{ bem('heading', [], slider_base_class) }}>
+      <div class="text-heading">
+        <h2>Agenda Cultural</h2>
+        <p>Descubre todos los eventos que hay en nuestra agenda cultural.</p>
+      </div>
+      {% include "@atoms/buttons/button.twig" with {
+        button_icon: {
+          icon_name: 'flecha-derecha',
+          icon_height: 24,
+          icon_width: 24,
+          directory: ''
+        },
+        button_content:view_more_text,
+        button_url: 'https://agenda.mcj.go.cr/',
+        button_modifiers: ['primary', 'large']
+      } %}
+    </div>
+    <div {{ bem('body', [], slider_base_class) }}>
+      <div class="splide" aria-label="Mi Slider">
+        <div class="splide__track">
+          <ul class="splide__list">
+            {% for item in slider_items %}
+              {% include "@organisms/tpms-sliders/events-slider/events-slider-item.twig" with {
+                item__base_class: slider_base_class,
+                item: item
+              }%}
+            {% endfor %}
+          </ul>
+        </div>
+        <div {{ bem('footer', [], slider_base_class) }}>
+          <h4 class="text-footer">Conéctate con la
+            <span class="text-footer__highlight">esencia cultural</span>
+            del país</h4>
+          <div class="arrows">
+            <div class="splide__arrows"></div>
+          </div>
+          <ul class="splide__pagination"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+{%
+  set count = paragraph.field_tarjetas|length
+%}
+{%
+  set wrapper_classes = [
+    'tarjetas-wrapper',
+    'tarjetas-wrapper--count-' ~ (count > 3 ? 'more' : count)
+  ]
+%}
+
+<div class="{{ wrapper_classes|join(' ') }}">
+  {% block paragraph %}
+    {% for item in paragraph.field_tarjetas %}
+      {% set card = item.entity %}
+      {% if card %}
+        {% set media = card.field_imagen.entity %}
+        {% set image_file = media.field_media_image.entity %}
+        {% set uri = image_file.uri.value %}
+        {% include "@organisms/card-list/card-list-item.twig" with {
+            item__base_class: card_list_base_class,
+            item: item
+          }%}
+      {% endif %}
+    {% endfor %}
+  {% endblock %}
+</div></div>

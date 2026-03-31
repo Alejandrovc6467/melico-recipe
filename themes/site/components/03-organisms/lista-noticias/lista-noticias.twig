@@ -1,0 +1,135 @@
+{% if demoFilters %}
+  <div class="lista-noticias">
+    {# ————————————————— SIDEBAR ————————————————— #}
+    <div class="lista-noticias__sidebar">
+      <div class="sidebar-filtros">
+
+        {# Buscador #}
+        <div class="sidebar-filtros__buscador">
+          {% include "@molecules/search/search-inline.twig" %}
+        </div>
+
+        {# Select #}
+        <div class="sidebar-filtros__select">
+          {% include "@atoms/forms/select/select.twig" with {
+            select: select
+          } %}
+        </div>
+
+        {# Botón móvil para abrir filtros #}
+        <div class="sidebar-filtros__mobile_button">
+          {% include "@atoms/buttons/button.twig" with {
+            button_content: 'Filtros',
+            button_modifiers: ['tertiary'],
+            button_icon: {
+              icon_name: 'filtro',
+              icon_height: 24,
+              icon_width: 24,
+            }
+          } %}
+        </div>
+
+        {# Encabezado modal (mobile) #}
+        <div class="border_boton">
+          <div class="cerrar">
+            <div class="boton_cerrar">
+              {% include "@atoms/images/icons/_icon.twig" with {
+                icon__name: 'cerrar_filtro',
+                icon__height: 40,
+                icon__width: 40,
+              } %}
+            </div>
+            <div class="title">
+              {% include "@atoms/text/headings/_heading.twig" with {
+                heading_level: 3,
+                heading: "Filters"
+              } only %}
+            </div>
+          </div>
+        </div>
+
+        {# Grupos de checkboxes #}
+        {% for group in checkboxGroups %}
+          <div class="sidebar-filtros__grupo">
+            {% include "@atoms/text/text/01-paragraph.twig" with {
+              paragraph_content: group.title,
+              paragraph_modifiers: ['semi-bold']
+            } %}
+            {% include "@atoms/forms/checkbox/checkbox.twig" with {
+              checkboxes: group.items
+            } %}
+          </div>
+        {% endfor %}
+
+        {# Botones Limpiar / Buscar #}
+        <div class="limpia_busca">
+          {% include "@atoms/buttons/button.twig" with {
+            button_content: 'Limpiar Filtros',
+            button_modifiers: ['link'],
+          } %}
+          {% include "@atoms/buttons/button.twig" with {
+            button_content: 'Buscar',
+            button_modifiers: ['primary'],
+            button_icon: {
+              icon_name: 'search',
+              icon_height: 24,
+              icon_width: 24,
+            }
+          } %}
+        </div>
+
+      </div>
+    </div>
+
+    {# ————————————————— CONTENIDO ————————————————— #}
+    <div class="lista-noticias__content">
+      <div class="lista-noticias__grid">
+        {% for card in cards %}
+          {% include "@molecules/basic-card/basic-card.twig" with {
+            card__image__src: card.card__image__src,
+            card__image__alt: card.card__image__alt,
+            card__category:   card.card__category,
+            card__date:       card.card__date,
+            card__title:      card.card__title,
+            card__heading_level: 2,
+            card__description: card.card__description|length > 160
+              ? card.card__description|slice(0, 157) ~ '…'
+              : card.card__description,
+            card__url:        card.card__url,
+            basic_card__modifiers: ['news-horizontal']
+          } %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% else %}
+{# ————————————————— CONTENIDO ————————————————— #}
+<div class="lista-noticias__content">
+  <div class="lista-noticias__grid">
+    {% if cards|length > 0 %}
+      {% for card in cards %}
+        {% include "@molecules/basic-card/basic-card.twig" with {
+          card__image__src: card.card__image__src,
+          card__image__alt: card.card__image__alt,
+          card__category:   card.card__category,
+          card__date:       card.card__date,
+          card__title:      card.card__title,
+          card__heading_level: 2,
+          card__description: card.card__description|length > 160
+            ? card.card__description|slice(0, 157) ~ '…'
+            : card.card__description,
+          card__url:        card.card__url,
+          basic_card__modifiers: ['news-horizontal']
+        } %}
+      {% endfor %}
+    {% else %}
+      {% include "@molecules/no-resultados/no-resultados.twig" with {
+        button_url: path('<current>')
+      } %}
+    {% endif %}
+  </div>
+  <div class='pager'>
+    {{ pager|raw }}
+  </div>
+</div>
+{% endif %}

@@ -1,0 +1,36 @@
+{% set section_has_margin = section_has_margin is defined ? section_has_margin : true %}
+<section class="artists-section{% if section_has_margin %} artists-section--with-margin{% endif %}">
+  <div class="container">
+    
+    <div class="artists-section__header">
+      {% include "@atoms/text/headings/_heading.twig" with {
+        heading_level: 2,
+        heading: section_title|default('SECCIÓN ARTISTAS'),
+        heading_blockname: 'artists-section',
+        heading_modifiers: ['title'],
+        heading_icon: true,
+        heading_underline: true
+      } only %}
+    </div>
+
+    {% include "@atoms/text/text/01-paragraph.twig" with {
+      paragraph_content: section_description,
+      paragraph_blockname: 'artists-section',
+      paragraph_base_class: 'description'
+    } %}
+
+    <div class="row artists-section__grid">
+      {% for item in artists %}
+        <div class="col-12 col-md-6 col-lg-3 artists-section__item">
+          {% include "@molecules/artist-card/artist-card.twig" with {
+            card_image: item.image ? file_url(item.image) : null,
+            image_alt: item.image_alt,
+            card_title: item.title,
+            card_url: item.url
+          } %}
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>

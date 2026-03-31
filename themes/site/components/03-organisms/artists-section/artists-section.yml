@@ -1,0 +1,16 @@
+section_title: 'SECCIÓN ARTISTAS'
+section_description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'
+section_has_margin: true
+artists:
+  - title: 'Alquiler y prestamos de espacios'
+    image: 'https://picsum.photos/342/419?random=1'
+    url: url
+  - title: 'Becas'
+    image: 'https://picsum.photos/342/419?random=2'
+    url: url
+  - title: 'Premios Nacionales de Cultura'
+    image: 'https://picsum.photos/342/419?random=3'
+    url: url
+  - title: 'Fondos Concursables'
+    image: 'https://picsum.photos/342/419?random=4'
+    url: url

@@ -1,0 +1,20 @@
+langcode: es
+status: true
+dependencies: {  }
+name: card_noticia
+label: 'Card noticia (342-190)'
+effects:
+  bbb0c57e-20ed-4847-b8ff-bb1cec016072:
+    uuid: bbb0c57e-20ed-4847-b8ff-bb1cec016072
+    id: image_scale_and_crop
+    weight: 2
+    data:
+      width: 342
+      height: 190
+      anchor: center-center
+  d6ce4621-a047-4e55-a796-39915ff0bb24:
+    uuid: d6ce4621-a047-4e55-a796-39915ff0bb24
+    id: image_convert
+    weight: 2
+    data:
+      extension: webp

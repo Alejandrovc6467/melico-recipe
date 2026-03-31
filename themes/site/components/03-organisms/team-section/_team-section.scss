@@ -1,0 +1,26 @@
+.team-section {
+  &__title {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  &__h2 {
+    color: var(--tpms-azul-presi);
+  }
+
+  &__row {
+    row-gap: var(--spacing-xl);
+
+    @include large {
+      row-gap: var(--spacing-xl);
+    }
+  }
+
+  &__col {
+    display: flex;
+    justify-content: center;
+
+    @include large {
+      justify-content: flex-start;
+    }
+  }
+}

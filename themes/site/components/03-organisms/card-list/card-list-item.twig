@@ -1,0 +1,16 @@
+{% set card__image__src = file_url(uri) ? file_url(uri | image_style('eventolista')) : '' %}
+
+<div {{ bem('item', [], card_list_base_class) }}>
+  {% include "@molecules/basic-card/basic-card.twig" with {
+    card__image__src: card__image__src,
+    card__image__alt: card__image__src,
+    card__heading_level: 3,
+    card__title: card.field_tarjet_titulo.value,
+    card__description: card.field_description.value,
+    card__url__mas: card__url__mas,
+    card__txt__mas: card__txt__mas,
+    card__url__entradas: card__url__entradas,
+    card__txt__entradas: card__txt__entradas,
+    basic_card__modifiers: card__modifiers
+  } only %}
+</div>

@@ -1,0 +1,8 @@
+show_prev: true
+show_next: true
+pages:
+  - { number: 1, modifier: 'checked' }
+  - { number: 2, modifier: '' }
+  - { number: 3, modifier: '' }
+  - 'dots'
+  - { number: 10, modifier: '' }

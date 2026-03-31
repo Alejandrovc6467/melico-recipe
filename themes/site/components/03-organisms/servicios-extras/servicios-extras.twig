@@ -1,0 +1,83 @@
+{#
+/**
+ * @file
+ * Servicios Extra Component (Organism)
+ * Displays extra services with icons in a responsive grid layout
+ *
+ * Available variables:
+ * - title: Main title (string)
+ * - description: Intro description (string)
+ * - servicios_extra_items: Array of service objects
+ *   Each item contains:
+ *   - icon: Phosphor icon name (e.g., 'calendar-blank', 'users-three')
+ *   - title: Service title
+ *   - description: Service description
+ * - servicios_extra_modifiers: Array of BEM modifiers
+ * - servicios_extra_blockname: BEM blockname
+ * - servicios_extra_base_class: Base class (default: 'servicios_extra')
+ *
+ * Dependencies:
+ * - Phosphor Icons (ph-light family)
+ * - Bootstrap grid system
+ */
+#}
+
+{% set servicios_extra_base_class = servicios_extra_base_class|default('servicios_extra') %}
+
+<section {{ bem(servicios_extra_base_class, servicios_extra_modifiers, servicios_extra_blockname, ['section-margin']) }}>
+  <div class="container">
+
+    {# Main Title #}
+    {% if title %}
+      {% include "@atoms/text/headings/_heading.twig" with {
+        heading_level: 3,
+        heading: title,
+        heading_base_class: 'servicios_extra__title',
+      } only %}
+    {% endif %}
+
+    {# Description #}
+    {% if description %}
+      {% include "@atoms/text/text/01-paragraph.twig" with {
+        paragraph_content: description,
+        paragraph_base_class: 'servicios_extra__description',
+      } %}
+    {% endif %}
+   
+    {# Services Grid #}
+    <div class="row {{ servicios_extra_base_class }}__grid">
+      {% for item in servicios_extra_items %}
+        <div class="col-12 col-md-6 col-lg-3 {{ servicios_extra_base_class }}__item">
+
+          {# Icon Wrapper with Plus Badge #}
+          <div class="{{ servicios_extra_base_class }}__icon-wrapper">
+
+            <div class="{{ servicios_extra_base_class }}__icon-dinamic" title="{{ item.title }}" aria-hidden="true">
+              {{ item.icon }}
+            </div>
+
+            <span class="{{ servicios_extra_base_class }}__icon-plus" aria-hidden="true"></span>
+          </div>
+          
+          {# Service Info #}
+          <div class="{{ servicios_extra_base_class }}__info">
+            {% if item.title %}
+              {% include "@atoms/text/text/01-paragraph.twig" with {
+                paragraph_content: item.title,
+                paragraph_base_class: 'servicios_extra__title-item',
+              } %}
+            {% endif %}
+
+            {% if item.description %}
+              <span class="{{ servicios_extra_base_class }}__description-item">
+                {{ item.description }}
+              </span>
+            {% endif %}
+          </div>
+
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>

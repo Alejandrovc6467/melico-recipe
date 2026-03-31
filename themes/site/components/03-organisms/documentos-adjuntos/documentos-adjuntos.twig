@@ -1,0 +1,73 @@
+{#
+/**
+ * @file
+ * Componente de documentos adjuntos con lista de descargas
+ *
+ * Variables disponibles:
+ * - documentos_title: Título principal
+ * - documentos_description: Descripción del contenido
+ * - documentos_items: Array de documentos
+ *   - label: Nombre del documento
+ *   - url: Ruta del archivo
+ * - documentos_section_margin: Boolean para agregar clase section-margin
+ *
+ * Modifiers disponibles:
+ * - documentos_modifiers: Array de modificadores BEM
+ * - documentos_blockname: Nombre del bloque padre (opcional)
+ */
+#}
+
+{% set documentos_base_class = documentos_base_class|default('documentos-adjuntos') %}
+{% set additional_classes = documentos_section_margin ? ['section-margin'] : [] %}
+
+<section {{ bem(documentos_base_class, documentos_modifiers, documentos_blockname, additional_classes) }}>
+  <div class="container">
+    
+    {# Header con título y descripción #}
+    {% if documentos_title or documentos_description %}
+      <div class="{{ documentos_base_class }}__header">
+        
+        {# Título con icono y línea decorativa #}
+        {% if documentos_title %}
+          {% include "@atoms/text/headings/_heading.twig" with {
+            heading_level: 1,
+            heading: documentos_title,
+            heading_icon: true,
+            heading_underline: true,
+            heading_base_class: documentos_base_class ~ '__title',
+          } only %}
+        {% endif %}
+
+        {# Descripción #}
+        {% if documentos_description %}
+          <div class="{{ documentos_base_class }}__description">
+            {% include "@atoms/text/text/01-paragraph.twig" with {
+              paragraph_content: documentos_description,
+            } %}
+          </div>
+        {% endif %}
+
+      </div>
+    {% endif %}
+
+    {# Lista de documentos para descarga #}
+    {% if documentos_items %}
+      <div class="{{ documentos_base_class }}__list">
+        {% for item in documentos_items %}
+          <a 
+            href="{{ item.url }}" 
+            class="{{ documentos_base_class }}__download-button"
+            download
+          >
+            <span class="{{ documentos_base_class }}__label">{{ item.label }}</span>
+            <span 
+              class="{{ documentos_base_class }}__download-icon" 
+              aria-hidden="true">
+            </span>
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+  </div>
+</section>

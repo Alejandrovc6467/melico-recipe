@@ -1,0 +1,86 @@
+{#
+/**
+ * Historia Slider Component
+ * 
+ * Horizontal timeline slider displaying historical events
+ * 
+ * Variables:
+ * - slider__modifiers: Array of BEM modifiers
+ * - slider__block_name: BEM block name
+ * - heading_title: Main heading text (default: 'El Historial del Teatro')
+ * - heading_subtitle: Subtitle text (default: 'Scroll para conocer la historia')
+ * - slider_items: Array of timeline items to display
+ *   Each item should have:
+ *   - image: Image source
+ *   - title: Event title
+ *   - date: Event date
+ *   - description: Event description
+ */
+#}
+
+{% set slider_base_class = slider_base_class|default('historia-slider') %}
+{{ attach_library('tpms/splide') }}
+
+<div {{ bem(slider_base_class, slider__modifiers, slider__block_name, ['section-margin']) }}>
+
+  <div {{ bem('wrapper', [], slider_base_class, ['container']) }}>
+    
+    {% if heading_title or heading_subtitle %}
+      {# Header Section #}
+      <div {{ bem('header', [], slider_base_class) }}>
+        {% if heading_title %}
+          {% include "@atoms/text/headings/_heading.twig" with {
+            heading_level: 1,
+            heading: heading_title,
+            heading_base_class: slider_base_class ~ '__title',
+            heading_icon: true,
+            heading_underline: true
+          } only %}
+        {% endif %}
+        
+        {% if heading_subtitle %}
+          <div {{ bem('subtitle', [], slider_base_class) }}>
+            {% include "@atoms/text/headings/_heading.twig" with {
+                heading_level: 4,
+                heading: heading_subtitle,
+                heading_base_class: slider_base_class ~ '__subtitle-text',
+            } only %}
+            <span {{ bem('mouse-icon', [], slider_base_class) }}></span>
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {# Slider Section #}
+    <div {{ bem('slider-container', [], slider_base_class) }}>
+      {# Timeline continuo - Fuera del splide #}
+      <div {{ bem('timeline-wrapper', [], slider_base_class) }}>
+        <div {{ bem('timeline-line', [], slider_base_class) }}></div>
+      </div>
+      <div class="splide" aria-label="Historia Timeline Slider">
+        <div class="splide__track">
+          <ul class="splide__list">
+            {% for item in slider_items %}
+              <li class="splide__slide" role="presentation">
+                {% include "@molecules/card-historia/card-historia.twig" with {
+                  card_historia__image: item.image,
+                  card_historia__alt: item.image_alt,
+                  card_historia__title: item.title,
+                  card_historia__date: item.date,
+                  card_historia__description: item.description,
+                } %}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      {# Custom Navigation Arrows - Outside splide, bottom right corner #}
+      <div {{ bem('arrows', [], slider_base_class) }}>
+        <button {{ bem('arrow', ['prev'], slider_base_class) }} type="button" aria-label="Previous slide"></button>
+        <button {{ bem('arrow', ['next'], slider_base_class) }} type="button" aria-label="Next slide"></button>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,28 @@
+langcode: es
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: rpwvgyEURXLz_JjgMCrkS1rUv-0k3L79BpO-ReN7fDI
+id: node
+label: Contenido
+tags:
+  abstract: '[node:summary]'
+  canonical_url: '[node:url]'
+  description: '[node:summary] [node:title]'
+  image_src: '[node:field_image:entity:field_media_image:entity:url]'
+  og_description: '[node:summary]'
+  og_image: '[node:field_image:entity:field_media_image:entity:url]'
+  og_image_url: '[node:field_image:entity:field_media_image:entity:url]'
+  og_site_name: '[site:name]'
+  og_title: '[node:title] | [site:name]'
+  og_type: website
+  og_url: '[node:url]'
+  schema_web_page_description: '[node:summary]'
+  schema_web_page_type: WebPage
+  title: '[node:title] | [site:name]'
+  twitter_cards_creator: '@TeatroMelico'
+  twitter_cards_description: '[node:summary]'
+  twitter_cards_image: '[node:field_image:entity:field_media_image:entity:url]'
+  twitter_cards_site: '@TeatroMelico'
+  twitter_cards_title: '[node:title]'
+  twitter_cards_type: summary_large_image

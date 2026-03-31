@@ -1,0 +1,34 @@
+.views-funcionarios,
+.view-transparencia {
+  .views-exposed-form {
+    .form-item {
+      input[type='text'] {
+        border: 1px solid var(--gris-neblina) !important;
+        border-radius: 0;
+        height: 48px;
+      }
+      &-funcionario {
+        &::after {
+          filter: brightness(0) saturate(100%) invert(54%) sepia(4%)
+            saturate(700%) hue-rotate(163deg) brightness(86%) contrast(89%);
+        }
+      }
+    }
+    #edit-submit-lista-funcionarios {
+      height: 48px;
+    }
+    .form-actions {
+      display: flex;
+      gap: var(--spacing-lg);
+    }
+  }
+  thead {
+    th {
+      font-weight: 700 !important;
+    }
+  }
+  td {
+    color: var(--tpms-azul-presi) !important;
+    font-weight: 400 !important;
+  }
+}

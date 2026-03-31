@@ -1,0 +1,116 @@
+.efemeride-template {
+  max-width: 1320px;
+  margin: var(--spacing-xxl) 15px;
+
+  .content {
+    width: 100%;
+
+    .date {
+      @include heading-h4;
+
+      color: var(--tpms-azul-cielo);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .title {
+      margin-bottom: var(--spacing-xxl);
+      color: var(--tpms-azul-presi);
+    }
+  }
+
+  .extra-content-e {
+    margin-top: var(--spacing-xxl);
+    width: 100%;
+  }
+
+  .more-efemerides {
+    .title-more-efemerides {
+      @include heading-h5;
+
+      color: var(--tpms-azul-presi);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .more-efemerides-wrapper {
+      border: 1px solid var(--gris-neblina);
+      border-radius: 15px;
+      margin-bottom: var(--spacing-md);
+
+      a {
+        display: block !important;
+        all: unset;
+        color: var(--tpms-azul-presi);
+        padding: var(--spacing-md);
+        cursor: pointer;
+      }
+
+      .more-efemerides-date {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: var(--spacing-xs);
+
+        h4,
+        time {
+          @include heading-h4;
+
+          margin: 0;
+          color: var(--tpms-azul-presi);
+        }
+      }
+
+      h3 {
+        @include heading-h5;
+
+        color: var(--tpms-azul-presi);
+        margin: 0;
+      }
+
+      &:hover {
+        h5,
+        h4,
+        p {
+          color: var(--tpms-azul-cielo);
+        }
+      }
+    }
+
+    .button--secondary {
+      width: fill-available;
+      margin-top: var(--spacing-xl);
+    }
+  }
+}
+
+@include large {
+  .extra-content-e {
+    max-width: 30%;
+  }
+
+  .efemeride-template {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-lg);
+
+    .content {
+      max-width: 60%;
+    }
+
+    .extra-content-e {
+      margin-top: 0;
+    }
+  }
+}
+@include xl {
+  .efemeride-template {
+    margin: 64px auto;
+
+    .content {
+      max-width: 872px;
+    }
+  }
+
+  .extra-content-e {
+    max-width: 424px;
+  }
+}

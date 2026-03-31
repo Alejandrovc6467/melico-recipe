@@ -1,0 +1,21 @@
+archivos_title: 'Documentación'
+archivos_description: 'Enviar la solicitud de alquiler del Teatro a la Unidad de Producción Escénica, correo: programacion@teatromelico.go.cr. Esperar respuesta por parte de la Administración del Teatro. Una vez recibida la respuesta se inician los trámites administrativos para el alquiler.'
+
+archivos_image: 'https://www.americantheatre.org/wp-content/uploads/crowded-theatre.jpg?w=640'
+archivos_image_alt: 'Público en el teatro'
+
+archivos_items:
+  - label: 'CUENTA CLIENTE TPMS'
+    url: '/files/cuenta-cliente-tpms.pdf'
+
+  - label: 'CRÉDITOS TPMS 2020'
+    url: '/files/creditos-tpms-2020.pdf'
+
+  - label: 'CINTILLO BICENTENARIO'
+    url: '/files/cintillo-bicentenario.pdf'
+
+  - label: 'CINTILLO BICENTENARIO (BLANCO)'
+    url: '/files/cintillo-bicentenario-blanco.pdf'
+
+  - label: 'TMPS (FC)'
+    url: '/files/tmps-fc.pdf'

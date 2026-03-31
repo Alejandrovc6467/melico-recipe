@@ -1,0 +1,60 @@
+// ============================================================================
+// MEDIA RESOURCES SECTION - Organismo
+// ============================================================================
+
+.media-resources {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 1920px;
+  overflow: hidden;
+  padding: var(--spacing-xl) 15px;
+
+  @include medium {
+    padding: 133px 0;
+  }
+
+  // Contenedor principal con ancho máximo
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 628px;
+    gap: var(--spacing-xxl);
+  }
+
+  // Contenedor de título y descripción
+  &__content {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+  }
+
+  // Título
+  &__title {
+    font-size: 32px;
+    color: var(--tpms-azul-presi);
+    line-height: 1.5;
+    @include medium {
+      font-size: 42px;
+      line-height: 64px;
+    }
+  }
+
+  // Descripción
+  &__paragraph--description {
+    color: var(--grey-1);
+    margin: 0;
+    line-height: 1.7;
+    text-align: center;
+  }
+
+  // Contenedor de boton
+  &__actions {
+    margin-bottom: 24px;
+  }
+}

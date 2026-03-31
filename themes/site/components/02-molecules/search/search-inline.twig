@@ -1,0 +1,11 @@
+<form action="/search/node" method="get" id="search-block-form" class="inline-search-form" accept-charset="UTF-8">
+  {% include "@atoms/images/icons/_icon.twig" with {
+    icon__base_class: "icon",
+    icon__blockname: "toggle-expand",
+    icon__modifiers: ['search-inline-bubble'],
+    icon__name: "search",
+    icon__width: '19px',
+    icon__height: '19px'
+  } %}
+  <input type="text" name="keys" placeholder="Busqueda">
+</form>

@@ -1,0 +1,184 @@
+{% set footer__base_class = 'footer' %}
+{# Obtiene el logo del sitio si existe en Drupal; en Storybook usa el logo del tema. #}
+{% set footer__logo_uri_raw = elements is defined and elements.tpms_marcadelsitio_2 is defined and elements.tpms_marcadelsitio_2.content is defined and elements.tpms_marcadelsitio_2.content.site_logo is defined
+  ? elements.tpms_marcadelsitio_2.content.site_logo['#uri']
+  : null
+%}
+{# Normaliza rutas mal guardadas como public://sites/default/files/... o /sites/default/files/... #}
+{% set footer__logo_uri = footer__logo_uri_raw
+  ? footer__logo_uri_raw|replace({
+    'public://sites/default/files/': 'public://',
+    '/sites/default/files/': 'public://'
+  })
+  : null
+%}
+{# En Drupal, `tpms.theme` inyecta `elements.tpms_footer_logo_src` con image style. #}
+{% set footer__logo = elements is defined and elements.tpms_footer_logo_src is defined
+  ? file_url(elements.tpms_footer_logo_src)
+  : (footer__logo_uri
+    ? file_url(footer__logo_uri)
+    : (directory ? '/' ~ directory ~ '/images/logo.png' : 'logo.png')
+  )
+%}
+
+<footer {{ bem(footer__base_class) }}>
+  {# Sección superior: Newsletter (amarillo) #}
+  {% block footer__newsletter %}
+    <div {{ bem('newsletter', [], footer__base_class) }}>
+      <div class="container newsletter__content">
+        <div class="newsletter__copy section-margin">
+          {% if newsletter_title %}
+            {% include "@atoms/text/headings/_heading.twig" with {
+              heading_level: 3,
+              heading: newsletter_title|striptags|trim
+            } only %}
+          {% endif %}
+
+          {% if newsletter_description %}
+            {% if newsletter_description is iterable %}
+              {{ newsletter_description }}
+            {% else %}
+              {% include "@atoms/text/text/01-paragraph.twig" with {
+                paragraph_content: newsletter_description
+              } %}
+            {% endif %}
+          {% endif %}
+        </div>
+
+        {% if newsletter_form %}
+          <div class="newsletter__form section-margin">
+            {{ newsletter_form }}
+          </div>
+        {% else %}
+          {# En Drupal (cuando existe 'elements'), si no hay formulario, no 
+            mostramos fallback. En Storybook (sin 'elements') sí mostramos
+            el fallback para visualizar el organismo. #}
+          {% if elements is not defined %}
+            <form class="newsletter__form" action="#" method="post" novalidate>
+              <input class="newsletter__input" type="email" placeholder="Enter mail"/>
+              {% include "@atoms/buttons/button.twig" with {
+                button_content: 'SUSCRIBIRSE',
+                button_url: '#',
+                button_modifiers: ['primary']
+              } %}
+            </form>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  {% endblock %}
+
+  {# Sección principal: fondo negro con logo, menú y contacto #}
+  <div {{ bem('inner', ['content'], footer__base_class, 'container') }}>
+    {% block footer__logo %}
+      <div {{ bem('logo__wrapper', [], footer__base_class) }}>
+        <a href="/" {{ bem('logo', [], footer__base_class) }}>
+          {% include "@atoms/images/image/_image.twig" with {
+            image_src: footer__logo,
+            image_alt: 'logo',
+            image_base_class: 'logo__img',
+            image_blockname: footer__base_class
+          } %}
+        </a>
+
+        <div class="footer__logo__icon">
+          {% include "@atoms/images/icons/_icon.twig" with {
+            icon__name: 'logo-icon',
+            icon__width: '200',
+            icon__height: '46',
+            icon_decorative: true
+          } %}
+        </div>
+        
+        {# Redes sociales: en Drupal renderiza el bloque; en Storybook usa fallback. #}
+        {% if elements is defined and elements.tpms_socialnetworks is defined %}
+          <div {{ bem('social', [], footer__base_class) }}>
+            {{ elements.tpms_socialnetworks }}
+          </div>
+        {% else %}
+          <div {{ bem('social', [], footer__base_class) }}>
+            <ul class="social-media-links--platforms" role="list">
+              <li>
+                <a href="#" aria-label="Facebook">
+                  {% include "@atoms/images/icons/_icon.twig" with {
+                    icon__name: 'facebook',
+                    icon__width: '20',
+                    icon__height: '20',
+                    icon_decorative: true
+                  } %}
+                </a>
+              </li>
+              <li>
+                <a href="#" aria-label="Instagram">
+                  {% include "@atoms/images/icons/_icon.twig" with {
+                    icon__name: 'instagram',
+                    icon__width: '20',
+                    icon__height: '20',
+                    icon_decorative: true
+                  } %}
+                </a>
+              </li>
+              <li>
+                <a href="#" aria-label="Twitter">
+                  {% include "@atoms/images/icons/_icon.twig" with {
+                    icon__name: 'twitter',
+                    icon__width: '20',
+                    icon__height: '20',
+                    icon_decorative: true
+                  } %}
+                </a>
+              </li>
+              <li>
+                <a href="#" aria-label="YouTube">
+                  {% include "@atoms/images/icons/_icon.twig" with {
+                    icon__name: 'youtube',
+                    icon__width: '24',
+                    icon__height: '24',
+                    icon_decorative: true
+                  } %}
+                </a>
+              </li>
+            </ul>
+          </div>
+        {% endif %}
+      </div>
+    {% endblock %}
+
+    <div class="menus-order">
+      {% block footer__menu %}
+        {% if elements is defined and (elements.tpms_piedepagina is defined or elements.tpms_contactenos is defined) %}
+          {% if elements.tpms_piedepagina is defined %}
+            <div {{ bem('nav', [], footer__base_class) }}>
+              {{ elements.tpms_piedepagina }}
+            </div>
+          {% endif %}
+          {% if elements.tpms_contactenos is defined %}
+            <div {{ bem('contact', [], footer__base_class) }}>
+              {{ elements.tpms_contactenos }}
+            </div>
+          {% endif %}
+        {% else %}
+          <div {{ bem('menu', [], footer__base_class) }}>
+            {% include "@molecules/menus/inline/inline-menu.twig" %}
+          </div>
+        {% endif %}
+      {% endblock %}
+    </div>
+  </div>
+
+  <div {{ bem('outer', [], footer__base_class, 'container') }}>
+    {% block footer__copyright %}
+      <div {{ bem('copyright', [], footer__base_class) }}>
+        {% if elements is defined and elements.tpms_copyright is defined %}
+          <div {{ bem('copyright__block', [], footer__base_class) }}>
+            {{ elements.tpms_copyright }}
+          </div>
+        {% else %}
+          <p>
+            Copyright &copy; {{ "now"|date("Y") }} - Teatro Popular Melico Salazar, All rights reserved.
+          </p>
+        {% endif %}
+      </div>
+    {% endblock %}
+  </div>
+</footer>

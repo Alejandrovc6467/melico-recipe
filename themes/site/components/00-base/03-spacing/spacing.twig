@@ -1,0 +1,11 @@
+<h2>{{ spacing_heading }}</h2>
+<p>{{ spacing_description }}</p>
+
+<ul class="spacing-list">
+  {% for item in spacing_items %}
+    <li class="spacing-item">
+      <div class="spacing-box {{ item.class }}"></div>
+      <span>{{ item.label }}</span>
+    </li>
+  {% endfor %}
+</ul>

@@ -1,0 +1,97 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a group.
+ *
+ * Available variables:
+ * - group: The group entity with limited access to object properties and
+ *   methods. Only "getter" methods (method names starting with "get", "has",
+ *   or "is") and a few common methods such as "id" and "label" are available.
+ *   Calling other methods (such as group.delete) will result in an exception.
+ * - label: The title of the group.
+ * - content: All group items. Use {{ content }} to print them all,
+ *   or print a subset such as {{ content.field_example }}. Use
+ *   {{ content|without('field_example') }} to temporarily suppress the
+ *   printing of a given child element.
+ * - url: Direct URL of the current group.
+ * - attributes: HTML attributes for the containing element.
+ *   The attributes.class element may contain one or more of the following
+ *   classes:
+ *   - group: The current template type (also known as a "theming hook").
+ *   - group--[type]: The current group type. For example, if the group is a
+ *     "Classroom" it would result in "group--classroom". Note that the machine
+ *     name will often be in a short form of the human readable label.
+ *   - group--[view_mode]: The View Mode of the group; for example, a
+ *     teaser would result in: "group--teaser", and full: "group--full".
+ * - title_attributes: Same as attributes, except applied to the main title
+ *   tag that appears in the template.
+ * - content_attributes: Same as attributes, except applied to the main
+ *   content tag that appears in the template.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+ * - view_mode: View mode; for example, "teaser" or "full".
+ * - page: Flag for the full page state. Will be true if view_mode is 'full'.
+ *
+ * @see template_preprocess_group()
+ *
+ * @ingroup themeable
+ */
+#}
+<div{{attributes}}>
+	{{ attach_library('tpms/iconify') }}
+	{{ title_prefix }}
+	{% if not page %}
+		<h2{{title_attributes}}>
+			<a href="{{ url }}" rel="bookmark">{{ label }}</a>
+		</h2>
+	{% endif %}
+	{{ title_suffix }}
+	<div class="institucion-container">
+		<div class="institucion-header">
+			<div class="institucion-image">
+				{% if grupo.image %}
+					<img src="{{ grupo.image.url }}" alt="{{ grupo.image.alt }}" title="{{ grupo.image.alt }}" class="institucion-image"/>
+				{% endif %}
+			</div>
+			<div class="institucion-info">
+				<div class="categorias-list">
+					{% for item in grupo.categorias %}
+						{# Nombre de la categoría #}
+						<p class="category-name">{{ item.name }}</p>
+					{% endfor %}
+				</div>
+				<h2>{{ grupo.title }}</h2>
+				{% if grupo.provincia %}
+					<div class="provincia">
+						<p>Dirección:
+							<span>{{ grupo.provincia }}</span>
+						</p>
+					</div>
+				{% endif %}
+				{% if grupo.external_link %}
+					<a class="external-link" href="{{ grupo.external_link.uri }}" title="{{ grupo.external_link.title }}" target="{{ grupo.external_link.target }}">
+						visitar sitio web
+					</a>
+				{% endif %}
+			</div>
+		</div>
+		{% set body_items = content.field_body['#items'] ?? [] %}
+		{% set ubic_items = content.field_ubicacion['#items'] ?? [] %}
+
+		{% if body_items|length > 0 or ubic_items|length > 0 %}
+			<div class="institucion-body">
+				{{ content.field_body }}
+				{{content.field_ubicacion}}
+			</div>
+		{% endif %}
+		{% if content.field_instituciones_relacionadas[0] %}
+			<div class="institucion-content">
+				{{ content.field_instituciones_relacionadas }}
+			</div>
+		{% endif %}
+	</div>
+
+
+</div>

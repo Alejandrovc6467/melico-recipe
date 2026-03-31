@@ -1,0 +1,88 @@
+// Design Tokens – Spacing System
+:root {
+  --spacing-xxs: 4px;
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+  --spacing-xxxl: 64px;
+  --spacing-huge: 96px;
+}
+
+// Variables SCSS basadas en los custom properties (por compatibilidad)
+$spacing-xxs: var(--spacing-xxs);
+$spacing-xs: var(--spacing-xs);
+$spacing-sm: var(--spacing-sm);
+$spacing-md: var(--spacing-md);
+$spacing-lg: var(--spacing-lg);
+$spacing-xl: var(--spacing-xl);
+$spacing-xxl: var(--spacing-xxl);
+$spacing-xxxl: var(--spacing-xxxl);
+$spacing-huge: var(--spacing-huge);
+
+// Utilidades para demostrar en Storybook
+.spacing-box {
+  background-color: red;
+  height: var(--spacing-lg);
+}
+
+.spacing-xxs {
+  width: $spacing-xxs;
+}
+
+.spacing-xs {
+  width: $spacing-xs;
+}
+
+.spacing-sm {
+  width: $spacing-sm;
+}
+
+.spacing-md {
+  width: $spacing-md;
+}
+
+.spacing-lg {
+  width: $spacing-lg;
+}
+
+.spacing-xl {
+  width: $spacing-xl;
+}
+
+.spacing-xxl {
+  width: $spacing-xxl;
+}
+
+.spacing-xxxl {
+  width: $spacing-xxxl;
+}
+
+.spacing-huge {
+  width: $spacing-huge;
+}
+
+/* ---------- Espaciado de secciones (como en Figma) ---------- */
+
+/* Desktop: margin bottom 64px; Mobile: 32px */
+.section-margin {
+  margin-bottom: var(--spacing-xl);
+
+  @include medium {
+    margin-bottom: var(--spacing-xxxl);
+  }
+}
+
+@mixin section-margin {
+  @extend .section-margin;
+}
+
+.paragraph--with-section-margin:not(:has(.section-margin)) {
+  @include section-margin;
+}
+
+.paragraph--without-section-margin .section-margin {
+  margin-bottom: 0;
+}

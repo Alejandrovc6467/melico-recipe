@@ -1,0 +1,92 @@
+{#
+/**
+ * Event Card Component
+ *
+ * Card design for cultural events with:
+ * - Image on top
+ * - White content box with golden border
+ * - Category, title, and location
+ *
+ * Variables:
+ * - card__image__src: Event image path
+ * - card__image__rendered: Rendered image markup (optional)
+ * - card__image__alt: Image alt text
+ * - card__category: Category text
+ * - card__title: Event title
+ * - card__location: Location name
+ * - card__url: Link URL
+ * - card__heading_level: Heading level (default: 4)
+ * - card_version: string (e.g. 'default' | 'second' | 'compact' | 'horizontal' etc.)
+ * - event_card__modifiers: array of additional modifiers
+ * - event_card__blockname: optional blockname for bem()
+ */
+#}
+
+{% set event_card__base_class = 'event-card' %}
+
+{# card_version -> event-card--version-<card_version> #}
+{% set version_modifier = card_version ? ['version-' ~ card_version] : [] %}
+{% set combined_modifiers = (event_card__modifiers|default([]))|merge(version_modifier) %}
+
+<div {{ bem(event_card__base_class, combined_modifiers, event_card__blockname) }}>
+  {% if card__url %}
+    <a href="{{ card__url }}" class="event-card__link">
+  {% endif %}
+
+    {# Image #}
+    {% if card__image__rendered or card__image__src %}
+      <div class="event-card__image-wrapper">
+        {% if card__image__rendered %}
+          {{ card__image__rendered }}
+        {% else %}
+          {% include "@atoms/images/image/responsive-image.twig" with {
+            image_src: card__image__src,
+            image_alt: card__image__alt,
+          } only %}
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {# Border wrapper #}
+    <div class="event-card__border-wrapper">
+      <div class="event-card__content">
+
+        <div class="event-card__subcontent">
+          {# Category #}
+          {% if card__category %}
+            {% include "@atoms/text/text/01-paragraph.twig" with {
+              paragraph_content: card__category,
+              paragraph_blockname: event_card__base_class,
+              paragraph_modifiers: ['category']
+            } only %}
+          {% endif %}
+
+          {# Title #}
+          {% if card__title %}
+            {% include "@atoms/text/headings/_heading.twig" with {
+              heading: card__title,
+              heading_level: card__heading_level|default(4),
+              heading_blockname: event_card__base_class,
+              heading_modifiers: ['title']
+            } only %}
+          {% endif %}
+        </div>
+
+        {# Location #}
+        {% if card__location %}
+          <div class="event-card__location">
+            {% include "@atoms/text/text/01-paragraph.twig" with {
+              paragraph_content: card__location,
+              paragraph_blockname: event_card__base_class,
+              paragraph_modifiers: ['location']
+            } only %}
+          </div>
+        {% endif %}
+
+      </div>
+    </div>
+
+  {% if card__url %}
+    </a>
+  {% endif %}
+</div>

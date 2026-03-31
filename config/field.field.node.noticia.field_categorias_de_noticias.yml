@@ -1,0 +1,28 @@
+langcode: es
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_categorias_de_noticias
+    - node.type.noticia
+    - taxonomy.vocabulary.categorias_de_noticias
+id: node.noticia.field_categorias_de_noticias
+field_name: field_categorias_de_noticias
+entity_type: node
+bundle: noticia
+label: 'Categorías de noticias'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      categorias_de_noticias: categorias_de_noticias
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,120 @@
+.header-blue {
+  position: relative;
+  width: 100%;
+  min-height: 550px;
+  display: flex;
+  padding-top: var(--spacing-lg);
+  overflow: hidden;
+  max-width: 1920px;
+  margin-inline: auto;
+  @include section-margin;
+
+  @include small {
+    padding-top: 88px;
+  }
+
+  // Background & Image
+  // ========================================
+  &__background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+
+    //configuraciones extra usando image styles desde Drupal sitebuilding
+    div {
+      height: 100%;
+      width: 100%;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      360deg,
+      rgb(54 93 183 / 0%) 0%,
+      rgb(38 65 128 / 80%) 32.5%,
+      #182951 100%
+    );
+    z-index: 1;
+
+    @include medium {
+      background: linear-gradient(
+        270deg,
+        rgb(54 93 183 / 0%) 0%,
+        rgb(38 65 128 / 80%) 32.5%,
+        #182951 100%
+      );
+    }
+  }
+
+  // Container & Content
+  // ========================================
+  &__container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    @include container;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+
+  &__title {
+    color: var(--tpms-amarillo-paz);
+    font-size: 2.5rem;
+
+    @include large {
+      font-size: 3.25rem;
+      line-height: 1.5;
+    }
+  }
+
+  &__description {
+    color: var(--tpms-blanco);
+    max-width: 709px;
+  }
+
+  &__actions {
+    display: flex;
+    flex-flow: column wrap;
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-lg);
+
+    .button {
+      width: 100%;
+    }
+
+    @include medium {
+      gap: var(--spacing-lg);
+      flex-direction: row;
+
+      .button {
+        width: auto;
+      }
+    }
+  }
+}

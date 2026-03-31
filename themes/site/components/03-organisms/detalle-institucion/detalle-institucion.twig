@@ -1,0 +1,81 @@
+{#
+/**
+ * @file
+ * Detalle Institución - Organismo
+ * 
+ * Available variables:
+ * - detalle_institucion_title - título del servicio/espacio
+ * - detalle_institucion_title_icon - boolean para mostrar icono decorativo
+ * - detalle_institucion_image - URL de la imagen
+ * - detalle_institucion_image_alt - texto alternativo de la imagen
+ * - detalle_institucion_content - contenido HTML/texto del detalle
+ * - detalle_institucion_buttons - array de botones
+ * - detalle_institucion_modifiers - modificadores BEM
+ * - detalle_institucion_blockname - blockname BEM
+ */
+#}
+
+{% set detalle_institucion_base_class = 'detalle-institucion' %}
+    
+<section {{ bem(detalle_institucion_base_class, detalle_institucion_modifiers, detalle_institucion_blockname, ['section-margin']) }}>
+  <div class="container">
+    <div class="row">
+
+      {# Columna Izquierda - Imagen #}
+      <div class="col-12 col-lg-6">
+        <div class="detalle-institucion__image-wrapper">
+          <div class="detalle-institucion__image-container">
+            <img 
+              src="{{ detalle_institucion_image }}" 
+              alt="{{ detalle_institucion_image_alt }}"
+              class="detalle-institucion__image"
+            >
+          </div>
+        </div>
+      </div>
+
+      {# Columna Derecha - Contenido #}
+      <div class="col-12 col-lg-6">
+        <div class="detalle-institucion__content">
+          {% if detalle_institucion_title %}
+            {% include "@atoms/text/headings/_heading.twig" with {
+              heading_level: 2,
+              heading: detalle_institucion_title,
+              heading_icon: true,
+              heading_underline: true,
+              heading_base_class: 'detalle-institucion__title',
+            } only %}
+          {% endif %}
+
+          {% if detalle_institucion_description %}
+            {% include "@atoms/text/text/01-paragraph.twig" with {
+              paragraph_content: detalle_institucion_description,
+              paragraph_base_class: 'detalle-institucion__description',
+            } %}
+          {% endif %}
+
+       
+            <div class="detalle-institucion__actions">
+                {% if cta_primary_label and cta_primary_url %}
+                    {% include "@atoms/buttons/button.twig" with {
+                        button_content: cta_primary_label,
+                        button_url: cta_primary_url,
+                        button_modifiers: ['secondary', 'medium'],
+                    } %}
+                {% endif %}
+
+                {% if cta_secondary_label and cta_secondary_url %}
+                    {% include "@atoms/buttons/button.twig" with {
+                        button_content: cta_secondary_label,
+                        button_url: cta_secondary_url,
+                        button_modifiers: ['tertiary-border'],
+                    } %}
+                {% endif %}
+            </div>
+       
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

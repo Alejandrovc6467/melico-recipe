@@ -1,0 +1,146 @@
+{#
+/**
+ * @file
+ * Componente 50/50 - Imagen y Texto.
+ *
+ * Variables esperadas:
+ * - title: Título principal del bloque.
+ * - content: Texto o descripción general (string, puede contener HTML).
+ * - image: Objeto con:
+ *     - src: URL absoluta de la imagen.
+ *     - alt: Texto alternativo de la imagen.
+ * - image_format: Formato visual de la imagen ('cuadrada' o 'panoramica').
+ * - image_position: Posición de la imagen ('izquierda' o 'derecha').
+ * - size: Tamaño del componente ('small' para 30/70, por defecto 50/50).
+ * - variant: Modificador visual adicional (por ejemplo 'evento').
+ * - date_range: Texto con las fechas del evento (string).
+ * - lugar: Lugar físico del evento o actividad (string).
+ * - institucion: Institución relacionada con el evento (string).
+ * - categoria: Array de categorías. Se muestran como botones de solo texto.
+ * - button: String con el color del botón. Se usa como condicional para aplicar 'primary' o 'secondary'.
+ * - texto_imagen_button_content: Texto del botón.
+ * - texto_imagen_button_url: Enlace del botón.
+ * - links: Array de enlaces para variantes especiales.
+ */
+#}
+<div class="imagen-texto container section-margin imagen-texto--{{ image_position }} imagen-texto--{{ image_format }}{% if size %} imagen-texto--{{ size }}{% endif %}{% if variant %} imagen-texto--{{ variant }}{% endif %}">
+  <div class="imagen-texto__wrapper">
+
+    {# Imagen del componente, si existe #}
+    {% if image %}
+      <div class="imagen-texto__media">
+        {% include "@atoms/images/image/_image.twig" with {
+          image_src: image.src,
+          image_alt: image.alt
+        } %}
+      </div>
+    {% endif %}
+
+    <div class="imagen-texto__content">
+      {% if variant == 'evento' %}
+        {# Institución del evento #}
+        {% if institucion %}
+          <div class="imagen-texto__institucion">
+            {% include "@atoms/text/text/01-paragraph.twig" with {
+              paragraph_content: institucion,
+              paragraph_modifiers: ['small-bold']
+            } %}
+          </div> 
+        {% endif %}
+
+        {# Título principal con estilo page-title #}
+        {% if title %}
+          {% include "@atoms/page-title/page-title.twig" with {
+            title: title,
+          } only %}
+        {% endif %}
+
+        {# Lugar físico del evento o actividad #}
+        {% if lugar %}
+          <div class="imagen-texto__lugar">
+            {% include "@atoms/text/text/01-paragraph.twig" with {
+              paragraph_content: lugar,
+              paragraph_modifiers: ['small-semi-bold']
+            } %}
+          </div> 
+        {% endif %}
+
+        {# Tabla informativa o contenido principal #}
+        {% if content %}
+          <div class="imagen-texto__text">{{ content }}</div>
+        {% endif %}
+
+        {# Enlaces del evento: primero tertiary-border, segundo primary #}
+        {% if links %}
+          <div class="imagen-texto__actions">
+            {% if links[0] is defined %}
+              {# <div class="imagen-texto__boton"> #}
+                {% include "@atoms/buttons/button.twig" with {
+                  button_content: links[0].title|default(links[0].url),
+                  button_url: links[0].url|default('#'),
+                  button_target: links[0].target|default('_self'),
+                  button_modifiers: ['tertiary-border', 'medium'],
+                } %}
+              {# </div> #}
+            {% endif %}
+            {% if links[1] is defined %}
+              {# <div class="imagen-texto__boton"> #}
+                {% include "@atoms/buttons/button.twig" with {
+                  button_content: links[1].title|default(links[1].url),
+                  button_url: links[1].url|default('#'),
+                  button_target: links[1].target|default('_self'),
+                  button_modifiers: ['primary', 'medium'],
+                } %}
+              {# </div> #}
+            {% endif %}
+          </div>
+        {% endif %}
+      {% else %}
+        {# Renderiza las categorías como botones de solo texto con ícono (mascaras) #}
+        {% if categoria %}
+          <div class="imagen-texto__categorias">
+            {% for item in categoria %}
+              {% include "@atoms/buttons/button.twig" with {
+                button_icon: {
+                  icon_name: 'mascaras',
+                  icon_height: 24,
+                  icon_width: 24,
+                },
+                button_content: item,
+              } %}
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        {# Fecha del evento o actividad #}
+        {% if date_range %}
+          <span class="imagen-texto__date">{{ date_range }}</span>
+        {% endif %}
+
+        {# Título principal #}
+        {% if title %}
+          <div class="imagen-texto__title">
+            {% if title_as_paragraph %}
+              <p class="imagen-texto__title-paragraph">{{ title }}</p>
+            {% else %}
+              {% include "@atoms/text/headings/_heading.twig" with {
+                heading_level: 2,
+                heading: title
+              } only %}
+            {% endif %}
+            </div>
+        {% endif %}
+
+        {# Lugar físico del evento o actividad #}
+        {% if lugar %}
+          <p class="imagen-texto__lugar">Lugar: <strong>{{ lugar }}</strong></p>
+        {% endif %}
+
+        {# Texto o descripción principal #}
+        {% if content %}
+          <div class="imagen-texto__text">{{ content }}</div>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+entity_type_groups:
+  group:
+    institucion:
+      schema_organization: schema_organization
+      schema_place: schema_place
+  node:
+    efemeride:
+      schema_article: schema_article
+    espacios:
+      open_graph: open_graph
+      twitter_cards: twitter_cards
+      schema_article: schema_article
+      schema_web_page: schema_web_page
+    evento:
+      open_graph: open_graph
+      twitter_cards: twitter_cards
+      schema_article: schema_article
+      schema_event: schema_event
+    fondos_concursables:
+      schema_article: schema_article
+      schema_web_page: schema_web_page
+    institucion:
+      open_graph: open_graph
+      twitter_cards: twitter_cards
+      schema_organization: schema_organization
+      schema_web_page: schema_web_page
+    jerarcas:
+      schema_person: schema_person
+    noticia:
+      schema_article: schema_article
+    pagina_de_llegada:
+      schema_web_page: schema_web_page
+  paragraph:
+    faq:
+      schema_qa_page: schema_qa_page
+separator: ','
+tag_trim_method: beforeValue
+use_maxlength: true
+tag_trim_maxlength:
+  metatag_maxlength_title: null
+  metatag_maxlength_description: null
+  metatag_maxlength_abstract: null
+  metatag_maxlength_og_site_name: null
+  metatag_maxlength_og_title: null
+  metatag_maxlength_og_description: null
+  metatag_maxlength_twitter_cards_description: null
+  metatag_maxlength_twitter_cards_title: null
+tag_scroll_max_height: ''
+tag_trim_end: '|.,-:;/+&([{"'''
+trim_suffix: ''

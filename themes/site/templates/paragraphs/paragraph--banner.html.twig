@@ -1,0 +1,38 @@
+{#
+/**
+ * @file
+ * Template para el paragraph de tipo "banner".
+ *
+ * Campos disponibles:
+ * - field_titulo: Título del banner
+ * - field_description: Descripción del banner
+ * - field_imagen: Imagen del banner (Referencia de entidad: Multimedia)
+ */
+#}
+{%
+  set classes = [
+    'drupal-paragraph',
+    'paragraph--type--' ~ paragraph.bundle|clean_class,
+    view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+    not paragraph.isPublished() ? 'paragraph--unpublished'
+  ]
+%}
+
+{# Procesar la imagen con image style #}
+{% set image_uri = content.field_imagen[0]['#uri'] ?? null %}
+{% set image_style = content.field_imagen.0['#image_style'] ?? null %}
+{% set image_url = image_uri ? file_url(image_uri | image_style(image_style)) : null %}
+{% set image_alt = content.field_imagen[0]['#item'].alt ?? '' %}
+
+{% block paragraph %}
+  <div{{ attributes.addClass(classes) }}>
+    {% block content %}
+      {% include "@organisms/header-blue/header-blue.twig" with {
+        header_blue__title: paragraph.field_titulo.value,
+        header_blue__description: paragraph.field_description.value,
+        header_blue__image: image_url,
+        header_blue__image_alt: image_alt,
+      } only %}
+    {% endblock %}
+  </div>
+{% endblock paragraph %}

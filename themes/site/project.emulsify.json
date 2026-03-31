@@ -1,0 +1,10 @@
+{
+  "project": {
+    "platform": "drupal",
+    "name": "tpms",
+    "machineName": "tpms"
+  },
+  "starter": {
+    "repository": "https://github.com/emulsify-ds/emulsify-drupal.git"
+  }
+}

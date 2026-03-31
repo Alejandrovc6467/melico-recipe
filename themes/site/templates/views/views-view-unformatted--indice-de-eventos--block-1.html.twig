@@ -1,0 +1,31 @@
+{#
+/**
+ * @file
+ * Theme override to display the "indice_de_eventos" view (block_1) as a sidebar list.
+ *
+ * Available variables:
+ * - title: The title of this group of rows. May be empty.
+ * - rows: A list of the view's row items.
+ * - view: The view object.
+ * - default_row_class: Whether to add the default "views-row" class.
+ */
+#}
+{% set node_id = view.args[0]|default(null) %}
+
+<ul class="book-tree">
+  {% if node_id %}
+    <li class="book-tree__item">
+      <a href="#component-{{ node_id }}" class="book-tree__link">{{ 'Información'|t }}</a>
+    </li>
+  {% endif %}
+  {% for row in rows %}
+    {% set row_content = row.content|render %}
+    {% set row_content = row_content|replace({'href="/#':'href="#'}) %}
+    {% set row_content = row_content|replace({'<a href=\"':'<a class=\"book-tree__link\" href=\"'}) %}
+    {% if row_content|striptags|trim %}
+    <li class="book-tree__item">
+      {{- row_content|raw -}}
+    </li>
+    {% endif %}
+  {% endfor %}
+</ul>

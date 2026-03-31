@@ -1,0 +1,81 @@
+{#
+/**
+ * @file
+ * Componente de archivos adjuntos con imagen y lista de botones de descarga
+ *
+ * Variables disponibles:
+ * - archivos_title: título del componente
+ * - archivos_description: descripción/introducción
+ * - archivos_image: URL de la imagen
+ * - archivos_image_alt: texto alternativo de la imagen
+ * - archivos_items: array de items con datos de cada archivo
+ */
+#}
+
+{% set archivos_base_class = 'archivos-adjuntos' %}
+
+<section class="{{ archivos_base_class }} section-margin">
+  <div class="container">
+    
+    <div class="row">
+
+      {# Columna izquierda: Contenido #}
+      <div class="col-12 col-md-6 {{ archivos_base_class }}__content">
+        
+        <div class="{{ archivos_base_class }}__text-info">
+            {# Título #}
+            {% if archivos_title %}
+            {% include "@atoms/text/headings/_heading.twig" with {
+                heading_level: 2,
+                heading: archivos_title,
+                heading_icon: true,
+                heading_underline: true,
+            } only %}
+            {% endif %}
+
+            {# Descripción #}
+            {% if archivos_description %}
+            <div class="{{ archivos_base_class }}__description">
+                {% include "@atoms/text/text/01-paragraph.twig" with {
+                paragraph_content: archivos_description,
+                } %}
+            </div>
+            {% endif %}
+        </div>
+
+        {# Lista de archivos #}
+        {% if archivos_items %}
+          <div class="{{ archivos_base_class }}__list">
+            {% for item in archivos_items %}
+              <a 
+                href="{{ item.url }}" 
+                class="{{ archivos_base_class }}__download-button"
+                download
+              >
+                {{ item.label }}
+                 <span 
+                  class="{{ archivos_base_class }}__download-icon" 
+                  aria-hidden="true">
+                 </span>
+              </a>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+      </div>
+
+      {# Columna derecha: Imagen #}
+      <div class="col-12 col-md-6 {{ archivos_base_class }}__image-column">
+        <div class="{{ archivos_base_class }}__image-wrapper">
+          <img 
+            src="{{ archivos_image }}" 
+            alt="{{ archivos_image_alt }}"
+            class="{{ archivos_base_class }}__image"
+          >
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>

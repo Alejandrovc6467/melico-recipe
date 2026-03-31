@@ -1,0 +1,124 @@
+.contacto {
+  padding: var(--spacing-lg) 0;
+
+  &__title {
+    .h3 {
+      color: var(--tpms-azul-presi);
+      margin-bottom: var(--spacing-lg);
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    @include medium {
+      flex-direction: row;
+      gap: 136px;
+    }
+  }
+
+  &__direccion {
+    margin-bottom: var(--spacing-lg);
+
+    .h5 {
+      color: var(--tpms-azul-presi);
+    }
+
+    .paragraph {
+      color: var(--grey-1);
+    }
+  }
+
+  &__redes {
+    .h5 {
+      color: var(--tpms-azul-presi);
+      margin-bottom: var(--spacing-lg);
+    }
+  }
+
+  &__info-principal {
+    @include medium {
+      flex: 1;
+    }
+  }
+
+  &__info-secundaria {
+    display: flex;
+    gap: 90px;
+    flex-direction: column;
+    @include medium {
+      flex-direction: row;
+      flex: 2;
+    }
+
+    .paragraph--bold {
+      color: var(--tpms-azul-presi) !important;
+    }
+
+    .info_secundaria_uno {
+      .telefono {
+        margin-bottom: var(--spacing-lg);
+
+        p {
+          color: var(--grey-1);
+        }
+      }
+
+      .horario {
+        p {
+          color: var(--grey-1);
+        }
+      }
+
+      .paragraph--bold {
+        margin-bottom: var(--spacing-md);
+      }
+    }
+
+    .info_secundaria_dos {
+      .correo {
+        margin-bottom: var(--spacing-lg);
+
+        p {
+          color: var(--grey-1);
+        }
+      }
+
+      .persona {
+        margin-bottom: var(--spacing-lg);
+
+        p {
+          color: var(--grey-1);
+        }
+      }
+
+      .apartado_postal {
+        p {
+          color: var(--grey-1);
+        }
+      }
+
+      .paragraph--bold {
+        margin-bottom: var(--spacing-md);
+      }
+    }
+  }
+
+  &__redes-list {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-xs);
+  }
+
+  &__red {
+    padding: var(--spacing-sm);
+    background-color: var(--tpms-azul-presi);
+    border-radius: var(--radius-sm);
+
+    svg {
+      filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(0%)
+        hue-rotate(288deg) brightness(102%) contrast(102%);
+    }
+  }
+}

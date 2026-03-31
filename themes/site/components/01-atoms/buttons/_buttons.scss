@@ -1,0 +1,290 @@
+// Sass map to define colors. Each set should have a "Dark" variation when required.
+// e.g. `default` and `default-dark`. Or `purple` and `purple-dark`.
+$button-colors: (
+  primary: (
+    text: var(--tpms-blanco),
+    bg: var(--tpms-azul-presi),
+    text-hover: var(--tpms-blanco),
+    bg-hover: var(--tpms-azul-cielo),
+    text-active: var(--tpms-blanco),
+    bg-active: var(--tpms-azul-presi),
+  ),
+  secondary: (
+    text: var(--tpms-azul-presi),
+    bg: var(--tpms-oro-libertad),
+    text-hover: var(--tpms-azul-presi),
+    bg-hover: var(--tpms-amarillo-paz),
+    text-active: var(--tpms-blanco),
+    bg-active: var(--tpms-oro-libertad),
+  ),
+  tertiary: (
+    text: var(--tpms-azul-presi),
+    bg: var(--tpms-blanco),
+    text-hover: var(--tpms-azul-presi),
+    bg-hover: var(--tpms-amarillo-paz),
+    text-active: var(--tpms-azul-presi),
+    bg-active: var(--tpms-blanco),
+  ),
+  link: (
+    text: var(--tpms-azul-cielo),
+    bg: transparent,
+    text-hover: var(--tpms-azul-presi),
+    bg-hover: transparent,
+    text-active: var(--tpms-primary-d1),
+    bg-active: transparent,
+  ),
+);
+
+// Mixin to define colors for one or more schemes.
+// Simply pass the color scheme to the mixin to get the colors defined in the map.
+// e.g. @include buttonColors(default) will get all of the colors defined in the "default" section.
+@mixin buttonColors(
+  $scheme,
+  $pallate: map-get($button-colors, $scheme),
+  $map: $button-colors
+) {
+  color: map-get($pallate, text);
+  background-color: map-get($pallate, bg);
+
+  &:visited {
+    color: map-get($pallate, text);
+  }
+
+  &:hover {
+    color: map-get($pallate, text-hover);
+    background-color: map-get($pallate, bg-hover);
+  }
+
+  &:active {
+    color: map-get($pallate, text-active);
+    background-color: map-get($pallate, bg-active);
+  }
+}
+
+// The button-base mixin contains styles that apply to all buttons
+// regardless of color or size.
+@mixin button-base(
+  $border: none,
+  $cursor: pointer,
+  $display: flex,
+  $text-decoration: none,
+  $text-align: center,
+  $font-weight: 700,
+  $font-size: 18px,
+  $line-height: 1.5rem
+) {
+  border: $border;
+  cursor: $cursor;
+  display: $display;
+  text-decoration: $text-decoration;
+  text-align: $text-align;
+  font-weight: $font-weight;
+  font-size: $font-size;
+  line-height: $line-height;
+  font-family: var(--font-body);
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-sm $spacing-lg;
+  min-width: 200px;
+  text-transform: uppercase;
+
+  @include large {
+    display: inline-flex;
+  }
+}
+
+// Button color variations
+// Note how we include dark mode options for each
+@mixin button-color-primary {
+  @include buttonColors(primary);
+
+  letter-spacing: var(--ls-wide);
+  height: min-content;
+
+  //Esto debe ser una condicional en el twig para poner flecha o no
+  // &::after {
+  //   content: "";
+  //   font-family: fontello;
+  //   margin-left: 5px;
+  // }
+}
+
+@mixin button-color-secondary {
+  @include buttonColors(secondary);
+
+  //Esto debe ser una condicional en el twig para poner flecha o no
+  // &::after {
+  //   content: "";
+  //   font-family: fontello;
+  //   margin-left: 5px;
+  // }
+}
+
+@mixin button-color-tertiary {
+  @include buttonColors(tertiary);
+
+  //Esto debe ser una condicional en el twig para poner flecha o no
+  // &::after {
+  //   content: "";
+  //   font-family: fontello;
+  //   margin-left: 5px;
+  // }
+
+  // &:hover {
+  //   border: 2px solid var(--tpms-amarillo-paz);
+  // }
+
+  &:active {
+    border: none;
+  }
+}
+
+@mixin button-color-link {
+  @include buttonColors(link);
+
+  background-color: inherit;
+
+  &:active {
+    background-color: inherit;
+  }
+}
+
+@mixin button-medium {
+  padding: $spacing-md $spacing-lg;
+}
+
+@mixin button-large {
+  padding: $spacing-md $spacing-xxl;
+}
+
+.button {
+  @include button-base;
+
+  gap: 8px;
+  width: 100%;
+
+  @include large {
+    width: auto;
+  }
+
+  &--primary {
+    @include button-color-primary;
+  }
+
+  &--secondary {
+    @include button-color-secondary;
+  }
+
+  &--tertiary {
+    @include button-color-tertiary;
+  }
+
+  &--tertiary-border {
+    @extend .button--tertiary;
+
+    border: 2px solid var(--tpms-azul-presi);
+    padding: 10px var(--spacing-lg);
+
+    > .icon {
+      margin: 0;
+    }
+  }
+
+  &--link {
+    @include button-color-link;
+    @extend .link;
+
+    min-width: auto;
+  }
+
+  &--hide-on-desktop {
+    @include large {
+      display: none;
+    }
+  }
+
+  &--hide-on-tablet {
+    @include medium {
+      display: none;
+    }
+  }
+
+  &--hide-on-mobile {
+    @include small {
+      display: none;
+    }
+  }
+
+  &--medium {
+    @include button-medium;
+
+    @include medium {
+      padding-inline: var(--spacing-xxl);
+    }
+  }
+
+  &--medium.button--tertiary-border {
+    padding-block: 14px;
+  }
+
+  &--large {
+    @include button-large;
+
+    @include medium {
+      padding-inline: var(--spacing-xxl);
+    }
+  }
+
+  &.button--block {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+  }
+
+  &__label {
+    display: inline-block;
+    transform: translateY(2px);
+  }
+
+  &--mini {
+    @extend .paragraph--small-semi-bold;
+
+    color: var(--tpms-azul-presi);
+    border: 2px solid var(--tpms-azul-presi);
+    flex-direction: row-reverse;
+    text-transform: none;
+    gap: var(--spacing-sm);
+    padding: 4px var(--spacing-lg);
+    min-height: auto;
+    min-width: auto;
+
+    & > .icon {
+      margin: 0;
+    }
+
+    &:hover {
+      color: var(--tpms-azul-cielo);
+      border: 2px solid var(--tpms-azul-cielo);
+
+      & > .icon {
+        filter: brightness(0) saturate(100%) invert(14%) sepia(93%)
+          saturate(3420%) hue-rotate(219deg) brightness(84%) contrast(104%);
+      }
+    }
+  }
+}
+
+.search-white {
+  background: url('../assets/icons/search-white.svg') 30% center no-repeat;
+  background-position: calc(50% - 50px) center;
+  text-indent: 12px;
+  background-color: var(--tpms-azul-presi);
+}
+
+.flecha-abajo {
+  position: absolute;
+  top: 25%;
+  right: 1rem;
+  pointer-events: none;
+  content: url('../assets/icons/flecha-abajo.svg');
+}

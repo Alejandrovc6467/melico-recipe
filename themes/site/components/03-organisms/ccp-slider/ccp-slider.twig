@@ -1,0 +1,104 @@
+{{ attach_library('tpms/splide') }}
+<section class="tpms-ccp-slider" data-tpms-ccp-slider>
+	<div class="tpms-ccp-slider__inner container">
+
+		<header class="tpms-ccp-slider__header">
+			{% if title %}
+				{% include "@atoms/text/headings/_heading.twig" with {
+          heading_level: 2,
+          heading: title,
+          heading_icon: true,
+          heading_underline: true,
+          heading_base_class: 'tpms-ccp-slider__title'
+        } only %}
+			{% endif %}
+
+			{% if intro %}
+				{% include "@atoms/text/text/01-paragraph.twig" with {
+          paragraph_content: intro,
+          paragraph_base_class: 'tpms-ccp-slider__intro'
+        } %}
+			{% endif %}
+		</header>
+
+		<div
+			class="tpms-ccp-slider__grid">
+
+			{# NAV #}
+			<aside class="tpms-ccp-slider__nav splide" data-tpms-ccp-nav aria-label="Sedes">
+				<div class="tpms-ccp-slider__nav-line" aria-hidden="true"></div>
+
+				<div class="splide__track">
+					<ul class="splide__list">
+						{% for item in items %}
+							<li class="splide__slide">
+								<button class="tpms-ccp-slider__nav-item" type="button">
+									<span class="tpms-ccp-slider__nav-label">{{ item.sede_label|default('SEDE') }}</span>
+									<span class="tpms-ccp-slider__nav-text">{{ item.sede_text|default('') }}</span>
+								</button>
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</aside>
+
+			{# MAIN #}
+			<div class="tpms-ccp-slider__main splide" data-tpms-ccp-main>
+				<div class="splide__track">
+					<ul class="splide__list">
+						{% for item in items %}
+							<li class="splide__slide">
+								<article class="tpms-ccp-slider__card">
+
+									<div class="tpms-ccp-slider__image">
+										{% if item.image %}
+											<img class="tpms-ccp-slider__img" width="285" height="321" src="{{ item.image }}" alt="{{ (item.image_alt|default(item.name|default('')))|escape('html_attr') }}" loading="lazy" decoding="async"/>
+										{% else %}
+											{% if item.image_url %}
+												{{item.image_url}}
+											{% endif %}
+										{% endif %}
+									</div>
+
+									<div class="tpms-ccp-slider__panel">
+										{% include "@atoms/text/text/01-paragraph.twig" with {
+                      paragraph_content: item.role,
+                      paragraph_base_class: 'tpms-ccp-slider__role'
+                    } %}
+										{% include "@atoms/text/headings/_heading.twig" with {
+                      heading_level: 4,
+                      heading: item.name|default(''),
+                      heading_base_class: 'tpms-ccp-slider__name'
+                    } only %}
+
+										<p class="tpms-ccp-slider__contact">
+											{% if item.email %}
+												<a class="tpms-ccp-slider__link" href="mailto:{{ item.email }}">{{ item.email }}</a><br>
+											{% endif %}
+											{% if item.phone %}
+												<a class="tpms-ccp-slider__link" href="tel:{{ item.phone|replace({' ':''}) }}">{{ item.phone }}</a>
+											{% endif %}
+										</p>
+
+										<div class="tpms-ccp-slider__body">
+											{% if item.body is iterable %}
+												{% for p in item.body %}
+													{% include "@atoms/text/text/01-paragraph.twig" with {
+                            paragraph_content: p,
+                          } %}
+												{% endfor %}
+											{% endif %}
+										</div>
+
+									</div>
+
+								</article>
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</section>

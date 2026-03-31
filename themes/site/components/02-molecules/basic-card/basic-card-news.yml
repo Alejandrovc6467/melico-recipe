@@ -1,0 +1,7 @@
+card__image__src: 'logo.png'
+card__category: 'Noticia'
+card__date: 'Enero 11, 2025'
+card__title: 'ES OFICIAL: el Festival Internacional de las Artes 2024 arrancó en Guanacaste'
+card__url: 'https://example.com/'
+basic_card__modifiers:
+  - news

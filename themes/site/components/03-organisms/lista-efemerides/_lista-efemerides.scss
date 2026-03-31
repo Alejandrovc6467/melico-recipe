@@ -1,0 +1,179 @@
+.lista-efemerides {
+  .js-form-type-select.form-item-field-mes-value {
+    select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background: none;
+      padding-right: 1em;
+      color: var(--grey-1);
+    }
+  }
+
+  &__wrapper {
+    flex-direction: column;
+    max-width: 1320px;
+    display: flex;
+    margin: 0 0 var(--spacing-xl);
+    gap: 64px;
+  }
+
+  &__filtros {
+    width: 100%;
+
+    #views-exposed-form-efemerides-block-1 {
+      input#edit-title--3 {
+        background: url('../assets/icons/search-default.svg') 18px center
+          no-repeat;
+      }
+
+      input[type='submit'] {
+        @extend .search-white;
+
+        width: 100%;
+      }
+    }
+  }
+
+  &__date {
+    min-width: 70px;
+    max-height: 72px;
+    background-color: var(--tpms-amarillo-paz);
+    text-align: center;
+    padding-bottom: 8px;
+    padding-top: 8px;
+    border-radius: 3.5px;
+
+    .p-date {
+      font-size: 0.75rem;
+      color: var(--tpms-azul-presi);
+    }
+
+    time {
+      @include heading-h3;
+
+      color: var(--tpms-azul-presi);
+      margin: 0;
+    }
+
+    h3 {
+      color: var(--tpms-azul-presi);
+      margin: 0;
+    }
+  }
+
+  &__content {
+    .description--clamp {
+      position: relative;
+      max-height: 115px;
+      overflow: hidden;
+
+      p {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4;
+        line-clamp: 4;
+        overflow: hidden;
+      }
+    }
+
+    .link {
+      all: unset;
+    }
+
+    h2 {
+      @include heading-h5;
+
+      color: var(--tpms-azul-presi);
+      margin: 0;
+      margin-bottom: 8px;
+    }
+
+    p {
+      font-size: 0.75rem;
+      color: var(--grey-1);
+    }
+  }
+
+  &__item {
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: var(--spacing-lg);
+
+    &:hover {
+      h2 {
+        color: var(--tpms-azul-cielo);
+      }
+
+      .lista-efemerides__date {
+        background-color: var(--tpms-azul-cielo);
+
+        p,
+        h3,
+        time {
+          color: var(--tpms-blanco);
+        }
+      }
+    }
+  }
+
+  &__pager {
+    .paginator {
+      h4 {
+        display: none;
+      }
+    }
+
+    margin-top: var(--spacing-xl);
+  }
+}
+@include large {
+  .lista-efemerides {
+    &__wrapper {
+      flex-direction: row;
+      margin: var(--spacing-md) 15px var(--spacing-xl);
+    }
+
+    &__item {
+      gap: var(--spacing-lg);
+    }
+
+    &__date {
+      min-width: 114px;
+      max-height: 132px;
+      padding-bottom: 28px;
+      padding-top: 28px;
+      border-radius: 3.5px;
+
+      p {
+        font-size: 1rem;
+      }
+    }
+
+    &__content {
+      p {
+        font-size: 0.75rem;
+      }
+    }
+
+    &__filtros {
+      max-width: 312px;
+      margin-bottom: var(--spacing-xl);
+    }
+  }
+}
+
+@include xl {
+  .lista-efemerides {
+    &__wrapper {
+      margin: var(--spacing-xl) auto;
+      gap: 136px;
+    }
+
+    &__content {
+      max-width: 872px;
+    }
+  }
+}

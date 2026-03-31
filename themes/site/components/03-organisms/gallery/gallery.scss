@@ -1,0 +1,263 @@
+.gallery {
+  background-color: var(--tpms-azul-presi);
+  padding: var(--spacing-lg) 0;
+
+  @include large {
+    padding: var(--spacing-xxxl) 0;
+  }
+
+  &__item {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    cursor: pointer;
+
+    img {
+      transition: transform 0.3s ease;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgb(0 0 0 / 15%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+  }
+
+  &__title {
+    margin-bottom: var(--spacing-xl);
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+
+    @include xl {
+      justify-content: center;
+      margin-bottom: 48px;
+    }
+
+    h2,
+    .h2 {
+      color: var(--tpms-blanco);
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      font-size: 32px;
+      padding-bottom: var(--spacing-xxs);
+
+      @include large {
+        font-size: 42px;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 156px;
+        height: 2px;
+        background-color: var(--tpms-oro-libertad);
+      }
+    }
+  }
+
+  &__grid {
+    margin-bottom: var(--spacing-xl);
+
+    @include xl {
+      margin-bottom: var(--spacing-xxl);
+    }
+  }
+
+  &__left-wrapper,
+  &__right-wrapper {
+    margin-bottom: var(--spacing-md);
+
+    @include large {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    @include xl {
+      margin-bottom: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__left,
+  &__right {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    height: 100%;
+
+    @include large {
+      gap: var(--spacing-lg);
+    }
+  }
+
+  &__row-large {
+    width: 100%;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+  }
+
+  &__row-small {
+    display: flex;
+    gap: var(--spacing-md);
+    margin: 0;
+
+    @include large {
+      gap: var(--spacing-lg);
+    }
+
+    .col-6 {
+      padding: 0;
+      flex: 1;
+      min-width: 0;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+        aspect-ratio: 1 / 1;
+        min-height: 165px;
+
+        @include large {
+          aspect-ratio: 342 / 300;
+          min-height: 300px;
+        }
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--spacing-xl);
+    width: 100%;
+
+    @include xl {
+      margin-top: 72px;
+    }
+
+    .button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+
+      @include large {
+        width: 452px;
+        max-width: 452px;
+        height: 56px;
+        min-height: 56px;
+      }
+    }
+  }
+
+  &__item:hover img,
+  &__item:focus-visible img {
+    transform: scale(1.05);
+  }
+
+  &__item:hover::after,
+  &__item:focus-visible::after {
+    opacity: 1;
+  }
+
+  &__item:focus-visible {
+    outline: 2px solid var(--tpms-oro-libertad);
+    outline-offset: 2px;
+  }
+}
+
+.gallery-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+  background: rgb(0 0 0 / 85%);
+
+  &[hidden] {
+    display: none;
+  }
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+  }
+
+  &__dialog {
+    position: relative;
+    z-index: 1;
+    max-width: 90vw;
+    max-height: 90vh;
+  }
+
+  &__image {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 90vw;
+    max-height: 90vh;
+  }
+
+  &__close,
+  &__download {
+    position: absolute;
+    top: 0;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 8px;
+    background-color: rgb(255 255 255 / 92%);
+    background-repeat: no-repeat;
+    background-position: center;
+    backdrop-filter: blur(6px);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  &__close {
+    left: 0;
+    background-image: url('../assets/icons/equis.svg');
+    background-size: 14px 14px;
+  }
+
+  &__download {
+    right: 0;
+    display: inline-block;
+    background-image: url('../assets/icons/descargar.svg');
+    background-size: 24px 24px;
+  }
+
+  &__close:hover,
+  &__close:focus-visible,
+  &__download:hover,
+  &__download:focus-visible {
+    background-color: rgb(255 255 255 / 100%);
+    outline: 2px solid var(--tpms-oro-libertad);
+    outline-offset: 2px;
+  }
+}
+
+body.gallery-modal-open {
+  overflow: hidden;
+}

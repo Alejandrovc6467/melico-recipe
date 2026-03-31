@@ -1,0 +1,89 @@
+// Text Links Image Organism
+.text-links-image {
+  // Aplicar flexbox al row para cambiar el orden en móvil
+  .row {
+    display: flex;
+    flex-direction: column-reverse;
+
+    @include large {
+      flex-direction: row;
+    }
+  }
+  // Contenedor de contenido
+  &__content {
+    padding-top: 0;
+
+    @include large {
+      padding-top: 80px;
+    }
+  }
+
+  // Título principal
+  &__title {
+    color: var(--tpms-azul-presi);
+  }
+
+  // Contenedor de ítems
+  &__items {
+    display: flex;
+    flex-direction: column;
+    margin-top: var(--spacing-xl);
+    gap: var(--spacing-xxl);
+  }
+
+  // Ítem individual
+  &__item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--spacing-xl);
+
+    @include medium {
+      flex-direction: row;
+      gap: 80px;
+    }
+  }
+
+  // Título del ítem
+  &__item-title {
+    margin-bottom: var(--spacing-xs);
+    font-weight: 700;
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+    color: var(--tpms-azul-presi);
+    max-width: 527px;
+  }
+
+  // Número de ley
+  &__item-number {
+    color: $primary-d1;
+  }
+
+  // Botón del ítem
+  &__item-button {
+    height: 56px;
+  }
+
+  // columna imagen izquierda ---------------------
+
+  &__content-izquierdo {
+    display: flex;
+    justify-content: center;
+    padding-bottom: var(--spacing-xl);
+
+    @include large {
+      padding-bottom: 0px;
+      justify-content: flex-end;
+    }
+  }
+
+  // Wrapper de imagen
+  &__image-wrapper {
+    position: relative;
+  }
+
+  // Imagen
+  &__image {
+    object-fit: cover;
+  }
+}

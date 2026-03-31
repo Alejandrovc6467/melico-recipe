@@ -1,0 +1,15 @@
+default:
+  pretitle: 'Sample subtitle'
+  heading: 'Teatro Popular Melico Salazar'
+  cta_label: 'Sample label name'
+  cta_url: '#distribucion-butacas'
+
+  galery_text: 'Porem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'
+
+  image_left:
+    src: 'https://palomasanbasilio.es/wp-content/uploads/2025/03/Teatro-Melico-Salazar-San-Jose-Costa-Rica.jpg'
+    alt: 'Vista interior del Teatro Popular Melico Salazar mostrando el escenario y las butacas'
+
+  image_right:
+    src: 'https://media.licdn.com/dms/image/v2/C4D22AQH9S4eprdD-CA/feedshare-shrink_800/feedshare-shrink_800/0/1582211236646?e=2147483647&v=beta&t=EpZI5XzG087kG4OUYpUs6NGEcRUaznZ-hL9t_iK4DMM'
+    alt: 'Detalle de las butacas del teatro con el logo institucional'

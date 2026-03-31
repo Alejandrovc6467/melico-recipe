@@ -1,0 +1,18 @@
+langcode: es
+status: true
+dependencies: {  }
+id: node__noticia
+label: 'Contenido: Noticia'
+tags:
+  schema_article_about: '[node:field_metatags]'
+  schema_article_author: 'a:2:{s:5:"@type";s:6:"Person";s:4:"name";s:18:"[node:author:name]";}'
+  schema_article_date_modified: '[node:changed:custom:Y-m-d\TH:i:sP]'
+  schema_article_date_published: '[node:created:custom:Y-m-d\TH:i:sP]'
+  schema_article_description: '[node:body]'
+  schema_article_headline: '[node:title]'
+  schema_article_id: '[node:url]'
+  schema_article_image: 'a:2:{s:5:"@type";s:11:"ImageObject";s:3:"url";s:63:"[node:field_imagen_noticia:entity:field_media_image:entity:url]";}'
+  schema_article_main_entity_of_page: '[node:url]'
+  schema_article_name: '[node:title]'
+  schema_article_publisher: 'a:2:{s:5:"@type";s:6:"Person";s:4:"name";s:18:"[node:author:name]";}'
+  schema_article_type: NewsArticle

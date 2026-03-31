@@ -1,0 +1,11 @@
+header_blue__title: 'Teatro Popular Melico Salazar'
+header_blue__description: 'La Sorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'
+header_blue__image: 'https://sicultura-live.s3.amazonaws.com/public/media/_laf4295.jpg'
+header_blue__image_alt: 'Teatro Popular Melico Salazar'
+
+header_blue__buttons:
+  - button_content: 'RESERVAR'
+    button_url: '/reservar'
+
+  - button_content: 'TARIFAS 2024'
+    button_url: '/tarifas'

@@ -1,0 +1,107 @@
+.videoteca-grid {
+  text-align: center;
+
+  &__title-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+  }
+
+  &__main-title {
+    color: var(--tpms-azul-presi);
+    font-size: 3.25rem;
+    line-height: 1.5;
+  }
+
+  &__description {
+    max-width: 665px;
+    margin: 0 auto var(--spacing-xxl);
+    color: var(--grey-2);
+
+    @include large {
+      margin-bottom: var(--spacing-xl);
+    }
+  }
+
+  &__item--featured,
+  &__item--secondary {
+    margin-bottom: var(--spacing-lg);
+    text-align: left;
+
+    @include large {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .video-thumbnail__wrapper {
+      width: 100%;
+      height: 194px;
+
+      @include large {
+        height: 221px;
+      }
+    }
+  }
+
+  &__item--featured {
+    @include large {
+      margin-bottom: var(--spacing-xl);
+
+      .video-thumbnail__wrapper {
+        height: 697px;
+      }
+
+      .video-item__title {
+        font-size: 2rem;
+        line-height: 40px;
+      }
+    }
+  }
+
+  // Secundarios – overrides en desktop + icono play reducido
+  &__item--secondary {
+    @include large {
+      .video-thumbnail__wrapper {
+        height: 221px;
+      }
+    }
+
+    .video-thumbnail__play-icon {
+      width: 106px;
+      height: 75px;
+
+      @include large {
+        width: 60px;
+        height: 36px;
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--spacing-lg);
+    width: 100%;
+
+    @include large {
+      margin-top: 0;
+    }
+
+    .button {
+      width: 100%;
+      height: 56px;
+
+      @include large {
+        width: 457px;
+        min-width: 200px;
+      }
+    }
+  }
+}
+
+.video-thumbnail__image {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}

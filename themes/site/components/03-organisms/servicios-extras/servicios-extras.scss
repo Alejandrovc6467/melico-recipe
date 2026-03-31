@@ -1,0 +1,132 @@
+// =============================================================================
+// SERVICIOS EXTRA COMPONENT
+// Organism component for displaying extra services with Phosphor icons
+// =============================================================================
+
+.servicios_extra {
+  // Main Title
+  &__title {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    color: var(--tpms-azul-presi);
+  }
+
+  // Description
+  &__description {
+    margin-bottom: var(--spacing-xl);
+    color: var(--grey-2);
+    width: 100%;
+    max-width: 611px;
+  }
+
+  // Grid Container (using Bootstrap row)
+  &__grid {
+    gap: 30px;
+    max-width: 1440px;
+    margin: 0;
+
+    @include medium {
+      gap: var(--spacing-lg);
+    }
+  }
+
+  // Individual Item (Bootstrap handles the layout)
+  &__item {
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    padding: 0;
+    height: auto;
+    max-width: 341px;
+    gap: var(--spacing-sm);
+
+    @include medium {
+      gap: var(--spacing-lg);
+    }
+  }
+
+  // Icon Wrapper with Background
+  &__icon-wrapper {
+    background-color: var(--tpms-oro-libertad);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 76px;
+    height: 76px;
+    position: relative;
+    flex-shrink: 0;
+
+    @include medium {
+      width: 98px;
+      height: 76px;
+    }
+  }
+
+  // Phosphor Icon (Dynamic)
+  &__icon-dinamic {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    color: var(--tpms-azul-presi);
+
+    div {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      color: var(--tpms-blanco);
+    }
+  }
+
+  // Plus Badge Icon
+  &__icon-plus {
+    display: block;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: -12px;
+    right: -5px;
+    background-image: url('../assets/icons/plus-fill.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  // Info Container
+  &__info {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    gap: var(--spacing-xs);
+    max-width: 200px;
+
+    @include medium {
+      max-width: 100%;
+    }
+  }
+
+  // Item Title
+  &__title-item {
+    color: var(--tpms-azul-presi);
+    font-weight: 700;
+  }
+
+  // Item Description
+  &__description-item {
+    font-family: $font-body;
+    font-size: 14px;
+    line-height: 21px;
+    color: var(--grey-2);
+    font-weight: 400;
+  }
+}

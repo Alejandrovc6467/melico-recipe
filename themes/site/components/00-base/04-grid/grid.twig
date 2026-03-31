@@ -1,0 +1,14 @@
+<h2>{{ grid_heading }}</h2>
+<p>{{ grid_description }}</p>
+
+<div class="container">
+  {% for row in rows %}
+    <div class="row">
+      {% for col in row.columns %}
+        <div class="col-{{ col }}" style="background: #c1c5c8; text-align: center; padding: 1rem; margin-bottom: 1rem;">
+          col-{{ col }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endfor %}
+</div>

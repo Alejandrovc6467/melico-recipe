@@ -1,0 +1,13 @@
+@mixin link {
+  color: var(--tpms-azul-presi);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--tpms-azul-cielo);
+  }
+}
+
+.link,
+a {
+  @include link;
+}
